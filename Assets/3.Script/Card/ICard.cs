@@ -1,28 +1,14 @@
-using CardTypeEnum;
-
-namespace CardTypeEnum
+public interface ICard
 {
-    public enum CardType
+    string name { get; set; }
+    string symbol { get; set; }
+    int number { get; set; }
+
+    enum cardType
     {
         Active,
         Passive
     }
-    
-    public enum CardSymbol
-    {
-        Space,
-        Diamond,
-        Heart,
-        Club
-    }
-}
-
-public interface ICard
-{
-    string Name { get; }
-    int Number { get; }
-    CardType CardType { get; }
-    CardSymbol CardSymbol { get; }
 
     public void UseCard();
 }
