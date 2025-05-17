@@ -1009,7 +1009,7 @@ GameObject:
   m_Component:
   - component: {fileID: 705873074}
   m_Layer: 0
-  m_Name: ------------------------
+  m_Name: '------------------------'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1306,7 +1306,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sessionNumberText: {fileID: 278862215}
-  startButton: {fileID: 1458022172}
+  nickNameTexts:
+  - {fileID: 396058643}
+  - {fileID: 943270442}
+  - {fileID: 1892623369}
+  - {fileID: 704008400}
+  startButton: {fileID: 1458022174}
 --- !u!4 &1336716323
 Transform:
   m_ObjectHideFlags: 0
@@ -1478,7 +1483,9 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1458022175}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls: [{m_Target: {fileID: 1336716322}, m_TargetAssemblyTypeName: 'WatingSetting,
+            Assembly-CSharp', m_MethodName: OnStartButtonClicked, m_Mode: 1, m_Arguments: {m_ObjectArgument: {fileID: 0}, m_ObjectArgumentAssemblyTypeName: 'UnityEngine.Object,
+              UnityEngine', m_IntArgument: 0, m_FloatArgument: 0, m_StringArgument: '', m_BoolArgument: 0}, m_CallState: 2}]
 --- !u!114 &1458022175
 MonoBehaviour:
   m_ObjectHideFlags: 0

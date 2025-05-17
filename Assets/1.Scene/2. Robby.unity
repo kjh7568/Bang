@@ -1418,11 +1418,6 @@ MonoBehaviour:
   - {fileID: 1214723647702548, guid: 5d9c75c90f18a1446be55290d11190d9, type: 3}
   - {fileID: 1800371080893130, guid: 13e2e0d1d9cf40045916dc71e826e777, type: 3}
   - {fileID: 1506550050545096, guid: 4275ed6eb8506b54eb8dfb9b5f4e290e, type: 3}
-  prefabTransforms:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!4 &865430642
 Transform:
   m_ObjectHideFlags: 0

@@ -2029,6 +2029,8 @@ GameObject:
   - component: {fileID: 4670764120559952}
   - component: {fileID: 95217205003396926}
   - component: {fileID: 2275522254084607655}
+  - component: {fileID: -4152899911616028343}
+  - component: {fileID: 4796931198456707357}
   m_Layer: 0
   m_Name: Player 3
   m_TagString: Untagged
@@ -2099,6 +2101,62 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours: []
   ForceRemoteRenderTimeframe: 0
+--- !u!114 &-4152899911616028343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800371080893130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3750dea2db3acef4782f341ef0e1dd27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerGameStat:
+    sessionNumber: 0
+    characterModelNum: 0
+    PlayerInGameStat:
+      hp: 0
+      bulletRange: 0
+      isBang: 0
+      isVolcanic: 0
+      isBarrel: 0
+      isMustang: 0
+      isJail: 0
+      isDynamite: 0
+  playerBasicStat:
+    iD: 
+    password: 
+    nickName: Kim1
+--- !u!114 &4796931198456707357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800371080893130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3750dea2db3acef4782f341ef0e1dd27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerGameStat:
+    sessionNumber: 0
+    characterModelNum: 0
+    playerInGameStat:
+      Hp: 0
+      BulletRange: 0
+      IsBang: 0
+      IsVolcanic: 0
+      IsBarrel: 0
+      IsMustang: 0
+      IsJail: 0
+      IsDynamite: 0
+  playerBasicStat:
+    ID: 
+    Password: 
+    Nickname: Kim_1
 --- !u!1 &1842809463861744
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,18 +1,22 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
+[System.Serializable]
 public class PlayerInGameStat
 {
-    public int Hp { get; set; }
-    public int BulletRange { get; set; }
+    public int hp;
+    public int bulletRange;
     
-    public ICard[] HandCards { get; set; }
+    public ICard[] HandCards;
     public enum Job { Sceriffo, Vice, Fuorilegge, Rinnegato }
     
-    public IHuman MyHuman { get; set; }
+    public IHuman MyHuman;
 
-    public bool IsBang { get; set; }
-    public bool IsVolcanic { get; set; }
-    public bool IsBarrel { get; set; }
-    public bool IsMustang { get; set; }
-    public bool IsJail { get; set; }
-    public bool IsDynamite { get; set; }
+    public bool isBang;
+    public bool isVolcanic;
+    public bool isBarrel;
+    public bool isMustang;
+    public bool isJail;
+    public bool isDynamite;
 }

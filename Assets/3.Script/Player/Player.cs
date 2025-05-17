@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public static PlayerGameStat playerGameStat;
-    private PlayerBasicStat playerBasicStat;
+    [SerializeField] private PlayerGameStat playerGameStat;
+    [SerializeField] private PlayerBasicStat playerBasicStat;
+
+    public PlayerGameStat GameStat => playerGameStat;
+    public PlayerBasicStat BasicStat => playerBasicStat;
 }

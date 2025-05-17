@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerGameStat : MonoBehaviour
+[System.Serializable]
+public class PlayerGameStat
 {
     public int sessionNumber;
     public int characterModelNum;
-    public PlayerInGameStat PlayerInGameStat;
+    
+    [SerializeField] private PlayerInGameStat playerInGameStat;
+    
+    public PlayerInGameStat InGameStat => playerInGameStat;
 }

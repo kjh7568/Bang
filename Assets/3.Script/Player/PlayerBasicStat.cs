@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class PlayerBasicStat
 {
-    public string ID;
-    public string Password;
+    public string iD;
+    public string password;
+    public string nickName;
 }
