@@ -481,6 +481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01bb3c784a96d3439c2ca97093a1ddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deckData: {fileID: 11400000, guid: eb7fded0ed4dd1b4ab2dd75dc0d87f6a, type: 2}
   cardPrefab:
   - {fileID: 3898667522894550374, guid: bd386f18bbff6294a8a74baba89e655d, type: 3}
   - {fileID: 8375694351990801911, guid: 0774fec1960528f4ea093d71adc46a7c, type: 3}
