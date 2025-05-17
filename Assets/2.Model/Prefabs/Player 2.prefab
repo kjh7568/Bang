@@ -671,7 +671,6 @@ GameObject:
   - component: {fileID: 95060489484656484}
   - component: {fileID: 581144109252733257}
   - component: {fileID: 6149665301532569681}
-  - component: {fileID: -4962219773940854896}
   m_Layer: 0
   m_Name: Player 2
   m_TagString: Untagged
@@ -757,7 +756,7 @@ MonoBehaviour:
   playerGameStat:
     sessionNumber: 0
     characterModelNum: 0
-    PlayerInGameStat:
+    playerInGameStat:
       hp: 0
       bulletRange: 0
       isBang: 0
@@ -770,34 +769,6 @@ MonoBehaviour:
     iD: 
     password: 
     nickName: Bae
---- !u!114 &-4962219773940854896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1214723647702548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3750dea2db3acef4782f341ef0e1dd27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerGameStat:
-    sessionNumber: 0
-    characterModelNum: 0
-    playerInGameStat:
-      Hp: 0
-      BulletRange: 0
-      IsBang: 0
-      IsVolcanic: 0
-      IsBarrel: 0
-      IsMustang: 0
-      IsJail: 0
-      IsDynamite: 0
-  playerBasicStat:
-    ID: 
-    Password: 
-    Nickname: Bae
 --- !u!1 &1233716815622704
 GameObject:
   m_ObjectHideFlags: 0

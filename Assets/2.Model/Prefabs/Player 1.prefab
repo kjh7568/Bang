@@ -2489,7 +2489,6 @@ GameObject:
   - component: {fileID: 95918252503098470}
   - component: {fileID: 8107617641382066571}
   - component: {fileID: 5274620086830130402}
-  - component: {fileID: 4599421426223946406}
   m_Layer: 0
   m_Name: Player 1
   m_TagString: Untagged
@@ -2575,7 +2574,7 @@ MonoBehaviour:
   playerGameStat:
     sessionNumber: 0
     characterModelNum: 0
-    PlayerInGameStat:
+    playerInGameStat:
       hp: 0
       bulletRange: 0
       isBang: 0
@@ -2588,34 +2587,6 @@ MonoBehaviour:
     iD: 
     password: 
     nickName: Noh
---- !u!114 &4599421426223946406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1942289980213182}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3750dea2db3acef4782f341ef0e1dd27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerGameStat:
-    sessionNumber: 0
-    characterModelNum: 0
-    playerInGameStat:
-      Hp: 0
-      BulletRange: 0
-      IsBang: 0
-      IsVolcanic: 0
-      IsBarrel: 0
-      IsMustang: 0
-      IsJail: 0
-      IsDynamite: 0
-  playerBasicStat:
-    ID: 
-    Password: 
-    Nickname: Noh
 --- !u!1 &1954743680365594
 GameObject:
   m_ObjectHideFlags: 0
