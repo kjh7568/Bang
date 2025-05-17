@@ -1,0 +1,2428 @@
+fileFormatVersion: 2
+guid: 450711b000a00be4aa864a50d5c8b071
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: AbilityCard_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1583
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c7adfa95b427ae4ebd9237b9f5ce135
+      internalID: -559837958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_1
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 1583
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40c963e27e764424b8e1be2b7227abb9
+      internalID: -448543829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_2
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 1583
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33c1ca60517b5ee4499b5a8c6a46b589
+      internalID: -1309954416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_3
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 1583
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23cc3a14088a8a34b8694ef660fab6b3
+      internalID: 1975001331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_4
+      rect:
+        serializedVersion: 2
+        x: 584
+        y: 1583
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7bd5d4c36d15994285a8ac7d83cc5af
+      internalID: -651986582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_5
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 1583
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7d02da00ba607641b6806d6e968f765
+      internalID: -2105346489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_6
+      rect:
+        serializedVersion: 2
+        x: 876
+        y: 1583
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 761089f23647f6e4bb06274b97232285
+      internalID: 866903966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_7
+      rect:
+        serializedVersion: 2
+        x: 1022
+        y: 1583
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29b5bebc5a2984b4da1227645e63e43b
+      internalID: -1745492941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_8
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 1583
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49c6fd26efe3a3445b1db67c46e03e71
+      internalID: 1296896063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_9
+      rect:
+        serializedVersion: 2
+        x: 1314
+        y: 1583
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0de0da0437886f4e8c84d5657c05944
+      internalID: 209170821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_10
+      rect:
+        serializedVersion: 2
+        x: 1460
+        y: 1583
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bda3697323202394eaa8f2696b2da5b9
+      internalID: -1053786739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_11
+      rect:
+        serializedVersion: 2
+        x: 1606
+        y: 1583
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9bb76ea88043a694ebce037ca2a8cffb
+      internalID: 693360481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_12
+      rect:
+        serializedVersion: 2
+        x: 1752
+        y: 1583
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 424468ea3d9108045b189abe9cddb0af
+      internalID: 518940255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1358
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba42ee990631d5b4e9a2512bd0ae8a32
+      internalID: 1555158260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_14
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 1358
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09711e3ed3b77644da7a46cea94ba19e
+      internalID: -723058738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_15
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 1358
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5d292770952c884893939fe68d35f4f
+      internalID: 1497472904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_16
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 1358
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: add1477eb35575648a2f8706f685b873
+      internalID: -791940618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_17
+      rect:
+        serializedVersion: 2
+        x: 584
+        y: 1358
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1d3583afc140304697d2ba0b9f3dab2
+      internalID: -1814496420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_18
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 1358
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25418159c555c2048ad3b5440f4b0404
+      internalID: 1867919022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_19
+      rect:
+        serializedVersion: 2
+        x: 876
+        y: 1358
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9f6c5f861791fd4aa5e48cd0032c3e5
+      internalID: 393079494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_20
+      rect:
+        serializedVersion: 2
+        x: 1022
+        y: 1358
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12142ef138e746b4884725905fadc703
+      internalID: -376129997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_21
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 1358
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8af799582d0d4d49a9208f7e8e5d9bc
+      internalID: -619754332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_22
+      rect:
+        serializedVersion: 2
+        x: 1314
+        y: 1358
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e334a93616dd7bb40ab1f951b8d63fd1
+      internalID: 1704602996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_23
+      rect:
+        serializedVersion: 2
+        x: 1460
+        y: 1358
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2bb5097f9cfaf74e8fc9e1f599556b5
+      internalID: -184449713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_24
+      rect:
+        serializedVersion: 2
+        x: 1606
+        y: 1358
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 136b38ced46725146bb080f080ae765d
+      internalID: -1517961594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_25
+      rect:
+        serializedVersion: 2
+        x: 1752
+        y: 1358
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a21d686c6c2503e4bb1788523cf59bdf
+      internalID: -228377824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_26
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1133
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4097d08e892d7f4c9db6485354580ad
+      internalID: -580883122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_27
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 1133
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72cd6ba2b4e2c6148841c1d8e40cb1c0
+      internalID: -843113258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_28
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 1133
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c3e13224d6318c47ae30d0572d7fe00
+      internalID: -288240141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_29
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 1133
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0e11315c847a5744b90257c9441b3f8
+      internalID: -624952424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_30
+      rect:
+        serializedVersion: 2
+        x: 584
+        y: 1133
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc0472ceb0cfcf44fa2e84e40c712916
+      internalID: 930998964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_31
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 1133
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9225e011c7418ca4eb3dee436d0c9599
+      internalID: 326470073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_32
+      rect:
+        serializedVersion: 2
+        x: 876
+        y: 1133
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3c0fde631a03404cbba278903b04d4c
+      internalID: -29465450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_33
+      rect:
+        serializedVersion: 2
+        x: 1022
+        y: 1133
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 503ffd61b9df84d4ebea9c96290eb4c1
+      internalID: 1888448686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_34
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 1133
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27c987933e11650489b2e1b4c5a9f40f
+      internalID: 816439669
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_35
+      rect:
+        serializedVersion: 2
+        x: 1314
+        y: 1133
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 822c98d2429ce6a40abc7a5884c724e7
+      internalID: -1046351964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_36
+      rect:
+        serializedVersion: 2
+        x: 1460
+        y: 1133
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 700a72150f730784dbd1efee7ebe443c
+      internalID: 35250701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_37
+      rect:
+        serializedVersion: 2
+        x: 1606
+        y: 1133
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e3764a2d5b34304487ba1089256a0c7
+      internalID: -2065422896
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_38
+      rect:
+        serializedVersion: 2
+        x: 1752
+        y: 1133
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a388c4f9f82938340be84bf93f6e9b8d
+      internalID: -692369882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_39
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 908
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3df872bfbae8ae94ab174f817f46a0df
+      internalID: -109826647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_40
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 908
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe0f672e48c3f314493538b56ec09017
+      internalID: 1816970053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_41
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 908
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c65f953c5a8528468e93753fe2ee316
+      internalID: -2033599859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_42
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 908
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b0cc79133d57db48b3e3a4e86b8d41d
+      internalID: -120381565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_43
+      rect:
+        serializedVersion: 2
+        x: 584
+        y: 908
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55abbffa3322b2f49bb56bba194a87ae
+      internalID: 1609514230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_44
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 908
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f7d4d81d52c7d34a9f7009d0bd8dc13
+      internalID: 633321992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_45
+      rect:
+        serializedVersion: 2
+        x: 876
+        y: 908
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 520271c04384acc4194e2889925d3292
+      internalID: 109429353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_46
+      rect:
+        serializedVersion: 2
+        x: 1022
+        y: 908
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22803e42ebb8bd640959f568bc720caa
+      internalID: 1207760287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_47
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 908
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 854e1aecfb2891e46a99f0e73affdca2
+      internalID: -1743660486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_48
+      rect:
+        serializedVersion: 2
+        x: 1314
+        y: 908
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14c9f0f1b52698147b4ec19f77d3c970
+      internalID: 2020270306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_49
+      rect:
+        serializedVersion: 2
+        x: 1460
+        y: 908
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7776f441b7135046948eb158288c89f
+      internalID: 1643572849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_50
+      rect:
+        serializedVersion: 2
+        x: 1606
+        y: 908
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 92355efa2ebe261489b411d97a7c307c
+      internalID: 348588240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_51
+      rect:
+        serializedVersion: 2
+        x: 1752
+        y: 908
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bebb7d4ae182413409972b86fc17f894
+      internalID: -1311449466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_52
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 683
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94a918049fd54c542997d22dacc6e7a7
+      internalID: 1446728380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_53
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 683
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: acd386bb5cbad4f47a275942f94da19f
+      internalID: -905154989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_54
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 683
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 396d770afcd2f0d4c874e92e340de74f
+      internalID: -892878073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_55
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 683
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ada1173ea80b67141a3dbf06779b07b3
+      internalID: 1024560050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_56
+      rect:
+        serializedVersion: 2
+        x: 584
+        y: 683
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7ed7a1a681cd814ebe2ac25b73dee1f
+      internalID: 400288695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_57
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 683
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 382c0db7402f61d4491ba7233f639136
+      internalID: -2145017404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_58
+      rect:
+        serializedVersion: 2
+        x: 876
+        y: 683
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24a6dc1329ded114cb05ca9a987b5a96
+      internalID: -41535731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_59
+      rect:
+        serializedVersion: 2
+        x: 1022
+        y: 683
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cda4be1c0fce25c4faa58ec927664133
+      internalID: -2118441131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_60
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 683
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ce8430b216a40045af3a2bdfcaec3f0
+      internalID: -684576732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_61
+      rect:
+        serializedVersion: 2
+        x: 1314
+        y: 683
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6952637537d94984bb6ac92cfb13a464
+      internalID: -432836811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_62
+      rect:
+        serializedVersion: 2
+        x: 1460
+        y: 683
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1492315196fd8114ea8d19207c3bb798
+      internalID: -727083915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_63
+      rect:
+        serializedVersion: 2
+        x: 1606
+        y: 683
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2c9819b60c2f9946abe78cd28b2f769
+      internalID: -910018717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_64
+      rect:
+        serializedVersion: 2
+        x: 1752
+        y: 683
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 407204ce522719e4f87d83b87ebff31c
+      internalID: -1734424499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_65
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 458
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a26d34111ac5de146807cc0281a86855
+      internalID: -979281483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_66
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 458
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a05667df93e5284e8d0b4c9938d6b57
+      internalID: 1359570923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_67
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 458
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 808e74fef826cd74e9308b4b81ac230e
+      internalID: 372912377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_68
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 458
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5bf10919a7c55c54194d6e5c09a3bc31
+      internalID: -282930090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_69
+      rect:
+        serializedVersion: 2
+        x: 584
+        y: 458
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60654bc54f0f82542af9da430359a1ae
+      internalID: 1426166688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_70
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 458
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8160f4828b03c1c4eb24f9ac9b888408
+      internalID: 1353091999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_71
+      rect:
+        serializedVersion: 2
+        x: 876
+        y: 458
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81aa31330211d434aaf487b324207d68
+      internalID: 495107112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_72
+      rect:
+        serializedVersion: 2
+        x: 1022
+        y: 458
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1f221b6fc991c6418be9a6502a2069f
+      internalID: 442043140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_73
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 458
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 897206819d4308c48aacefc2d58871a4
+      internalID: 256457692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_74
+      rect:
+        serializedVersion: 2
+        x: 1314
+        y: 458
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b922b306055dbe44e90d81cd5fdac37f
+      internalID: -680540852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_75
+      rect:
+        serializedVersion: 2
+        x: 1460
+        y: 458
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f90e0810c3fd34488e6a65188d817e2
+      internalID: -1543257672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_76
+      rect:
+        serializedVersion: 2
+        x: 1606
+        y: 458
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5795eae6f79c3f4e8974f78be561688
+      internalID: 755788813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_77
+      rect:
+        serializedVersion: 2
+        x: 1752
+        y: 458
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94e8a54a0d3adea4db7171ec9edb69f2
+      internalID: 263900165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_78
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 233
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 927fcca59fda1eb4983d7c1d8b01b434
+      internalID: 2141939785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_79
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 233
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cdb256daafcf2e94bbcdf8a26bd9e678
+      internalID: 1190646295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_80
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 233
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d6dee2c071f3ae340a0352163c025948
+      internalID: -125446867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_81
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 233
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab241c76a0ee34d448e201b49d59b32d
+      internalID: -1405266891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_82
+      rect:
+        serializedVersion: 2
+        x: 584
+        y: 233
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d271d80231dbf274e9ef7543a94ecc18
+      internalID: -1497416058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_83
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 233
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99f65b3395a07bc489249d44a7dd0120
+      internalID: -1180176354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_84
+      rect:
+        serializedVersion: 2
+        x: 876
+        y: 233
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0fc3b73b62aa68b43bf5b0501c634f63
+      internalID: 867032456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_85
+      rect:
+        serializedVersion: 2
+        x: 1022
+        y: 233
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a62063c641057174dbd453f358d9280a
+      internalID: -1619465886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_86
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 233
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af738ae04bd3bf84bb8c9d8e8ca0b65a
+      internalID: -648771271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_87
+      rect:
+        serializedVersion: 2
+        x: 1314
+        y: 233
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6bb7074e777f41e44a907f9b14bff603
+      internalID: -1064129124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_88
+      rect:
+        serializedVersion: 2
+        x: 1460
+        y: 233
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 640784057723cd04aac16492c15a949f
+      internalID: -1081772833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_89
+      rect:
+        serializedVersion: 2
+        x: 1606
+        y: 233
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 461ac58e0ce65b2429fb7e4ce89b0ac4
+      internalID: -1447541808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_90
+      rect:
+        serializedVersion: 2
+        x: 1752
+        y: 233
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 027583e43d528174aa3e57d32923a965
+      internalID: -1164779829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_91
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 8
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a372a55980f0634382a244324bac059
+      internalID: -1853586125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_92
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 8
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6580007702620540b0a2ef5d9d8345a
+      internalID: -787925883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_93
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 8
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f8e21d1ea75ef6428dc0a180c275b88
+      internalID: 2043410225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_94
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 8
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 956b9b52bc3ab964b9f145a2b6494bf7
+      internalID: -431687454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_95
+      rect:
+        serializedVersion: 2
+        x: 584
+        y: 8
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: afad314cb4ff5a74ba17ee73613f18d2
+      internalID: -799793632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_96
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 8
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 128c6a46edeaa864aad1af0d97bfee8c
+      internalID: -525902176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_97
+      rect:
+        serializedVersion: 2
+        x: 876
+        y: 8
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: abe1902cea404b04aba27b81facd3ad1
+      internalID: 731649329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_98
+      rect:
+        serializedVersion: 2
+        x: 1022
+        y: 8
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31da32bebc1ea2343b31c47f293d832f
+      internalID: -1945061087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_99
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 8
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e47685a649f05fe4ebea7c3047e0b148
+      internalID: 1851431936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_100
+      rect:
+        serializedVersion: 2
+        x: 1314
+        y: 8
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b93fa509f9489494d9f11b04124f81f0
+      internalID: 1576609560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_101
+      rect:
+        serializedVersion: 2
+        x: 1460
+        y: 8
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6879d7d714ac38c49accd9d02c5c6fd2
+      internalID: -1542425440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_102
+      rect:
+        serializedVersion: 2
+        x: 1606
+        y: 8
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6e9764c3e31677c499f60a159068ac43
+      internalID: -571713092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AbilityCard_103
+      rect:
+        serializedVersion: 2
+        x: 1752
+        y: 8
+        width: 146
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d407e3a7d08d224c882fda8258853a3
+      internalID: 1645631097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 6f10cf401c13b3842835eb2e271de575
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      AbilityCard_0: -559837958
+      AbilityCard_1: -448543829
+      AbilityCard_10: -1053786739
+      AbilityCard_100: 1576609560
+      AbilityCard_101: -1542425440
+      AbilityCard_102: -571713092
+      AbilityCard_103: 1645631097
+      AbilityCard_11: 693360481
+      AbilityCard_12: 518940255
+      AbilityCard_13: 1555158260
+      AbilityCard_14: -723058738
+      AbilityCard_15: 1497472904
+      AbilityCard_16: -791940618
+      AbilityCard_17: -1814496420
+      AbilityCard_18: 1867919022
+      AbilityCard_19: 393079494
+      AbilityCard_2: -1309954416
+      AbilityCard_20: -376129997
+      AbilityCard_21: -619754332
+      AbilityCard_22: 1704602996
+      AbilityCard_23: -184449713
+      AbilityCard_24: -1517961594
+      AbilityCard_25: -228377824
+      AbilityCard_26: -580883122
+      AbilityCard_27: -843113258
+      AbilityCard_28: -288240141
+      AbilityCard_29: -624952424
+      AbilityCard_3: 1975001331
+      AbilityCard_30: 930998964
+      AbilityCard_31: 326470073
+      AbilityCard_32: -29465450
+      AbilityCard_33: 1888448686
+      AbilityCard_34: 816439669
+      AbilityCard_35: -1046351964
+      AbilityCard_36: 35250701
+      AbilityCard_37: -2065422896
+      AbilityCard_38: -692369882
+      AbilityCard_39: -109826647
+      AbilityCard_4: -651986582
+      AbilityCard_40: 1816970053
+      AbilityCard_41: -2033599859
+      AbilityCard_42: -120381565
+      AbilityCard_43: 1609514230
+      AbilityCard_44: 633321992
+      AbilityCard_45: 109429353
+      AbilityCard_46: 1207760287
+      AbilityCard_47: -1743660486
+      AbilityCard_48: 2020270306
+      AbilityCard_49: 1643572849
+      AbilityCard_5: -2105346489
+      AbilityCard_50: 348588240
+      AbilityCard_51: -1311449466
+      AbilityCard_52: 1446728380
+      AbilityCard_53: -905154989
+      AbilityCard_54: -892878073
+      AbilityCard_55: 1024560050
+      AbilityCard_56: 400288695
+      AbilityCard_57: -2145017404
+      AbilityCard_58: -41535731
+      AbilityCard_59: -2118441131
+      AbilityCard_6: 866903966
+      AbilityCard_60: -684576732
+      AbilityCard_61: -432836811
+      AbilityCard_62: -727083915
+      AbilityCard_63: -910018717
+      AbilityCard_64: -1734424499
+      AbilityCard_65: -979281483
+      AbilityCard_66: 1359570923
+      AbilityCard_67: 372912377
+      AbilityCard_68: -282930090
+      AbilityCard_69: 1426166688
+      AbilityCard_7: -1745492941
+      AbilityCard_70: 1353091999
+      AbilityCard_71: 495107112
+      AbilityCard_72: 442043140
+      AbilityCard_73: 256457692
+      AbilityCard_74: -680540852
+      AbilityCard_75: -1543257672
+      AbilityCard_76: 755788813
+      AbilityCard_77: 263900165
+      AbilityCard_78: 2141939785
+      AbilityCard_79: 1190646295
+      AbilityCard_8: 1296896063
+      AbilityCard_80: -125446867
+      AbilityCard_81: -1405266891
+      AbilityCard_82: -1497416058
+      AbilityCard_83: -1180176354
+      AbilityCard_84: 867032456
+      AbilityCard_85: -1619465886
+      AbilityCard_86: -648771271
+      AbilityCard_87: -1064129124
+      AbilityCard_88: -1081772833
+      AbilityCard_89: -1447541808
+      AbilityCard_9: 209170821
+      AbilityCard_90: -1164779829
+      AbilityCard_91: -1853586125
+      AbilityCard_92: -787925883
+      AbilityCard_93: 2043410225
+      AbilityCard_94: -431687454
+      AbilityCard_95: -799793632
+      AbilityCard_96: -525902176
+      AbilityCard_97: 731649329
+      AbilityCard_98: -1945061087
+      AbilityCard_99: 1851431936
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
