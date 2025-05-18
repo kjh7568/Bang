@@ -7,14 +7,21 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+    
     [SerializeField] private CardSystem cardSystem;
     [SerializeField] private UINameSynchronizer uiSystem;
     
     [SerializeField] private HumanList humanList;
     [SerializeField] private JobList jobList;
     
-    private List<Player> players = new();
-    
+    public List<Player> players = new();
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         CachePlayerInfo();

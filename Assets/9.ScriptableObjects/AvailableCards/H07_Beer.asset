@@ -16,3 +16,4 @@ MonoBehaviour:
   number: 7
   cardType: 0
   cardSymbol: 2
+  cardSprite: {fileID: -905154989, guid: 450711b000a00be4aa864a50d5c8b071, type: 3}
