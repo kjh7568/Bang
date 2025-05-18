@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 089cd724b583406687dc8e0f43c30b48, type: 3}
   m_Name: RoseDoolan
   m_EditorClassIdentifier: 
-  name: 
-  description: 
-  cardSprite: {fileID: 0}
+  name: "\uB85C\uC988 \uB458\uB780"
+  description: "\uB2E4\uB978 \uC0AC\uB78C\uC744 \uBCFC \uB54C \uAC70\uB9AC 1\uC774
+    \uAC00\uAE4C\uC6CC\uC9D1\uB2C8\uB2E4."
+  cardSprite: {fileID: 1101881348, guid: bead71edfb0bd9741bbc8c921f62e238, type: 3}

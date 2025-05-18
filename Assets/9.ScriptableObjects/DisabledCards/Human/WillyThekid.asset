@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6025b45df444204a34d2ae77f3daac8, type: 3}
   m_Name: WillyThekid
   m_EditorClassIdentifier: 
-  name: 
-  description: 
-  cardSprite: {fileID: 0}
+  name: "\uC70C\uB9AC \uB354 \uD0A4\uB4DC"
+  description: "<\uBC45!>\uC744 \uC6D0\uD558\uB294 \uB9CC\uD07C \uC0AC\uC6A9\uD560
+    \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+  cardSprite: {fileID: -1652895676, guid: bead71edfb0bd9741bbc8c921f62e238, type: 3}

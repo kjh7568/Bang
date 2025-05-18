@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11df69c7c6c643e190a44113191e13a8, type: 3}
   m_Name: SuzyLafayette
   m_EditorClassIdentifier: 
-  name: 
-  description: 
-  cardSprite: {fileID: 0}
+  name: "\uC218\uC9C0 \uB77C\uD30C\uC608\uD2B8"
+  description: "\uC190\uC5D0 \uB0A8\uC740 \uCE74\uB4DC\uAC00 \uD55C \uC7A5\uB3C4
+    \uC5C6\uB2E4\uBA74 \uC989\uC2DC \uCE74\uB4DC \uB354\uBBF8\uC5D0\uC11C \uCE74\uB4DC
+    \uD55C \uC7A5\uC744 \uAC00\uC838\uC635\uB2C8\uB2E4."
+  cardSprite: {fileID: 1150613236, guid: bead71edfb0bd9741bbc8c921f62e238, type: 3}

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "RoseDoolan", menuName = "Card/HumanData/RoseDoolan")]
+[CreateAssetMenu(fileName = "RoseDoolan", menuName = "Card/Human/RoseDoolan")]
 public class RoseDoolan : HumanData
 {
     public override void UseAbility()

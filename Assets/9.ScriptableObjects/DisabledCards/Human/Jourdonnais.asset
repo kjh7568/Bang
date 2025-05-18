@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f017120b64bf424081fae60e22f78cf6, type: 3}
   m_Name: Jourdonnais
   m_EditorClassIdentifier: 
-  name: 
+  name: "\uC8FC\uB974\uB3C4\uB124"
   description: " <\uBC45!>\uC758 \uD45C\uC801\uC774 \uB420 \uB54C\uB9C8\uB2E4 \"\uCE74\uB4DC
     \uD3BC\uCE58\uAE30!\"\uB97C \uD560 \uC218 \uC788\uC73C\uBA70, \uD558\uD2B8\uAC00
     \uB098\uC624\uBA74 \uCD1D\uC54C\uC774 \uBE57\uB098\uAC11\uB2C8\uB2E4."
-  cardSprite: {fileID: 0}
+  cardSprite: {fileID: 253767202, guid: bead71edfb0bd9741bbc8c921f62e238, type: 3}

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2877b6d635ff8414ba1e4fdd7cc3ec7a, type: 3}
+  m_Name: Sceriffo
+  m_EditorClassIdentifier: 
+  name: "\uBCF4\uC548\uAD00"
+  description: "\uBB34\uBC95\uC790 \uBAA8\uB450\uC640 \uBC30\uC2E0\uC790\uB97C \uC0AC\uC0B4\uD558\uB77C!"
+  cardSprite: {fileID: -1140354351, guid: 502815f71a7422b428977aae8342cfb7, type: 3}

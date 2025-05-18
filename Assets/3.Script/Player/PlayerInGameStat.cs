@@ -9,9 +9,9 @@ public class PlayerInGameStat
     public int bulletRange;
     
     public ICard[] HandCards;
-    public enum Job { Sceriffo, Vice, Fuorilegge, Rinnegato }
     
     public IHuman MyHuman;
+    public IJob MyJob;
 
     public bool isBang;
     public bool isVolcanic;

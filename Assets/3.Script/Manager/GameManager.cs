@@ -2,20 +2,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private CardSystem cardSystem;
+    [SerializeField] private HumanList humanList;
+    [SerializeField] private JobList jobList;
     
     private List<Player> players = new();
     
     private void Start()
     {
         CachePlayerInfo();
+        
         SetPlayerHuman();
         SetPlayerJob();
-
-        cardSystem.Init();
+        
+        GetPlayerInfo();
+        
+        // cardSystem.Init();
     }
 
     private void CachePlayerInfo()
@@ -36,15 +42,38 @@ public class GameManager : MonoBehaviour
     {
         //일단 인물 구현이 완료 된 것이 아니기 때문에 그냥 더미로 만듬
         Debug.Log("각 플레이어의 인물 카드가 정해졌습니다.");
+
+        var tempList = humanList.humanList;
         
-        /* foreach (var player in players)
-           {
-               player.GameStat.InGameStat.MyHuman =  player;
-           } */
+        foreach (var player in players)
+        {
+            int idx = Random.Range(0, tempList.Count);
+            player.GameStat.InGameStat.MyHuman = tempList[idx];
+            tempList.RemoveAt(idx);
+        }
     }
 
+    private void GetPlayerInfo() //나중에 지울 것
+    {
+        foreach (var player in players)
+        {
+            var nickName = player.BasicStat.nickName;
+            var human = player.GameStat.InGameStat.MyHuman.Name;
+            var job = player.GameStat.InGameStat.MyJob.Name;
+            
+            Debug.Log($"{nickName} 플레이어의 인물은 {human}이며, 직업은 {job}입니다.");
+        }
+    }
+    
     private void SetPlayerJob()
     {
-        Debug.Log("각 플레이어의 직업이 정해졌습니다.");
+        var tempList = jobList.jobList;
+        
+        foreach (var player in players)
+        {
+            int idx = Random.Range(0, tempList.Count);
+            player.GameStat.InGameStat.MyJob = tempList[idx];
+            tempList.RemoveAt(idx);
+        }
     }
 }
