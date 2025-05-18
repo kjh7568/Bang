@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiManager : MonoBehaviour
+public class UINameSynchronizer : MonoBehaviour
 {
     [SerializeField]private TMP_Text nickNameText;
     

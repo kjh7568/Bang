@@ -1554,7 +1554,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardSystem: {fileID: 270049309}
-  uiSystem: {fileID: 1237947400}
+  uiSystem: {fileID: 1286567634}
   humanList: {fileID: 11400000, guid: 2fcfa21c6f3ca4849a4319dedb2d2e2b, type: 2}
   jobList: {fileID: 11400000, guid: 1f96b6aa8e58bcb40a94d9ac756f8f2a, type: 2}
 --- !u!4 &726887971
@@ -2369,7 +2369,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1212908479}
   m_CullTransparentMesh: 1
---- !u!1 &1237947399
+--- !u!1 &1286567633
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2377,25 +2377,25 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1237947401}
-  - component: {fileID: 1237947400}
+  - component: {fileID: 1286567635}
+  - component: {fileID: 1286567634}
   m_Layer: 0
-  m_Name: UiManager
+  m_Name: UiSyncer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1237947400
+--- !u!114 &1286567634
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1237947399}
+  m_GameObject: {fileID: 1286567633}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 738b32859fcdd8941955df4626174742, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d370066c3bd7ef45b9ad06b5eb16787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   nickNameText: {fileID: 396051573}
@@ -2405,16 +2405,16 @@ MonoBehaviour:
   humanNameText: {fileID: 1138227104}
   humanInfoText: {fileID: 693942689}
   humanImage: {fileID: 42577857}
---- !u!4 &1237947401
+--- !u!4 &1286567635
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1237947399}
+  m_GameObject: {fileID: 1286567633}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1247.1395, y: 521.78284, z: 4.9976935}
+  m_LocalPosition: {x: 1841.7163, y: 498.4757, z: 4.8101215}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2867,7 +2867,7 @@ PrefabInstance:
     - target: {fileID: 8107617641382066571, guid: 085e53ee40ad24b40a83bd90705ad460,
         type: 3}
       propertyPath: SortKey
-      value: 4186374509
+      value: 867686590
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3662,4 +3662,4 @@ SceneRoots:
   - {fileID: 1298087073}
   - {fileID: 726887971}
   - {fileID: 270049310}
-  - {fileID: 1237947401}
+  - {fileID: 1286567635}

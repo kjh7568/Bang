@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private CardSystem cardSystem;
-    [SerializeField] private UiManager uiSystem;
+    [SerializeField] private UINameSynchronizer uiSystem;
     
     [SerializeField] private HumanList humanList;
     [SerializeField] private JobList jobList;
@@ -45,8 +45,6 @@ public class GameManager : MonoBehaviour
     private void SetPlayerHuman()
     {
         //일단 인물 구현이 완료 된 것이 아니기 때문에 그냥 더미로 만듬
-        Debug.Log("각 플레이어의 인물 카드가 정해졌습니다.");
-
         var tempList = humanList.humanList;
         
         foreach (var player in players)
