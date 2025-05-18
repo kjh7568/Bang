@@ -5,10 +5,17 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+    
     [SerializeField] private CardSystem cardSystem;
     
-    private List<Player> players = new();
-    
+    public List<Player> players = new();
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         CachePlayerInfo();

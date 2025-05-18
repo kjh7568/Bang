@@ -12,7 +12,8 @@ public class CardSystem : MonoBehaviour
     [SerializeField] private GameObject[] cardPrefab;
     [SerializeField] private Transform deckParent;
 
-    private List<CardData> initDeck;
+    private List<CardData> initDeck = new List<CardData>();
+    private List<CardData> usedDeck = new List<CardData>();
     
     public void Init()
     {
@@ -30,9 +31,7 @@ public class CardSystem : MonoBehaviour
 
         for (int i = 0; i < initDeck.Count; i++)
         {
-            Debug.Log($"덱 정보 ::: {initDeck[i].Name}");
-            
-            initDeck[i].UseCard();
+            Debug.Log($"덱 정보 ::: {initDeck[i].name}");
         }
     }
 
@@ -40,6 +39,25 @@ public class CardSystem : MonoBehaviour
     public void DistributeHandCards()
     {
         Debug.Log("핸드 카드 분배");
+
+        foreach (var player in GameManager.Instance.players)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                // player.GameStat.InGameStat.HandCards[i] = initDeck[i];
+                // initDeck.RemoveAt(i);
+                
+                player.GameStat.InGameStat.HandCards[i] = initDeck[0];
+                initDeck.RemoveAt(0);
+                
+                Debug.Log($"{player.BasicStat.nickName} 핸드 카드 ::: {player.GameStat.InGameStat.HandCards[i]}");
+            }
+        }
+    }
+
+    private void UseTest()
+    {
+        
     }
     
     private void MakeDeck()
