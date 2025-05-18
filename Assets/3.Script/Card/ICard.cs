@@ -1,4 +1,5 @@
 using CardTypeEnum;
+using UnityEngine;
 
 namespace CardTypeEnum
 {
@@ -23,6 +24,7 @@ public interface ICard
     int Number { get; }
     CardType CardType { get; }
     CardSymbol CardSymbol { get; }
+    Sprite CardSprite { get; }
 
     public void UseCard();
 }

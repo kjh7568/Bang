@@ -671,6 +671,7 @@ GameObject:
   - component: {fileID: 95060489484656484}
   - component: {fileID: 581144109252733257}
   - component: {fileID: 6149665301532569681}
+  - component: {fileID: 2971485256075811076}
   m_Layer: 0
   m_Name: Player 2
   m_TagString: Untagged
@@ -769,6 +770,19 @@ MonoBehaviour:
     iD: 
     password: 
     nickName: Bae
+--- !u!114 &2971485256075811076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214723647702548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59767b6744eb5134a8c78bc187fd375d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handCardImageList: []
 --- !u!1 &1233716815622704
 GameObject:
   m_ObjectHideFlags: 0

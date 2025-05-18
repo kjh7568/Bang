@@ -1547,6 +1547,7 @@ GameObject:
   - component: {fileID: 95511887735396104}
   - component: {fileID: 4290950276335187836}
   - component: {fileID: 5899487425630405010}
+  - component: {fileID: 2522154560432778785}
   m_Layer: 0
   m_Name: Player 4
   m_TagString: Untagged
@@ -1645,6 +1646,19 @@ MonoBehaviour:
     iD: 
     password: 
     nickName: Kim2
+--- !u!114 &2522154560432778785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1506550050545096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59767b6744eb5134a8c78bc187fd375d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handCardImageList: []
 --- !u!1 &1517154364432892
 GameObject:
   m_ObjectHideFlags: 0
