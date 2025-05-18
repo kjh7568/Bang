@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private CardSystem cardSystem;
+    [SerializeField] private UiManager uiSystem;
+    
     [SerializeField] private HumanList humanList;
     [SerializeField] private JobList jobList;
     
@@ -20,7 +23,8 @@ public class GameManager : MonoBehaviour
         SetPlayerJob();
         
         GetPlayerInfo();
-        
+
+        uiSystem.Init(players[0]);
         // cardSystem.Init();
     }
 
