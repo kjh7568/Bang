@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 456bf90e834c95e4184fc09de525fd55, type: 3}
+  m_Name: BartCassidy
+  m_EditorClassIdentifier: 
+  name: "\uBC14\uD2B8 \uCE90\uC2DC\uB514"
+  description: "\uC0DD\uBA85\uB825 1\uC744 \uC783\uC744 \uB54C\uB9C8\uB2E4 \uCE74\uB4DC
+    \uB354\uBBF8\uC5D0\uC11C \uCE74\uB4DC \uD55C \uC7A5\uC744 \uAC00\uC838\uC635\uB2C8\uB2E4."
+  cardSprite: {fileID: 1475190708, guid: bead71edfb0bd9741bbc8c921f62e238, type: 3}

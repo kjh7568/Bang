@@ -1,0 +1,12 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "SuzyLafayette", menuName = "Card/HumanData/SuzyLafayette")]
+public class SuzyLafayette : HumanData
+{
+    public override void UseAbility()
+    {
+        Debug.Log("손에 남은 카드가 한 장도 없다면 즉시 카드 더미에서 카드 한 장을 가져옵니다.");
+    }
+}

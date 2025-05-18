@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using CardTypeEnum;
 
-[CreateAssetMenu(fileName = "CardData", menuName = "Card/CardData")]
 public class CardData : ScriptableObject, ICard
 {
     [SerializeField] private string name;
