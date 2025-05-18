@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
         GetPlayerInfo();
 
         uiSystem.Init(players[0]);
-        // cardSystem.Init();
+        cardSystem.Init();
     }
 
     private void CachePlayerInfo()

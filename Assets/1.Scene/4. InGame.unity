@@ -571,9 +571,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c51e988d3b6dcba4e84d53a2d46edb3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckData: {fileID: 0}
+  deckData: {fileID: 11400000, guid: eb7fded0ed4dd1b4ab2dd75dc0d87f6a, type: 2}
   cardPrefab: []
-  deckParent: {fileID: 0}
+  deckParent: {fileID: 2144325579}
 --- !u!4 &270049310
 Transform:
   m_ObjectHideFlags: 0
