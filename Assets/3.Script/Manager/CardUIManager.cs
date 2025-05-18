@@ -18,17 +18,11 @@ public class CardUIManager : MonoBehaviour
         Instance = this;
         
         playerStat = GetComponent<Player>();
-        Debug.Log($"플레이어 정보 ::: {playerStat.BasicStat.nickName}");
     }
 
     public void SetHandCardImageList()
     {
         handCardImageList = UIManager.Instance.handCardImageList;
-
-        for (int i = 0; i < handCardImageList.Count; i++)
-        {
-            Debug.Log($"핸드 카드 UI 설정 완료 ::: {handCardImageList[i].name}");
-        }
 
         UpdateHandCardUI();
     }
@@ -39,8 +33,6 @@ public class CardUIManager : MonoBehaviour
         
         for (int i = 0; i < playerStat.GameStat.InGameStat.HandCards.Length; i++)
         {
-            Debug.Log($"핸드 카드 확인 ::: {playerStat.GameStat.InGameStat.HandCards[i].Name}");
-            
             if (playerStat.GameStat.InGameStat.HandCards[i] == null) return;
             
             handCardImageList[i].sprite = playerStat.GameStat.InGameStat.HandCards[i].CardSprite;
