@@ -17,7 +17,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public NetworkRunner _runner;
     
     public Dictionary<PlayerRef, NetworkObject> spawnedPlayers;
-    public Dictionary<int, NetworkObject> spawnedDummyPlayers;
+    public Dictionary<PlayerRef, NetworkObject> playerNickNames;
     
     private string sessionNumber;
     private Dictionary<PlayerRef, bool> readyStates = new();
@@ -25,7 +25,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     private void Awake()
     {
         spawnedPlayers = new Dictionary<PlayerRef, NetworkObject>();
-        spawnedDummyPlayers = new Dictionary<int, NetworkObject>();
         
         if (Instance != null && Instance != this)
         {
@@ -98,27 +97,10 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             
             var networkPlayer = runner.Spawn(playerPrefabs[prefabIdx], spawnTransform.position, spawnTransform.rotation, player);
             spawnedPlayers.Add(player, networkPlayer);
-            // spawnedDummyPlayers.Add(0, networkPlayer);
-            
             
             DontDestroyOnLoad(networkPlayer);
             
-            // if (_runner.ActivePlayers.Count() == 1)
-            // {
-            //     for (int i = 1; i < 4; i++)
-            //     {
-            //         int dummyIdx = i;
-            //         var dummyTransform = playerPrefabs[dummyIdx].transform;
-            //         var dummyPlayer = runner.Spawn(playerPrefabs[dummyIdx], dummyTransform.position, dummyTransform.rotation);
-            //
-            //         spawnedDummyPlayers.Add(i, dummyPlayer);
-            //
-            //         DontDestroyOnLoad(dummyPlayer);
-            //         // Debug.Log($"더미 플레이어 {i} 생성 완료");
-            //     }
-            // }
-            
-            if (spawnedDummyPlayers.Count() == 4)
+            if (spawnedPlayers.Count() == 4)
             {
                 WatingSetting ui = FindObjectOfType<WatingSetting>();
                 if (ui != null)
