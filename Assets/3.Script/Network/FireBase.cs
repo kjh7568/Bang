@@ -133,7 +133,7 @@ private Dictionary<string, FirebaseFirestore> playerFirestore = new Dictionary<s
 
 private void SignIn(string email, string password)
 {
-    Debug.Log("2");
+    
     try
     {
         if (!isInitialized)
@@ -159,7 +159,7 @@ private void SignIn(string email, string password)
 
         playerAuth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task =>
         {
-            Debug.Log("3");
+            
             if (task.IsFaulted)
             {
                 Debug.LogError("로그인 중 예외 발생: " + task.Exception?.Message);
@@ -168,17 +168,17 @@ private void SignIn(string email, string password)
 
             if (task.IsCompleted)
             {
-                Debug.Log("4");
+                
                 FirebaseUser newUser = task.Result.User;
-                Debug.Log("5");
+                
                 statusMessage = "로그인 성공";
                 isLoggedIn = true;
                 Debug.Log(statusMessage);
-                Debug.Log("6");
+                
                 LoadUserEmailAndPasswordFromFirestore(newUser.UserId, email);
-                Debug.Log("7");
+                
             }
-            Debug.Log("8");
+            
         });
     }
     catch (Exception ex)
