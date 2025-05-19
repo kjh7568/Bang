@@ -29,6 +29,7 @@
         [SerializeField] private Button buttonStart;
         [SerializeField] private Button buttonSignUp;
 
+        [SerializeField] public LoginButton loginButton; 
         
         //[SerializeField] private GameObject PlayerPrefab;
         private void Start()
@@ -147,7 +148,6 @@ private void SignIn(string email, string password)
             return;
         }
 
-        // 로그인 상태 확인
         if (auth.CurrentUser != null)
         {
             Debug.LogWarning("이미 로그인된 상태입니다.");
@@ -155,22 +155,7 @@ private void SignIn(string email, string password)
             return;
         }
 
-        // 고유한 FirebaseApp 생성 (플레이어마다)
-        FirebaseApp playerApp = FirebaseApp.Create(new AppOptions
-        {
-            ProjectId = FirebaseApp.DefaultInstance.Options.ProjectId,
-            ApiKey = FirebaseApp.DefaultInstance.Options.ApiKey,
-            AppId = FirebaseApp.DefaultInstance.Options.AppId
-        }, email);
-
-        // 각 플레이어의 FirebaseAuth와 Firestore 인스턴스 독립적 관리
-        FirebaseAuth playerAuth = FirebaseAuth.GetAuth(playerApp);
-        FirebaseFirestore firestore = FirebaseFirestore.GetInstance(playerApp);
-        
-        playerAuths[email] = playerAuth;
-        playerFirestore[email] = firestore;
-
-        playerAuth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task =>
+        auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task =>
         {
             Debug.Log("3");
             if (task.IsFaulted)
@@ -184,16 +169,20 @@ private void SignIn(string email, string password)
             {
                 Debug.Log("4");
                 FirebaseUser newUser = task.Result.User;
-                Debug.Log("5");
                 statusMessage = "로그인 성공";
                 isLoggedIn = true;
-                Debug.Log(statusMessage);
                 statusText.text = statusMessage;
-                Debug.Log("6");
-                LoadUserEmailAndPasswordFromFirestore(newUser.UserId, email);
-                Debug.Log("7");
+
+                // 로그인 성공 시 LoginButton의 OnStartButton 호출
+                if (loginButton != null)
+                {
+                    loginButton.OnStartButton();
+                }
+                else
+                {
+                    Debug.LogError("LoginButton 스크립트가 연결되지 않았습니다.");
+                }
             }
-            Debug.Log("8");
         });
     }
     catch (Exception ex)
@@ -202,6 +191,7 @@ private void SignIn(string email, string password)
         statusText.text = "SignIn에서 예외 발생: " + ex.Message;
     }
 }
+    
 
 // Firestore에서 사용자 이메일과 비밀번호 불러오기 (사용자별 Firestore 사용)
 private void LoadUserEmailAndPasswordFromFirestore(string userId, string email)
