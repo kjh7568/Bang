@@ -37,6 +37,28 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         DontDestroyOnLoad(gameObject);
     }
 
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    {
+        if (!_runner.IsServer) return;
+
+        var networkPlayer = SpawnPlayer(runner, player);
+        RegisterNickname(player, networkPlayer);
+        UpdateNicknameUIAndBroadcast();
+        DontDestroyOnLoad(networkPlayer);
+        CheckStartCondition();
+    }
+
+    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
+    {
+        if (spawnedPlayers.ContainsKey(player))
+        {
+            runner.Despawn(spawnedPlayers[player]);
+
+            spawnedPlayers.Remove(player);
+            playerNickNames.Remove(player);
+        }
+    }
+
     public async void StartGame(GameMode mode)
     {
         string randSessionName = Random.Range(0, 10000).ToString();
@@ -88,46 +110,46 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     }
 
     public string GetSessionNumber() => _runner.SessionInfo.Name;
-    
-    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+
+    private NetworkObject SpawnPlayer(NetworkRunner runner, PlayerRef player)
     {
-        if (_runner.IsServer)
-        {
-            int prefabIdx = _runner.ActivePlayers.Count() - 1;
-            var spawnTransform = playerPrefabs[prefabIdx].transform;
+        int prefabIdx = _runner.ActivePlayers.Count() - 1;
+        var spawnTransform = playerPrefabs[prefabIdx].transform;
 
-            var networkPlayer = runner.Spawn(playerPrefabs[prefabIdx], spawnTransform.position, spawnTransform.rotation,
-                player);
-            spawnedPlayers.Add(player, networkPlayer);
+        var networkPlayer = runner.Spawn(
+            playerPrefabs[prefabIdx],
+            spawnTransform.position,
+            spawnTransform.rotation,
+            player
+        );
 
-            var nickName = networkPlayer.GetComponent<Player>().BasicStat.nickName;
-            playerNickNames.Add(player, nickName);
-
-            WatingSetting ui = FindObjectOfType<WatingSetting>();
-            var nicknames = new List<string>(playerNickNames.Values).ToArray();
-            
-            ui.UpdateNicknameTexts(nicknames);
-            var broadcaster = FindObjectOfType<Broadcaster>();
-            broadcaster.RPC_UpdateNicknames(nicknames);
-            
-            DontDestroyOnLoad(networkPlayer);
-
-            if (spawnedPlayers.Count() == 4)
-            {
-                if (ui != null)
-                    ui.ShowStartButton();
-            }
-        }
+        spawnedPlayers.Add(player, networkPlayer);
+        return networkPlayer;
     }
 
-    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
+    private void RegisterNickname(PlayerRef player, NetworkObject networkPlayer)
     {
-        if (spawnedPlayers.ContainsKey(player))
+        var nickName = networkPlayer.GetComponent<Player>().BasicStat.nickName;
+        playerNickNames[player] = nickName;
+    }
+
+    private void UpdateNicknameUIAndBroadcast()
+    {
+        var ui = FindObjectOfType<WatingSetting>();
+        var nicknames = playerNickNames.Values.ToArray();
+
+        ui?.UpdateNicknameTexts(nicknames);
+
+        var broadcaster = FindObjectOfType<Broadcaster>();
+        broadcaster?.RPC_UpdateNicknames(nicknames);
+    }
+
+    private void CheckStartCondition()
+    {
+        if (spawnedPlayers.Count == 4)
         {
-            runner.Despawn(spawnedPlayers[player]);
-            
-            spawnedPlayers.Remove(player);
-            playerNickNames.Remove(player);
+            var ui = FindObjectOfType<WatingSetting>();
+            ui?.ShowStartButton();
         }
     }
 
