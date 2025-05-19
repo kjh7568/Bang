@@ -740,7 +740,8 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
-  NetworkedBehaviours: []
+  NetworkedBehaviours:
+  - {fileID: 6149665301532569681}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &6149665301532569681
 MonoBehaviour:
@@ -760,6 +761,7 @@ MonoBehaviour:
     playerInGameStat:
       hp: 0
       bulletRange: 0
+      HandCardsId: 0000000000000000000000000000000000000000
       isBang: 0
       isVolcanic: 0
       isBarrel: 0

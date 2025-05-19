@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using Enumerable = System.Linq.Enumerable;
+using Random = UnityEngine.Random;
 
 public class CardSystem : MonoBehaviour
 {
@@ -12,9 +14,18 @@ public class CardSystem : MonoBehaviour
     [SerializeField] private GameObject[] cardPrefab;
     [SerializeField] private Transform deckParent;
 
-    private List<CardData> initDeck = new List<CardData>();
-    private List<CardData> usedDeck = new List<CardData>();
+    // private List<CardData> initDeck = new List<CardData>();
+    // private List<CardData> usedDeck = new List<CardData>();
+    private List<int> initDeck = new List<int>();
+    private List<int> usedDeck = new List<int>();
+    List<int> cardToIdList = new List<int>();
     
+    private void Awake()
+    {
+        // 카드 아이디 컨버팅
+        ConvertCardListToIdList();
+    }
+
     public void Init()
     {
         MakeDeck();
@@ -27,13 +38,13 @@ public class CardSystem : MonoBehaviour
     //덱 정보를 만들고 섞는 건 서버만 알고 있어도 되나 카드를 넘겨주는 함수 같은 경우는 RPC를 이용해서 정보를 넘겨줘야 함 --> 이건 차후 잘 해봐야 할 듯
     public void ShuffleDeck()
     {
-        initDeck = deckData.cardList.OrderBy(x => Random.value).ToList();
+        initDeck = cardToIdList.OrderBy(x => Random.value).ToList();
         
-        Debug.Log("덱 셔플");
+        Debug.Log("덱 셔플 완료");
 
         for (int i = 0; i < initDeck.Count; i++)
         {
-            Debug.Log($"덱 정보 ::: {initDeck[i].name}");
+            Debug.Log($"덱 정보 ::: {initDeck[i]}");
         }
     }
 
@@ -44,18 +55,58 @@ public class CardSystem : MonoBehaviour
 
         foreach (var player in GameManager.Instance.players)
         {
-            for (int i = 0; i < 2; i++)
+            int[] hand = new int[10];
+
+            for (int i = 0; i < 4; i++)
             {
-                // player.GameStat.InGameStat.HandCards[i] = initDeck[i];
-                // initDeck.RemoveAt(i);
-                
-                player.GameStat.InGameStat.HandCards[i] = initDeck[0];
+                hand[i] = initDeck[0];
                 initDeck.RemoveAt(0);
-                
-                Debug.Log($"{player.BasicStat.nickName} 핸드 카드 ::: {player.GameStat.InGameStat.HandCards[i]}");
             }
+
+            // 서버에서만 GameStat에 저장
+            player.GameStat.InGameStat.HandCardsId = hand;
+
+            // RPC로 클라이언트에게 카드 정보 전달
+            player.RPC_ReceiveHandCards(hand);
+
+            Debug.Log($"{player.BasicStat.nickName} 핸드 카드 분배 완료");
+            
+            // CardData[] hand = new CardData[5];
+            //
+            // for (int i = 0; i < 5; i++)
+            // {
+            //     hand[i] = initDeck[0];
+            //     initDeck.RemoveAt(0);
+            // }
+            //
+            // // 서버에서만 GameStat에 저장
+            // player.GameStat.InGameStat.HandCards = hand;
+            //
+            // // RPC로 클라이언트에게 카드 정보 전달
+            // player.RPC_ReceiveHandCards(hand);
+            //
+            // Debug.Log($"{player.BasicStat.nickName} 핸드 카드 분배 완료");
         }
     }
+
+    // public void DistributeHandCards()
+    // {
+    //     Debug.Log("핸드 카드 분배");
+    //
+    //     foreach (var player in GameManager.Instance.players)
+    //     {
+    //         for (int i = 0; i < 2; i++)
+    //         {
+    //             // player.GameStat.InGameStat.HandCards[i] = initDeck[i];
+    //             // initDeck.RemoveAt(i);
+    //             
+    //             player.GameStat.InGameStat.HandCards[i] = initDeck[0];
+    //             initDeck.RemoveAt(0);
+    //             
+    //             Debug.Log($"{player.BasicStat.nickName} 핸드 카드 ::: {player.GameStat.InGameStat.HandCards[i]}");
+    //         }
+    //     }
+    // }
 
     private void UseTest()
     {
@@ -90,4 +141,16 @@ public class CardSystem : MonoBehaviour
         }
      }
      */
+    
+    public void ConvertCardListToIdList()
+    {
+        foreach (var card in deckData.cardList)
+        {
+            int id = card.Number;
+            cardToIdList.Add(id);
+        }
+
+        //return cardToIdList;
+    }
+
 }

@@ -9,6 +9,7 @@ public class PlayerInGameStat
     public int bulletRange;
     
     public ICard[] HandCards = new CardData[5];
+    public int[] HandCardsId = new int[5];
     
     public IHuman MyHuman;
     public IJob MyJob;

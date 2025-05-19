@@ -31,11 +31,14 @@ public class CardUIManager : MonoBehaviour
     {
         Debug.Log("핸드 카드 UI 업데이트 시작");
         
-        for (int i = 0; i < playerStat.GameStat.InGameStat.HandCards.Length; i++)
+        for (int i = 0; i < playerStat.GameStat.InGameStat.HandCardsId.Length; i++)
         {
-            if (playerStat.GameStat.InGameStat.HandCards[i] == null) return;
+            // so id 값으로 조회해서 스프라이트 변경
             
-            handCardImageList[i].sprite = playerStat.GameStat.InGameStat.HandCards[i].CardSprite;
+            
+            // if (playerStat.GameStat.InGameStat.HandCards[i] == null) return;
+            //
+            // handCardImageList[i].sprite = playerStat.GameStat.InGameStat.HandCards[i].CardSprite;
         }
         
         Debug.Log("핸드 카드 UI 업데이트 완료");
