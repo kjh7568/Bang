@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "3048241302",
+    "project_id": "bang-a04e8",
+    "storage_bucket": "bang-a04e8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:3048241302:android:1585320dd13fc7b551eab7",
+        "android_client_info": {
+          "package_name": "com.Bang.Bang"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAmp_q6AFIZxzEdy4PPop-C4MKEDlPCrc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
