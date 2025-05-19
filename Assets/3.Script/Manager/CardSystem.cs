@@ -16,9 +16,13 @@ public class CardSystem : MonoBehaviour
 
     // private List<CardData> initDeck = new List<CardData>();
     // private List<CardData> usedDeck = new List<CardData>();
-    private List<int> initDeck = new List<int>();
-    private List<int> usedDeck = new List<int>();
+    
+    // 카드 id 초기 리스트
     List<int> cardToIdList = new List<int>();
+    // 셔플된 초기 카드
+    private List<int> initDeck = new List<int>();
+    // 사용된 카드
+    private List<int> usedDeck = new List<int>();
     
     private void Awake()
     {
@@ -55,9 +59,9 @@ public class CardSystem : MonoBehaviour
 
         foreach (var player in GameManager.Instance.players)
         {
-            int[] hand = new int[10];
+            int[] hand = new int[5];
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i <= 4; i++)
             {
                 hand[i] = initDeck[0];
                 initDeck.RemoveAt(0);
@@ -69,7 +73,7 @@ public class CardSystem : MonoBehaviour
             // RPC로 클라이언트에게 카드 정보 전달
             player.RPC_ReceiveHandCards(hand);
 
-            Debug.Log($"{player.BasicStat.nickName} 핸드 카드 분배 완료");
+            //Debug.Log($"{player.BasicStat.nickName} 핸드 카드 분배 완료");
             
             // CardData[] hand = new CardData[5];
             //
@@ -146,7 +150,7 @@ public class CardSystem : MonoBehaviour
     {
         foreach (var card in deckData.cardList)
         {
-            int id = card.Number;
+            int id = card.CardID;
             cardToIdList.Add(id);
         }
 

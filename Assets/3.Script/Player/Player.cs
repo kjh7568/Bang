@@ -9,22 +9,21 @@ public class Player : NetworkBehaviour
     public PlayerGameStat GameStat => playerGameStat;
     public PlayerBasicStat BasicStat => playerBasicStat;
     
+    
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_ReceiveHandCards(int[] cards)
+    public void RPC_ReceiveHandCards(int[] cardIDs, RpcInfo info = default)
     {
-        Debug.Log($"[{BasicStat.nickName}] 핸드카드 수신");
+        if (!Object.HasInputAuthority) return;
 
-        for (int i = 0; i < cards.Length; i++)
-        {
-            GameStat.InGameStat.HandCardsId[i] = cards[i];
-        }
-
-        if (Object.HasInputAuthority)
-        {
-            // 내 클라이언트에서만 UI 갱신
-            CardUIManager.Instance.SetHandCardImageList();
-        }
+        var cards = new CardData[cardIDs.Length];
         
-        //CardUIManager.Instance.SetHandCardImageList();
+        for (int i = 0; i < cardIDs.Length; i++)
+        {
+            cards[i] = CardUIManager.Instance.GetCardByID(cardIDs[i]);
+        }
+
+        GameStat.InGameStat.HandCards = cards;
+
+        CardUIManager.Instance.SetHandCardImageList();
     }
 }
