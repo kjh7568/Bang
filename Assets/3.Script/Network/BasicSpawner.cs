@@ -89,39 +89,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     
     public string GetSessionNumber() => _runner.SessionInfo.Name;
     
-    private void BroadcastNicknamesToAll()
-    {
-        List<string> nicknames = new();
-
-        foreach (var kvp in spawnedPlayers)
-        {
-            var playerComponent = kvp.Value.GetComponent<Player>();
-            if (playerComponent != null)
-            {
-                string nick = playerComponent.BasicStat.nickName;
-                // Debug.Log($"[Server] 닉네임 추가: {nick}");
-                nicknames.Add(nick);
-            }
-            else
-            {
-                Debug.LogWarning("[Server] Player 컴포넌트가 없음!");
-            }
-        }
-
-        // Debug.Log($"[Server] 총 닉네임 수: {nicknames.Count}");
-        RPC_UpdateNicknames(nicknames.ToArray());
-    }
-    
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_UpdateNicknames(string[] nicknames)
-    {
-        var ui = FindObjectOfType<WatingSetting>();
-        if (ui != null)
-        {
-            ui.UpdateNicknameTexts(new List<string>(nicknames));
-        }
-    }
-    
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (_runner.IsServer)
@@ -131,32 +98,24 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             
             var networkPlayer = runner.Spawn(playerPrefabs[prefabIdx], spawnTransform.position, spawnTransform.rotation, player);
             spawnedPlayers.Add(player, networkPlayer);
+            // spawnedDummyPlayers.Add(0, networkPlayer);
             
-            // spawnedPlayers.Add(player, networkPlayer);
-            spawnedDummyPlayers.Add(0, networkPlayer);
             
             DontDestroyOnLoad(networkPlayer);
             
-            if (_runner.ActivePlayers.Count() == 1)
-            {
-                for (int i = 1; i < 4; i++)
-                {
-                    int dummyIdx = i;
-                    var dummyTransform = playerPrefabs[dummyIdx].transform;
-                    var dummyPlayer = runner.Spawn(playerPrefabs[dummyIdx], dummyTransform.position, dummyTransform.rotation);
-
-                    spawnedDummyPlayers.Add(i, dummyPlayer);
-
-                    DontDestroyOnLoad(dummyPlayer);
-                    // Debug.Log($"더미 플레이어 {i} 생성 완료");
-                }
-            }
-            
-            // if (_runner.ActivePlayers.Count() == 4)
+            // if (_runner.ActivePlayers.Count() == 1)
             // {
-            //     WatingSetting ui = FindObjectOfType<WatingSetting>();
-            //     if (ui != null)
-            //         ui.ShowStartButton();
+            //     for (int i = 1; i < 4; i++)
+            //     {
+            //         int dummyIdx = i;
+            //         var dummyTransform = playerPrefabs[dummyIdx].transform;
+            //         var dummyPlayer = runner.Spawn(playerPrefabs[dummyIdx], dummyTransform.position, dummyTransform.rotation);
+            //
+            //         spawnedDummyPlayers.Add(i, dummyPlayer);
+            //
+            //         DontDestroyOnLoad(dummyPlayer);
+            //         // Debug.Log($"더미 플레이어 {i} 생성 완료");
+            //     }
             // }
             
             if (spawnedDummyPlayers.Count() == 4)
@@ -165,8 +124,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
                 if (ui != null)
                     ui.ShowStartButton();
             }
-            
-            BroadcastNicknamesToAll();
         }
     }
     
@@ -176,7 +133,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         {
             runner.Despawn(spawnedPlayers[player]);
             spawnedPlayers.Remove(player);
-            BroadcastNicknamesToAll();
         }
     }
     
