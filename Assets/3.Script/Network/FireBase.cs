@@ -67,7 +67,7 @@
             Debug.Log("9");
         }
 
-        private void OnSignUpButtonClicked()
+        public void OnSignUpButtonClicked()
         {
             string email = inputSignUpEmail.text;
             string password = inputSignUpPassword.text;
