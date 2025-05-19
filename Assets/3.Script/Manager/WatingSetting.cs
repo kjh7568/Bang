@@ -20,18 +20,11 @@ public class WatingSetting : MonoBehaviour
         sessionNumberText.text = $"Session number: {BasicSpawner.Instance.GetSessionNumber()}";
     }
 
-    public void UpdateNicknameTexts(List<string> nicknames)
+    public void UpdateNicknameTexts(string[] nickNames)
     {
         for (int i = 0; i < nickNameTexts.Length; i++)
         {
-            if (i < nicknames.Count)
-            {
-                nickNameTexts[i].text = nicknames[i];
-            }
-            else
-            {
-                nickNameTexts[i].text = "Empty";
-            }
+            nickNameTexts[i].text = i < nickNames.Length ? nickNames[i] : "Empty";
         }
     }
     
