@@ -23,15 +23,22 @@
         [SerializeField] private TMP_InputField inputSignUpEmail; // TMP_InputField로 변경
         [SerializeField] private TMP_InputField inputSignUpPassword; // TMP_InputField로 변경
         [SerializeField] private TMP_InputField inputSignUpnickname; // TMP_InputField로 변경
+        
         [SerializeField] private Button buttonStart;
         [SerializeField] private Button buttonSignUp;
 
+        [SerializeField] private LoginButton loginButton;
+        
+        [SerializeField] private TMP_Text NotificationText; 
         //[SerializeField] private GameObject PlayerPrefab;
+        [SerializeField] private SavePlayerBasicStat playerBasicStat;
+        
         private void Start()
         {
             buttonStart.interactable = false;
             buttonSignUp.interactable = false;
             InitFirebase();
+            
         }
 
         private void InitFirebase()
@@ -62,9 +69,9 @@
         {
             string email = inputLoginEmail.text;
             string password = inputLoginPassword.text;
-            Debug.Log("1");
+            
             SignIn(email, password);
-            Debug.Log("9");
+            
         }
 
         public void OnSignUpButtonClicked()
@@ -83,13 +90,15 @@
                 {
                     FirebaseUser newUser = task.Result.User;
                     statusMessage = "회원가입 성공";
-                    isLoggedIn = true;
+                    
 
                     SaveUserToFirestore(newUser.UserId, email, HashPassword(password),nickname);
                 }
                 else
                 {
                     statusMessage = "회원가입 실패: " + task.Exception?.Message;
+                    NotificationText.gameObject.SetActive(true);
+                    NotificationText.text = "already ID exist";
                     Debug.Log(statusMessage);
                 }
             });
@@ -162,7 +171,33 @@ private void SignIn(string email, string password)
             
             if (task.IsFaulted)
             {
-                Debug.LogError("로그인 중 예외 발생: " + task.Exception?.Message);
+                if (task.Exception != null && task.Exception.InnerException is FirebaseException firebaseEx)
+                {
+                    var errorCode = ((FirebaseException)firebaseEx).ErrorCode;
+                    
+                    // 이메일이 없을 때
+                    if (errorCode == (int)AuthError.UserNotFound)
+                    {
+                        NotificationText.gameObject.SetActive(true);
+                        NotificationText.text = "Email not found";
+                    }
+                    // 비밀번호가 틀렸을 때
+                    else if (errorCode == (int)AuthError.WrongPassword)
+                    {
+                        NotificationText.gameObject.SetActive(true);
+                        NotificationText.text = "Password is incorrect";
+                    }
+                    else
+                    {
+                        NotificationText.gameObject.SetActive(true);
+                        NotificationText.text = "ex";
+                        Debug.LogError("로그인 중 예외 발생: " + firebaseEx.Message);
+                    }
+                }
+                else
+                {
+                    Debug.LogError("로그인 중 알 수 없는 예외 발생: " + task.Exception?.Message);
+                }
                 return;
             }
 
@@ -176,9 +211,11 @@ private void SignIn(string email, string password)
                 Debug.Log(statusMessage);
                 
                 LoadUserEmailAndPasswordFromFirestore(newUser.UserId, email);
-                
+                loginButton.OnStartButton();
+
+
             }
-            
+                
         });
     }
     catch (Exception ex)
@@ -219,6 +256,10 @@ private void LoadUserEmailAndPasswordFromFirestore(string userId, string email)
                 Debug.Log($"사용자 이메일: {userEmail}");
                 Debug.Log($"사용자 비밀번호 (해시): {userPassword}");
                 Debug.Log($"사용자 닉네임: {userNickname}");
+
+                playerBasicStat.Email = userEmail;
+                playerBasicStat.Password = userPassword;
+                playerBasicStat.Nickname = userNickname;
             }
             else
             {

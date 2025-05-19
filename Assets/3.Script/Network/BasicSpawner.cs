@@ -41,11 +41,13 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (!_runner.IsServer) return;
 
+        // 플레이어가 들어왔을 때, 플레이어를 스폰하고, 닉네임을 등록하고, UI를 업데이트하고, 시작 조건을 체크합니다.
         var networkPlayer = SpawnPlayer(runner, player);
         RegisterNickname(player, networkPlayer);
         UpdateNicknameUIAndBroadcast();
         DontDestroyOnLoad(networkPlayer);
         CheckStartCondition();
+        
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
