@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0e90966be56f9d41b2a360ef06910a4, type: 3}
   m_Name: C10_Missed
   m_EditorClassIdentifier: 
+  cardID: 39
   name: Missed
   number: 10
   cardType: 0

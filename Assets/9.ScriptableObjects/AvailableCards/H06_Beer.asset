@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b361fa14c403e4448ca6f039cbaf0bd, type: 3}
   m_Name: H06_Beer
   m_EditorClassIdentifier: 
+  cardID: 52
   name: Beer
   number: 6
   cardType: 0
