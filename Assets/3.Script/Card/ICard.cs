@@ -20,6 +20,7 @@ namespace CardTypeEnum
 
 public interface ICard
 {
+    int CardID { get; }
     string Name { get; }
     int Number { get; }
     CardType CardType { get; }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5873dacdaa4bf2d419bd8731533dc993, type: 3}
   m_Name: D02_Bang
   m_EditorClassIdentifier: 
+  cardID: 13
   name: Bang
   number: 2
   cardType: 0
