@@ -88,7 +88,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     }
 
     public string GetSessionNumber() => _runner.SessionInfo.Name;
-
+    
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (_runner.IsServer)
@@ -104,8 +104,12 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             playerNickNames.Add(player, nickName);
 
             WatingSetting ui = FindObjectOfType<WatingSetting>();
-            ui.UpdateNicknameTexts(new List<string>(playerNickNames.Values));
-
+            var nicknames = new List<string>(playerNickNames.Values).ToArray();
+            
+            ui.UpdateNicknameTexts(nicknames);
+            var broadcaster = FindObjectOfType<Broadcaster>();
+            broadcaster.RPC_UpdateNicknames(nicknames);
+            
             DontDestroyOnLoad(networkPlayer);
 
             if (spawnedPlayers.Count() == 4)
@@ -121,7 +125,9 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         if (spawnedPlayers.ContainsKey(player))
         {
             runner.Despawn(spawnedPlayers[player]);
+            
             spawnedPlayers.Remove(player);
+            playerNickNames.Remove(player);
         }
     }
 
