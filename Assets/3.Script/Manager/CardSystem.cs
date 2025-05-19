@@ -35,7 +35,7 @@ public class CardSystem : MonoBehaviour
         MakeDeck();
         DistributeHandCards();
         
-        CardUIManager.Instance.SetHandCardImageList();
+        //CardUIManager.Instance.SetHandCardImageList();
     }
     
     //게임 시스템과 마찬가지로 본격적으로 구현시작하면 서버와 연동해서 작업해야 함.

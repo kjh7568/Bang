@@ -12,54 +12,68 @@ public class CardUIManager : MonoBehaviour
     public static CardUIManager Instance;
     
     [SerializeField] private List<Image> handCardImageList;
-
-    private Player playerStat;
+    [SerializeField] private DeckData deckData;
+    
+    //private Player playerStat;
     
     private void Awake()
     {
         Instance = this;
         
-        playerStat = GetComponent<Player>();
+        //playerStat = GetComponent<Player>();
         Initialize();
     }
 
     public void SetHandCardImageList()
     {
-        handCardImageList = UIManager.Instance.handCardImageList;
+        //handCardImageList = UIManager.Instance.handCardImageList;
 
-        UpdateHandCardUI();
+        //UpdateHandCardUI();
     }
     
-    public void UpdateHandCardUI()
+    public void UpdateHandCardUI(CardData[] cards)
     {
         Debug.Log("핸드 카드 UI 업데이트 시작");
-        
-        for (int i = 0; i < playerStat.GameStat.InGameStat.HandCardsId.Length; i++)
+        Debug.Log($"cards.Length:: {cards.Length}");
+        for (int i = 0; i < cards.Length; i++)
         {
             // so id 값으로 조회해서 스프라이트 변경
             
-            Debug.Log($"{playerStat.name} :: {playerStat.GameStat.InGameStat.HandCardsId[i]}");
+            Debug.Log($" {cards[i]}");
             
             // if (playerStat.GameStat.InGameStat.HandCards[i] == null) return;
             
-            handCardImageList[i].sprite = playerStat.GameStat.InGameStat.HandCards[i].CardSprite;
+            handCardImageList[i].sprite = cards[i].CardSprite;
         }
         
-        Debug.Log("핸드 카드 UI 업데이트 완료");
+        //Debug.Log("핸드 카드 UI 업데이트 완료");
     }
     
     private static Dictionary<int, CardData> idToCard;
 
-    public static void Initialize()
+    public void Initialize()
     {
-        var cards = Resources.LoadAll<CardData>("Cards"); 
+        if (deckData == null)
+        {
+            Debug.LogError("deckData가 할당되지 않았습니다!");
+            return;
+        }
+
+        List<CardData> cards = deckData.cardList;
         idToCard = cards.ToDictionary(card => card.CardID, card => card);
+
+        Debug.Log($"[Initialize] 카드 총 개수: {idToCard.Count}");
+
+        foreach (var card in cards)
+        {
+            Debug.Log($"[Card] ID: {card.CardID}, Name: {card.Name}");
+        }
     }
 
     public CardData GetCardByID(int id)
     {
         Debug.Log($"GetCardByID::{id}");
-        if (idToCard.TryGetValue(id, out var card))
+        if (idToCard.TryGetValue(id, out CardData card))
             return card;
 
         Debug.LogError($"Card ID {id} not found.");

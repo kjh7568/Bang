@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
@@ -10,20 +12,89 @@ public class Player : NetworkBehaviour
     public PlayerBasicStat BasicStat => playerBasicStat;
     
     
+    //[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    // public void RPC_ReceiveHandCards(int[] cardIDs, RpcInfo info = default)
+    // {
+    //     if (!Object.HasInputAuthority) return;
+    //
+    //     var cards = new CardData[cardIDs.Length];
+    //     
+    //     for (int i = 0; i < cardIDs.Length; i++)
+    //     {
+    //         cards[i] = CardUIManager.Instance.GetCardByID(cardIDs[i]);
+    //     }
+    //
+    //     GameStat.InGameStat.HandCards = cards;
+    // }
+    
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_ReceiveHandCards(int[] cardIDs, RpcInfo info = default)
     {
-        if (!Object.HasInputAuthority) return;
+        //if (!Object.HasInputAuthority) return;
 
+        // 카드 할당
         var cards = new CardData[cardIDs.Length];
-        
         for (int i = 0; i < cardIDs.Length; i++)
         {
             cards[i] = CardUIManager.Instance.GetCardByID(cardIDs[i]);
         }
-
+        
         GameStat.InGameStat.HandCards = cards;
+        PlayerRef myRef = Runner.LocalPlayer;
+        Debug.Log($"myRef:: {myRef}");
 
-        CardUIManager.Instance.SetHandCardImageList();
+        StartCoroutine(WaitForPlayerObject());
+
+        //Debug.Log($"playerNetworkObject: {playerNetworkObject}");
+        
+        // Player 컴포넌트 가져오기 (NetworkRunner 필요)
+        //NetworkObject playerNetworkObject = Runner.GetPlayerObject(myRef);
+        //Debug.Log($"playerNetworkObject:: {playerNetworkObject}");
+        
+        // if (playerNetworkObject != null)
+        // {
+        //     Player playerComponent = playerNetworkObject.GetComponent<Player>();
+        //     Debug.Log($"playerComponent:: {playerComponent}");
+        //
+        //     if (playerComponent != null)
+        //     {
+        //         Debug.Log($"[RPC] Player Component Found: {playerComponent.name}");
+        //         // playerComponent를 통해 원하는 작업 수행
+        //
+        //         CardUIManager.Instance.UpdateHandCardUI(cards);
+        //     }
+        //     else
+        //     {
+        //         Debug.LogWarning("[RPC] Player 컴포넌트 없음");
+        //     }
+        // }
+        // else
+        // {
+        //     Debug.LogWarning("[RPC] Player NetworkObject 못 찾음");
+        // }
+    }
+
+    
+    IEnumerator WaitForPlayerObject()
+    {
+        PlayerRef myRef = Runner.LocalPlayer;
+        NetworkObject playerNetworkObject = null;
+
+        while ((playerNetworkObject = Runner.GetPlayerObject(myRef)) == null)
+        {
+            yield return null; // 다음 프레임까지 기다림
+        }
+
+        Debug.Log($"playerNetworkObject: {playerNetworkObject}");
+
+        Player playerComponent = playerNetworkObject.GetComponent<Player>();
+        if (playerComponent != null)
+        {
+            Debug.Log($"Player 컴포넌트 찾음: {playerComponent.name}");
+        }
+        else
+        {
+            Debug.LogWarning("Player 컴포넌트 못 찾음");
+        }
     }
 }

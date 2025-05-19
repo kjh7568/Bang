@@ -2489,7 +2489,6 @@ GameObject:
   - component: {fileID: 95918252503098470}
   - component: {fileID: 8107617641382066571}
   - component: {fileID: 5274620086830130402}
-  - component: {fileID: -3350153833274696555}
   m_Layer: 0
   m_Name: Player 1
   m_TagString: Untagged
@@ -2590,19 +2589,6 @@ MonoBehaviour:
     iD: 
     password: 
     nickName: Noh
---- !u!114 &-3350153833274696555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1942289980213182}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59767b6744eb5134a8c78bc187fd375d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handCardImageList: []
 --- !u!1 &1954743680365594
 GameObject:
   m_ObjectHideFlags: 0
