@@ -18,14 +18,19 @@
         private string statusMessage = "";
         private bool isLoggedIn = false;
 
-        [SerializeField] private TMP_InputField inputLoginEmail; // TMP_InputField로 변경
-        [SerializeField] private TMP_InputField inputLoginPassword; // TMP_InputField로 변경
-        [SerializeField] private TMP_InputField inputSignUpEmail; // TMP_InputField로 변경
-        [SerializeField] private TMP_InputField inputSignUpPassword; // TMP_InputField로 변경
-        [SerializeField] private TMP_InputField inputSignUpnickname; // TMP_InputField로 변경
+        [SerializeField] private TMP_InputField inputLoginEmail; 
+        [SerializeField] private TMP_InputField inputLoginPassword; 
+        [SerializeField] private TMP_InputField inputSignUpEmail; 
+        [SerializeField] private TMP_InputField inputSignUpPassword; 
+        [SerializeField] private TMP_InputField inputSignUpnickname; 
+        
+        [SerializeField] private TMP_Text statusText;
+        
         [SerializeField] private Button buttonStart;
         [SerializeField] private Button buttonSignUp;
 
+        [SerializeField] public LoginButton loginButton; 
+        
         //[SerializeField] private GameObject PlayerPrefab;
         private void Start()
         {
@@ -139,30 +144,24 @@ private void SignIn(string email, string password)
         if (!isInitialized)
         {
             Debug.LogError("Firebase가 초기화되지 않았습니다.");
+            statusText.text = "Firebase가 초기화되지 않았습니다.";
             return;
         }
 
-        // 고유한 FirebaseApp 생성 (플레이어마다)
-        FirebaseApp playerApp = FirebaseApp.Create(new AppOptions
+        if (auth.CurrentUser != null)
         {
-            ProjectId = FirebaseApp.DefaultInstance.Options.ProjectId,
-            ApiKey = FirebaseApp.DefaultInstance.Options.ApiKey,
-            AppId = FirebaseApp.DefaultInstance.Options.AppId
-        }, email);
+            Debug.LogWarning("이미 로그인된 상태입니다.");
+            statusText.text = "ID is login";
+            return;
+        }
 
-        // 각 플레이어의 FirebaseAuth와 Firestore 인스턴스 독립적 관리
-        FirebaseAuth playerAuth = FirebaseAuth.GetAuth(playerApp);
-        FirebaseFirestore firestore = FirebaseFirestore.GetInstance(playerApp);
-        
-        playerAuths[email] = playerAuth;
-        playerFirestore[email] = firestore;
-
-        playerAuth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task =>
+        auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task =>
         {
             Debug.Log("3");
             if (task.IsFaulted)
             {
                 Debug.LogError("로그인 중 예외 발생: " + task.Exception?.Message);
+                statusText.text = "로그인 실패: " + task.Exception?.Message;
                 return;
             }
 
@@ -170,22 +169,29 @@ private void SignIn(string email, string password)
             {
                 Debug.Log("4");
                 FirebaseUser newUser = task.Result.User;
-                Debug.Log("5");
                 statusMessage = "로그인 성공";
                 isLoggedIn = true;
-                Debug.Log(statusMessage);
-                Debug.Log("6");
-                LoadUserEmailAndPasswordFromFirestore(newUser.UserId, email);
-                Debug.Log("7");
+                statusText.text = statusMessage;
+
+                // 로그인 성공 시 LoginButton의 OnStartButton 호출
+                if (loginButton != null)
+                {
+                    loginButton.OnStartButton();
+                }
+                else
+                {
+                    Debug.LogError("LoginButton 스크립트가 연결되지 않았습니다.");
+                }
             }
-            Debug.Log("8");
         });
     }
     catch (Exception ex)
     {
         Debug.LogError("SignIn에서 예외 발생: " + ex.Message);
+        statusText.text = "SignIn에서 예외 발생: " + ex.Message;
     }
 }
+    
 
 // Firestore에서 사용자 이메일과 비밀번호 불러오기 (사용자별 Firestore 사용)
 private void LoadUserEmailAndPasswordFromFirestore(string userId, string email)

@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
 
     private void CachePlayerInfo()
     {
-        foreach (var player in BasicSpawner.Instance.spawnedDummyPlayers)
+        foreach (var player in BasicSpawner.Instance.spawnedPlayers)
         {
             var playerTemp = player.Value.GetComponent<Player>();
             players.Add(playerTemp);
