@@ -124,6 +124,9 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         );
 
         spawnedPlayers.Add(player, networkPlayer);
+        
+        runner.SetPlayerObject(player, networkPlayer); 
+
         return networkPlayer;
     }
 

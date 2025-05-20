@@ -13,6 +13,29 @@ public class Player : NetworkBehaviour
     public PlayerBasicStat BasicStat => playerBasicStat;
     
     
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_ReceiveHandCards(int[] cardIDs, RpcInfo info = default)
+    {
+        // 카드 할당
+        var cards = new CardData[cardIDs.Length];
+        for (int i = 0; i < cardIDs.Length; i++)
+        {
+            cards[i] = CardUIManager.Instance.GetCardByID(cardIDs[i]);
+        }
+        
+        GameStat.InGameStat.HandCards = cards;
+        PlayerRef myRef = Runner.LocalPlayer;
+        Debug.Log($"myRef:: {myRef}");
+
+        var playerObj = Runner.GetPlayerObject(myRef);
+        var player = playerObj.GetComponent<Player>();
+        Debug.Log(player.BasicStat.nickName);
+        
+        //RPC_RequestPlayerInfo();
+        //RPC_RequestPlayerInfo_Fallback(Runner.LocalPlayer);
+    }
+    
+        
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_RequestPlayerInfo_Fallback(PlayerRef requester)
     {
@@ -25,96 +48,30 @@ public class Player : NetworkBehaviour
             //RPC_ReceivePlayerInfo(nickname, requester);
         }
     }
-
-    //[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    // public void RPC_ReceiveHandCards(int[] cardIDs, RpcInfo info = default)
-    // {
-    //     if (!Object.HasInputAuthority) return;
-    //
-    //     var cards = new CardData[cardIDs.Length];
-    //     
-    //     for (int i = 0; i < cardIDs.Length; i++)
-    //     {
-    //         cards[i] = CardUIManager.Instance.GetCardByID(cardIDs[i]);
-    //     }
-    //
-    //     GameStat.InGameStat.HandCards = cards;
-    // }
     
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_ReceiveHandCards(int[] cardIDs, RpcInfo info = default)
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    public void RPC_RequestPlayerInfo(RpcInfo info = default)
     {
-        //if (!Object.HasInputAuthority) return;
+        if (!Runner.IsServer) return; 
 
-        // 카드 할당
-        var cards = new CardData[cardIDs.Length];
-        for (int i = 0; i < cardIDs.Length; i++)
+        // if (info.Source == null)
+        // {
+        //     Debug.LogWarning("info.Source is null. Check who is calling this RPC.");
+        //     return;
+        // }
+
+        Debug.Log($"Runner Is Server :: {BasicSpawner.Instance.spawnedPlayers}");
+        
+        if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(info.Source, out var playerObj))
         {
-            cards[i] = CardUIManager.Instance.GetCardByID(cardIDs[i]);
-        }
-        
-        GameStat.InGameStat.HandCards = cards;
-        PlayerRef myRef = Runner.LocalPlayer;
-        Debug.Log($"myRef:: {myRef}");
+            var player = playerObj.GetComponent<Player>();
+            string nickname = player.BasicStat.nickName;
 
-        RPC_RequestPlayerInfo_Fallback(Runner.LocalPlayer);
-        
-        // if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(Runner.LocalPlayer, out var playerObj))
-        // {
-        //     var player = playerObj.GetComponent<Player>();
-        //     Debug.Log($"player:: {player.BasicStat.nickName}");
-        //
-        //     CardUIManager.Instance.UpdateHandCardUI(cards);
-        // }
-        
-        //StartCoroutine(WaitForPlayerObject(cards));
-
-        //Debug.Log($"playerNetworkObject: {playerNetworkObject}");
-        
-        // Player 컴포넌트 가져오기 (NetworkRunner 필요)
-        //NetworkObject playerNetworkObject = Runner.GetPlayerObject(myRef);
-        //Debug.Log($"playerNetworkObject:: {playerNetworkObject}");
-        
-        // if (playerNetworkObject != null)
-        // {
-        //     Player playerComponent = playerNetworkObject.GetComponent<Player>();
-        //     Debug.Log($"playerComponent:: {playerComponent}");
-        //
-        //     if (playerComponent != null)
-        //     {
-        //         Debug.Log($"[RPC] Player Component Found: {playerComponent.name}");
-        //         // playerComponent를 통해 원하는 작업 수행
-        //
-        //         CardUIManager.Instance.UpdateHandCardUI(cards);
-        //     }
-        //     else
-        //     {
-        //         Debug.LogWarning("[RPC] Player 컴포넌트 없음");
-        //     }
-        // }
-        // else
-        // {
-        //     Debug.LogWarning("[RPC] Player NetworkObject 못 찾음");
-        // }
-    }
-
-    
-    IEnumerator WaitForPlayerObject(CardData[] cards)
-    {
-        yield return new WaitUntil(() => Runner.GetPlayerObject(Runner.LocalPlayer) != null);
-
-        var playerNetworkObject = Runner.GetPlayerObject(Runner.LocalPlayer);
-        Debug.Log($"playerNetworkObject: {playerNetworkObject}");
-
-        var playerComponent = playerNetworkObject.GetComponent<Player>();
-        if (playerComponent != null)
-        {
-            Debug.Log($"Player 컴포넌트 찾음: {playerComponent.name}");
-            CardUIManager.Instance.UpdateHandCardUI(cards);
+            //RPC_ReceivePlayerInfo(nickname, info.Source);
         }
         else
         {
-            Debug.LogWarning("Player 컴포넌트 못 찾음");
+            Debug.LogWarning($"PlayerRef {info.Source} not found in spawnedPlayers.");
         }
     }
 }
