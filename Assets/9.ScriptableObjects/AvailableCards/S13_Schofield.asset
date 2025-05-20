@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd42c1740ab792344b20b8e1b2c9b3fb, type: 3}
+  m_Name: S13_Schofield
+  m_EditorClassIdentifier: 
+  cardID: 68
+  name: Schofield
+  number: 13
+  cardType: 1
+  cardSymbol: 0
+  cardSprite: {fileID: 866903966, guid: 450711b000a00be4aa864a50d5c8b071, type: 3}
