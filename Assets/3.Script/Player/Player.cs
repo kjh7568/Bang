@@ -23,16 +23,12 @@ public class Player : NetworkBehaviour
         
         Debug.Log(player.BasicStat.nickName);
         
-        // 카드 할당
-        if (Runner.IsServer)
+        for (int i = 0; i < player.GameStat.InGameStat.HandCards.Length; i++)
         {
-            for (int i = 0; i < player.GameStat.InGameStat.HandCards.Length; i++)
-            {
-                cards[i] = CardUIManager.Instance.GetCardByID(player.GameStat.InGameStat.HandCardsId[i]);
-            }
-        
-            GameStat.InGameStat.HandCards = cards;
+            cards[i] = CardUIManager.Instance.GetCardByID(player.GameStat.InGameStat.HandCardsId[i]);
         }
+        
+        GameStat.InGameStat.HandCards = cards;
         
         CardUIManager.Instance.UpdateHandCardUI(cards);
     }
