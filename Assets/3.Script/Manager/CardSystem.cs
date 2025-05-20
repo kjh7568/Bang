@@ -7,6 +7,13 @@ using UnityEngine;
 using Enumerable = System.Linq.Enumerable;
 using Random = UnityEngine.Random;
 
+public enum DrawType
+{
+    Initial,  // 초기 5장
+    DrawOne,  // 1장 추가
+    Custom    // n장
+}
+
 public class CardSystem : MonoBehaviour
 {
     //함수명, 멤버 변수 명 등 전부 원하시는대로 바꿔도 됨
@@ -33,7 +40,7 @@ public class CardSystem : MonoBehaviour
     public void Init()
     {
         MakeDeck();
-        DistributeHandCards();
+        InitDistributeHandCards();
         
         //CardUIManager.Instance.SetHandCardImageList();
     }
@@ -47,49 +54,68 @@ public class CardSystem : MonoBehaviour
         Debug.Log("덱 셔플 완료");
     }
 
-    public void DistributeHandCards()
+    public void InitDistributeHandCards()
     {
-        Debug.Log("핸드 카드 분배");
-
+        Debug.Log("초기 핸드 카드 분배");
+    
         foreach (var player in GameManager.Instance.players)
         {
             int[] hand = new int[5];
-
-            for (int i = 0; i <= 4; i++)
+    
+            for (int i = 0; i <= 2; i++)
             {
                 hand[i] = initDeck[0];
                 initDeck.RemoveAt(0);
             }
-
+    
             player.GameStat.InGameStat.HandCardsId = hand;
             player.RPC_ReceiveToHandCardsData(hand);
         }
     }
-
-
-    // public void DistributeHandCards()
-    // {
-    //     Debug.Log("핸드 카드 분배");
-    //
-    //     foreach (var player in GameManager.Instance.players)
-    //     {
-    //         for (int i = 0; i < 2; i++)
-    //         {
-    //             // player.GameStat.InGameStat.HandCards[i] = initDeck[i];
-    //             // initDeck.RemoveAt(i);
-    //             
-    //             player.GameStat.InGameStat.HandCards[i] = initDeck[0];
-    //             initDeck.RemoveAt(0);
-    //             
-    //             Debug.Log($"{player.BasicStat.nickName} 핸드 카드 ::: {player.GameStat.InGameStat.HandCards[i]}");
-    //         }
-    //     }
-    // }
-
-    private void UseTest()
+    
+    public void DistributeHandCards(Player player, DrawType drawType = DrawType.Initial, int count = 1)
     {
-        
+        int drawCount = drawType switch
+        {
+            DrawType.Initial => 5,
+            DrawType.DrawOne => 1,
+            DrawType.Custom => count,
+            _ => 1
+        };
+
+        List<int> drawn = new List<int>();
+
+        for (int i = 0; i < drawCount; i++)
+        {
+            if (initDeck.Count == 0)
+            {
+                // 덱이 없으면 usedDeck에서 리셋
+                if (usedDeck.Count > 0)
+                {
+                    Debug.Log("덱 없음 → 재셔플");
+                    initDeck = usedDeck.OrderBy(x => Random.value).ToList();
+                    usedDeck.Clear();
+                }
+                else
+                {
+                    Debug.LogWarning("덱과 사용된 카드 모두 없음!");
+                    break;
+                }
+            }
+
+            int cardId = initDeck[0];
+            drawn.Add(cardId);
+            initDeck.RemoveAt(0);
+        }
+
+        // 카드 ID 저장
+        player.GameStat.InGameStat.HandCardsId = 
+            (player.GameStat.InGameStat.HandCardsId ?? Array.Empty<int>()).Concat(drawn).ToArray();
+
+        // RPC로 UI 갱신 요청
+        player.RPC_ReceiveToHandCardsData(player.GameStat.InGameStat.HandCardsId);
     }
+
     
     private void MakeDeck()
     {
@@ -98,6 +124,7 @@ public class CardSystem : MonoBehaviour
         //덱 생성 후 조기 셔플 --> 혹은 생성과 동시에 셔플한 채로 만들어도 되긴 함
         ShuffleDeck();
     }
+    
     /*
      void Start()
      {
