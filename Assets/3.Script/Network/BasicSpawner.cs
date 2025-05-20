@@ -16,15 +16,17 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] private GameObject[] playerPrefabs;
     public NetworkRunner _runner;
 
-    public Dictionary<PlayerRef, NetworkObject> spawnedPlayers = new();
-    public Dictionary<PlayerRef, string> playerNickNames = new();
-    private Dictionary<PlayerRef, string> nicknameBuffer = new();
-    
+    public Dictionary<PlayerRef, NetworkObject> spawnedPlayers;
+    public Dictionary<PlayerRef, string> playerNickNames;
+
     private string sessionNumber;
     private Dictionary<PlayerRef, bool> readyStates = new();
 
     private void Awake()
     {
+        spawnedPlayers = new Dictionary<PlayerRef, NetworkObject>();
+        playerNickNames = new Dictionary<PlayerRef, string>();
+
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -126,31 +128,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         spawnedPlayers.Add(player, networkPlayer);
         return networkPlayer;
     }
-    
-    private NetworkObject SpawnPlayerWithNickname(NetworkRunner runner, PlayerRef player)
-    {
-        int prefabIdx = _runner.ActivePlayers.Count() - 1;
-        var spawnTransform = playerPrefabs[prefabIdx].transform;
-
-        string nickname = nicknameBuffer.ContainsKey(player) ? nicknameBuffer[player] : $"Player";
-
-        var networkPlayer = runner.Spawn(
-            playerPrefabs[prefabIdx],
-            spawnTransform.position,
-            spawnTransform.rotation,
-            player,
-            onBeforeSpawned: (runner, obj) =>
-            {
-                var playerComponent = obj.GetComponent<Player>();
-                if (playerComponent != null)
-                {
-                    playerComponent.BasicStat.nickName = nickname;
-                }
-            });
-
-        spawnedPlayers.Add(player, networkPlayer);
-        return networkPlayer;
-    }
 
     private void RegisterNickname(PlayerRef player, NetworkObject networkPlayer)
     {
@@ -177,20 +154,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             ui?.ShowStartButton();
         }
     }
-    
-    public void ReceiveNicknameFromClient(PlayerRef player, string nickname)
-    {
-        if (_runner.IsServer)
-        {
-            if (nicknameBuffer.ContainsKey(player))
-                nicknameBuffer[player] = nickname;
-            else
-                nicknameBuffer.Add(player, nickname);
 
-            Debug.Log($"[서버] 닉네임 수신: {nickname} (From: {player})");
-        }
-    }
-    
     #region interface methods
 
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
