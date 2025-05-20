@@ -12,9 +12,7 @@ using Random = UnityEngine.Random;
 public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
     public static BasicSpawner Instance { get; private set; }
-    
-    [SerializeField] private SavePlayerBasicStat savePlayerBasicStat;
-    
+
     [SerializeField] private GameObject[] playerPrefabs;
     public NetworkRunner _runner;
 
@@ -39,17 +37,10 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Start()
-    {
-        GameObject saveStat= GameObject.Find("SavePlayerBasicStat");
-        savePlayerBasicStat = saveStat.gameObject.GetComponent<SavePlayerBasicStat>();
-    }
-
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (!_runner.IsServer) return;
 
-        Debug.Log($"on player joined {player.PlayerId}");
         // 플레이어가 들어왔을 때, 플레이어를 스폰하고, 닉네임을 등록하고, UI를 업데이트하고, 시작 조건을 체크합니다.
         var networkPlayer = SpawnPlayer(runner, player);
         RegisterNickname(player, networkPlayer);
@@ -110,7 +101,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
         }
 
-        Debug.unityLogger.Log($"starting game {sessionName}");
         await _runner.StartGame(new StartGameArgs()
         {
             //args 초기화
@@ -126,17 +116,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     private NetworkObject SpawnPlayer(NetworkRunner runner, PlayerRef player)
     {
         int prefabIdx = _runner.ActivePlayers.Count() - 1;
-        
-        playerPrefabs[prefabIdx].GetComponent<Player>().BasicStat.iD = savePlayerBasicStat.Email;
-        playerPrefabs[prefabIdx].GetComponent<Player>().BasicStat.password = savePlayerBasicStat.Password;
-        playerPrefabs[prefabIdx].GetComponent<Player>().BasicStat.nickName = savePlayerBasicStat.Nickname;
-    
-        Debug.Log("223 : " + playerPrefabs[prefabIdx].GetComponent<Player>().BasicStat.nickName);
-        Debug.Log("252 : " + savePlayerBasicStat.Nickname);
-        
         var spawnTransform = playerPrefabs[prefabIdx].transform;
 
-     
         var networkPlayer = runner.Spawn(
             playerPrefabs[prefabIdx],
             spawnTransform.position,
