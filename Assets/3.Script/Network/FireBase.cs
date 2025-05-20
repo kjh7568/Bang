@@ -33,6 +33,9 @@
         //[SerializeField] private GameObject PlayerPrefab;
         [SerializeField] private SavePlayerBasicStat playerBasicStat;
         
+        private Dictionary<string, FirebaseAuth> playerAuths = new Dictionary<string, FirebaseAuth>();
+        private Dictionary<string, FirebaseFirestore> playerFirestore = new Dictionary<string, FirebaseFirestore>();
+        
         private void Start()
         {
             buttonStart.interactable = false;
@@ -84,29 +87,63 @@
 
         private void CreateAccount(string email, string password, string nickname)
         {
-            auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task =>
+            try
             {
-                if (task.IsCompleted && !task.IsFaulted)
+                if (!isInitialized)
                 {
-                    FirebaseUser newUser = task.Result.User;
-                    statusMessage = "회원가입 성공";
-                    
+                    Debug.LogError("Firebase가 초기화되지 않았습니다.");
+                    return;
+                }
 
-                    SaveUserToFirestore(newUser.UserId, email, HashPassword(password),nickname);
-                }
-                else
+                // 고유한 FirebaseApp 생성 (플레이어마다)
+                FirebaseApp playerApp = FirebaseApp.Create(new AppOptions
                 {
-                    statusMessage = "회원가입 실패: " + task.Exception?.Message;
-                    NotificationText.gameObject.SetActive(true);
-                    NotificationText.text = "already ID exist";
-                    Debug.Log(statusMessage);
-                }
-            });
+                    ProjectId = FirebaseApp.DefaultInstance.Options.ProjectId,
+                    ApiKey = FirebaseApp.DefaultInstance.Options.ApiKey,
+                    AppId = FirebaseApp.DefaultInstance.Options.AppId
+                }, email);
+
+                // 각 플레이어의 FirebaseAuth와 Firestore 인스턴스 독립적 관리
+                FirebaseAuth playerAuth = FirebaseAuth.GetAuth(playerApp);
+                FirebaseFirestore firestore = FirebaseFirestore.GetInstance(playerApp);
+
+                // 플레이어 별로 FirebaseAuth, Firestore 저장
+                playerAuths[email] = playerAuth;
+                playerFirestore[email] = firestore;
+
+                playerAuth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task =>
+                {
+                    if (task.IsCompleted && !task.IsFaulted)
+                    {
+                        FirebaseUser newUser = task.Result.User;
+                        statusMessage = "회원가입 성공";
+
+                        SaveUserToFirestore(newUser.UserId, email, HashPassword(password), nickname, email);
+                    }
+                    else
+                    {
+                        statusMessage = "회원가입 실패: " + task.Exception?.Message;
+                        NotificationText.gameObject.SetActive(true);
+                        NotificationText.text = "already ID exist";
+                        Debug.Log(statusMessage);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("CreateAccount에서 예외 발생: " + ex.Message);
+            }
         }
 
-        private void SaveUserToFirestore(string userId, string email, string hashedPassword,string nickname)
+        private void SaveUserToFirestore(string userId, string email, string hashedPassword, string nickname, string playerEmail)
         {
-            FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
+            if (!playerFirestore.ContainsKey(playerEmail))
+            {
+                Debug.LogError("Firestore 인스턴스를 찾을 수 없습니다.");
+                return;
+            }
+
+            FirebaseFirestore db = playerFirestore[playerEmail];
             DocumentReference userDocRef = db.Collection("users").Document(userId);
 
             Dictionary<string, object> userData = new Dictionary<string, object>
@@ -137,8 +174,7 @@
             return BitConverter.ToString(hash).Replace("-", "").ToLower();
         }
 
-        private Dictionary<string, FirebaseAuth> playerAuths = new Dictionary<string, FirebaseAuth>();
-private Dictionary<string, FirebaseFirestore> playerFirestore = new Dictionary<string, FirebaseFirestore>();
+
 
 private void SignIn(string email, string password)
 {
