@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerInGameStat
 {
     public int hp;
+    public bool IsDead => hp <= 0;
     public int bulletRange;
     
     public ICard[] HandCards = new CardData[5];
@@ -20,4 +21,6 @@ public class PlayerInGameStat
     public bool isMustang;
     public bool isJail;
     public bool isDynamite;
+    
+    
 }
