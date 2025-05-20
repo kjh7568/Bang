@@ -55,7 +55,8 @@ public class CardSystem : MonoBehaviour
         foreach (var player in GameManager.Instance.players)
         {
             int[] hand = new int[5];
-
+            var cards = new CardData[5];
+            
             for (int i = 0; i <= 4; i++)
             {
                 hand[i] = initDeck[0];
@@ -65,9 +66,16 @@ public class CardSystem : MonoBehaviour
             // 서버에서만 GameStat에 저장
             player.GameStat.InGameStat.HandCardsId = hand;
 
+            for (int i = 0; i < hand.Length; i++)
+            {
+                cards[i] = CardUIManager.Instance.GetCardByID(hand[i]);
+            }
+            
+            player.GameStat.InGameStat.HandCards = cards;
+            
             // RPC로 클라이언트에게 카드 정보 전달
-            player.RPC_ReceiveHandCards(hand);
-
+            player.RPC_ReceiveToHandCardsData();
+            
             //Debug.Log($"{player.BasicStat.nickName} 핸드 카드 분배 완료");
             
             // CardData[] hand = new CardData[5];
