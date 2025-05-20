@@ -72,7 +72,7 @@ public class CardUIManager : MonoBehaviour
 
     public CardData GetCardByID(int id)
     {
-        Debug.Log($"GetCardByID::{id}");
+        //Debug.Log($"GetCardByID::{id}");
         if (idToCard.TryGetValue(id, out CardData card))
             return card;
 

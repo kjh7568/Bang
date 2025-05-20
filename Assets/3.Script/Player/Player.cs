@@ -42,8 +42,16 @@ public class Player : NetworkBehaviour
         GameStat.InGameStat.HandCards = cards;
         PlayerRef myRef = Runner.LocalPlayer;
         Debug.Log($"myRef:: {myRef}");
+        
+        if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(Runner.LocalPlayer, out var playerObj))
+        {
+            var player = playerObj.GetComponent<Player>();
+            Debug.Log($"player:: {player.BasicStat.nickName}");
 
-        StartCoroutine(WaitForPlayerObject());
+            CardUIManager.Instance.UpdateHandCardUI(cards);
+        }
+        
+        //StartCoroutine(WaitForPlayerObject(cards));
 
         //Debug.Log($"playerNetworkObject: {playerNetworkObject}");
         
@@ -75,22 +83,18 @@ public class Player : NetworkBehaviour
     }
 
     
-    IEnumerator WaitForPlayerObject()
+    IEnumerator WaitForPlayerObject(CardData[] cards)
     {
-        PlayerRef myRef = Runner.LocalPlayer;
-        NetworkObject playerNetworkObject = null;
+        yield return new WaitUntil(() => Runner.GetPlayerObject(Runner.LocalPlayer) != null);
 
-        while ((playerNetworkObject = Runner.GetPlayerObject(myRef)) == null)
-        {
-            yield return null; // 다음 프레임까지 기다림
-        }
-
+        var playerNetworkObject = Runner.GetPlayerObject(Runner.LocalPlayer);
         Debug.Log($"playerNetworkObject: {playerNetworkObject}");
 
-        Player playerComponent = playerNetworkObject.GetComponent<Player>();
+        var playerComponent = playerNetworkObject.GetComponent<Player>();
         if (playerComponent != null)
         {
             Debug.Log($"Player 컴포넌트 찾음: {playerComponent.name}");
+            CardUIManager.Instance.UpdateHandCardUI(cards);
         }
         else
         {

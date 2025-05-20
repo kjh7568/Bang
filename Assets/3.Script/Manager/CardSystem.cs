@@ -43,13 +43,8 @@ public class CardSystem : MonoBehaviour
     public void ShuffleDeck()
     {
         initDeck = cardToIdList.OrderBy(x => Random.value).ToList();
-        
-        Debug.Log("덱 셔플 완료");
 
-        for (int i = 0; i < initDeck.Count; i++)
-        {
-            Debug.Log($"덱 정보 ::: {initDeck[i]}");
-        }
+        Debug.Log("덱 셔플 완료");
     }
 
     //요고 RPC 써야 할 듯
