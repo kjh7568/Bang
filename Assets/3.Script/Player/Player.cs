@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Fusion;
@@ -12,6 +13,19 @@ public class Player : NetworkBehaviour
     public PlayerBasicStat BasicStat => playerBasicStat;
     
     
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_RequestPlayerInfo_Fallback(PlayerRef requester)
+    {
+        if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(requester, out var playerObj))
+        {
+            var player = playerObj.GetComponent<Player>();
+            string nickname = player.BasicStat.nickName;
+
+            Debug.Log(nickname);
+            //RPC_ReceivePlayerInfo(nickname, requester);
+        }
+    }
+
     //[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     // public void RPC_ReceiveHandCards(int[] cardIDs, RpcInfo info = default)
     // {
@@ -42,14 +56,16 @@ public class Player : NetworkBehaviour
         GameStat.InGameStat.HandCards = cards;
         PlayerRef myRef = Runner.LocalPlayer;
         Debug.Log($"myRef:: {myRef}");
-        
-        if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(Runner.LocalPlayer, out var playerObj))
-        {
-            var player = playerObj.GetComponent<Player>();
-            Debug.Log($"player:: {player.BasicStat.nickName}");
 
-            CardUIManager.Instance.UpdateHandCardUI(cards);
-        }
+        RPC_RequestPlayerInfo_Fallback(Runner.LocalPlayer);
+        
+        // if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(Runner.LocalPlayer, out var playerObj))
+        // {
+        //     var player = playerObj.GetComponent<Player>();
+        //     Debug.Log($"player:: {player.BasicStat.nickName}");
+        //
+        //     CardUIManager.Instance.UpdateHandCardUI(cards);
+        // }
         
         //StartCoroutine(WaitForPlayerObject(cards));
 
