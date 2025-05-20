@@ -151,7 +151,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     private void CheckStartCondition()
     {
-        if (spawnedPlayers.Count == 2)
+        if (spawnedPlayers.Count == 1)
         {
             var ui = FindObjectOfType<WatingSetting>();
             ui?.ShowStartButton();

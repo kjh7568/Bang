@@ -20,15 +20,7 @@ public class CardUIManager : MonoBehaviour
     {
         Instance = this;
         
-        //playerStat = GetComponent<Player>();
         Initialize();
-    }
-
-    public void SetHandCardImageList()
-    {
-        //handCardImageList = UIManager.Instance.handCardImageList;
-
-        //UpdateHandCardUI();
     }
     
     public void UpdateHandCardUI(ICard[] cards)
@@ -38,15 +30,16 @@ public class CardUIManager : MonoBehaviour
         for (int i = 0; i < cards.Length; i++)
         {
             // so id 값으로 조회해서 스프라이트 변경
+
+            if (cards[i] == null)
+            {
+                continue;    
+            }
             
             Debug.Log($" {cards[i]}");
             
-            // if (playerStat.GameStat.InGameStat.HandCards[i] == null) return;
-            
             handCardImageList[i].sprite = cards[i].CardSprite;
         }
-        
-        //Debug.Log("핸드 카드 UI 업데이트 완료");
     }
     
     private static Dictionary<int, CardData> idToCard;
@@ -63,25 +56,15 @@ public class CardUIManager : MonoBehaviour
         idToCard = cards.ToDictionary(card => card.CardID, card => card);
 
         Debug.Log($"[Initialize] 카드 총 개수: {idToCard.Count}");
-
-        foreach (var card in cards)
-        {
-            Debug.Log($"[Card] ID: {card.CardID}, Name: {card.Name}");
-        }
     }
 
     public CardData GetCardByID(int id)
     {
-        //Debug.Log($"GetCardByID::{id}");
         if (idToCard.TryGetValue(id, out CardData card))
             return card;
-
-        Debug.LogError($"Card ID {id} not found.");
+        
+        Debug.Log($"Card ID {id} not found.");
         return null;
     }
 }
 
-// public static class CardDatabase
-// {
-//
-// }
