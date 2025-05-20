@@ -55,46 +55,28 @@ public class CardSystem : MonoBehaviour
         foreach (var player in GameManager.Instance.players)
         {
             int[] hand = new int[5];
-            var cards = new CardData[5];
-            
+
             for (int i = 0; i <= 4; i++)
             {
                 hand[i] = initDeck[0];
                 initDeck.RemoveAt(0);
             }
 
-            // 서버에서만 GameStat에 저장
             player.GameStat.InGameStat.HandCardsId = hand;
 
+            // 호스트는 직접 카드 객체 생성
+            var cards = new CardData[5];
             for (int i = 0; i < hand.Length; i++)
             {
                 cards[i] = CardUIManager.Instance.GetCardByID(hand[i]);
             }
-            
             player.GameStat.InGameStat.HandCards = cards;
-            
-            // RPC로 클라이언트에게 카드 정보 전달
-            player.RPC_ReceiveToHandCardsData();
-            
-            //Debug.Log($"{player.BasicStat.nickName} 핸드 카드 분배 완료");
-            
-            // CardData[] hand = new CardData[5];
-            //
-            // for (int i = 0; i < 5; i++)
-            // {
-            //     hand[i] = initDeck[0];
-            //     initDeck.RemoveAt(0);
-            // }
-            //
-            // // 서버에서만 GameStat에 저장
-            // player.GameStat.InGameStat.HandCards = hand;
-            //
-            // // RPC로 클라이언트에게 카드 정보 전달
-            // player.RPC_ReceiveHandCards(hand);
-            //
-            // Debug.Log($"{player.BasicStat.nickName} 핸드 카드 분배 완료");
+
+            // 카드 ID만 보내서 클라이언트에서 생성하게 함
+            player.RPC_ReceiveToHandCardsData(hand);
         }
     }
+
 
     // public void DistributeHandCards()
     // {

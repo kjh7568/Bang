@@ -31,15 +31,33 @@ public class Player : NetworkBehaviour
     //     RPC_ReceiveToHandCardsData();
     // }
     
-     
+    
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_ReceiveToHandCardsData(RpcInfo info = default)
+    public void RPC_ReceiveToHandCardsData(int[] handCardIds, RpcInfo info = default)
     {
-        PlayerRef myRef = Runner.LocalPlayer;
-        Debug.Log($"myRef:: {myRef}");
-        var playerObj = Runner.GetPlayerObject(myRef);
-        var player = playerObj.GetComponent<Player>();
-        
-        CardUIManager.Instance.UpdateHandCardUI(player.GameStat.InGameStat.HandCards);
+        if (Runner.LocalPlayer != Object.InputAuthority) return;
+
+        Debug.Log($"[Client] 카드 수신: {string.Join(",", handCardIds)}");
+
+        var cards = new CardData[handCardIds.Length];
+        for (int i = 0; i < handCardIds.Length; i++)
+        {
+            cards[i] = CardUIManager.Instance.GetCardByID(handCardIds[i]);
+        }
+
+        GameStat.InGameStat.HandCards = cards;
+        CardUIManager.Instance.UpdateHandCardUI(cards);
     }
+
+    
+    // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    // public void RPC_ReceiveToHandCardsData(RpcInfo info = default)
+    // {
+    //     PlayerRef myRef = Runner.LocalPlayer;
+    //     Debug.Log($"myRef:: {myRef}");
+    //     var playerObj = Runner.GetPlayerObject(myRef);
+    //     var player = playerObj.GetComponent<Player>();
+    //     
+    //     CardUIManager.Instance.UpdateHandCardUI(player.GameStat.InGameStat.HandCards);
+    // }
 }
