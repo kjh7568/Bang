@@ -1902,7 +1902,7 @@ MonoBehaviour:
   buttonSignUp: {fileID: 1680716642}
   loginButton: {fileID: 723389491}
   NotificationText: {fileID: 993894215}
-  playerBasicStat: {fileID: 1454015147}
+  savePlayerBasicStat: {fileID: 1454015147}
 --- !u!4 &684154963
 Transform:
   m_ObjectHideFlags: 0
