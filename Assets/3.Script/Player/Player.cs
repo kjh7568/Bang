@@ -18,6 +18,8 @@ public class Player : NetworkBehaviour
     {
         if (Runner.LocalPlayer != Object.InputAuthority) return;
 
+        Debug.Log($"[Client] 카드 수신: {string.Join(",", handCardIds)}");
+
         var cards = new CardData[handCardIds.Length];
         
         for (int i = 0; i < handCardIds.Length; i++)
