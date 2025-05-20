@@ -47,7 +47,6 @@ public class CardSystem : MonoBehaviour
         Debug.Log("덱 셔플 완료");
     }
 
-    //요고 RPC 써야 할 듯
     public void DistributeHandCards()
     {
         Debug.Log("핸드 카드 분배");
@@ -63,16 +62,6 @@ public class CardSystem : MonoBehaviour
             }
 
             player.GameStat.InGameStat.HandCardsId = hand;
-
-            // 호스트는 직접 카드 객체 생성
-            var cards = new CardData[5];
-            for (int i = 0; i < hand.Length; i++)
-            {
-                cards[i] = CardUIManager.Instance.GetCardByID(hand[i]);
-            }
-            player.GameStat.InGameStat.HandCards = cards;
-
-            // 카드 ID만 보내서 클라이언트에서 생성하게 함
             player.RPC_ReceiveToHandCardsData(hand);
         }
     }
