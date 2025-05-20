@@ -66,7 +66,7 @@ public class CardSystem : MonoBehaviour
             player.GameStat.InGameStat.HandCardsId = hand;
 
             // RPC로 클라이언트에게 카드 정보 전달
-            player.RPC_ReceiveHandCards();
+            player.RPC_ReceiveHandCards(hand);
 
             //Debug.Log($"{player.BasicStat.nickName} 핸드 카드 분배 완료");
             

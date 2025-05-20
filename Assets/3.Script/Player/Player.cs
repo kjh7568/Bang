@@ -13,23 +13,33 @@ public class Player : NetworkBehaviour
     public PlayerBasicStat BasicStat => playerBasicStat;
     
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_ReceiveHandCards(RpcInfo info = default)
+    public void RPC_ReceiveHandCards(int[] cardIDs,RpcInfo info = default)
+    { 
+        var cards = new CardData[cardIDs.Length];
+        
+        // 카드 할당
+        if (Runner.IsServer)
+        {
+            for (int i = 0; i < cardIDs.Length; i++)
+            {
+                cards[i] = CardUIManager.Instance.GetCardByID(cardIDs[i]);
+            }
+            
+            GameStat.InGameStat.HandCards = cards;
+        }
+
+        RPC_ReceiveToHandCardsData();
+    }
+    
+     
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_ReceiveToHandCardsData(RpcInfo info = default)
     {
         PlayerRef myRef = Runner.LocalPlayer;
         Debug.Log($"myRef:: {myRef}");
         var playerObj = Runner.GetPlayerObject(myRef);
         var player = playerObj.GetComponent<Player>();
-        var cards = new CardData[player.GameStat.InGameStat.HandCards.Length];
         
-        Debug.Log(player.BasicStat.nickName);
-        
-        for (int i = 0; i < player.GameStat.InGameStat.HandCards.Length; i++)
-        {
-            cards[i] = CardUIManager.Instance.GetCardByID(player.GameStat.InGameStat.HandCardsId[i]);
-        }
-        
-        GameStat.InGameStat.HandCards = cards;
-        
-        CardUIManager.Instance.UpdateHandCardUI(cards);
+        CardUIManager.Instance.UpdateHandCardUI(player.GameStat.InGameStat.HandCards);
     }
 }

@@ -31,7 +31,7 @@ public class CardUIManager : MonoBehaviour
         //UpdateHandCardUI();
     }
     
-    public void UpdateHandCardUI(CardData[] cards)
+    public void UpdateHandCardUI(ICard[] cards)
     {
         Debug.Log("핸드 카드 UI 업데이트 시작");
         Debug.Log($"cards.Length:: {cards.Length}");
