@@ -41,11 +41,14 @@ public class Player : NetworkBehaviour
         if (Runner.LocalPlayer == playerRef)
         {
             // 내 턴이라면
-            Debug.Log($"Runner.LocalPlayer :: {Runner.LocalPlayer} ");
+            Debug.Log($"Runner.LocalPlayer :: {Runner.LocalPlayer}");
+            UIManager.Instance.cardListPanel.SetActive(true);
         }
         else
         {
             // 내 턴이 아니라면 
+            UIManager.Instance.waitingPanel.SetActive(true);
+            UIManager.Instance.waitingUserTurnText.text = "상대가 카드를 선택하는 중입니다.";
         }
     }
 }
