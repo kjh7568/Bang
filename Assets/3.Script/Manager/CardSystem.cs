@@ -60,7 +60,7 @@ public class CardSystem : MonoBehaviour
     
         foreach (var player in GameManager.Instance.players)
         {
-            int[] hand = new int[5];
+            int[] hand = new int[] {0, 0, 0, 0, 0};
     
             for (int i = 0; i <= 2; i++)
             {
@@ -73,47 +73,9 @@ public class CardSystem : MonoBehaviour
         }
     }
     
-    public void DistributeHandCards(Player player, DrawType drawType = DrawType.Initial, int count = 1)
+    public void addHandCards()
     {
-        int drawCount = drawType switch
-        {
-            DrawType.Initial => 5,
-            DrawType.DrawOne => 1,
-            DrawType.Custom => count,
-            _ => 1
-        };
-
-        List<int> drawn = new List<int>();
-
-        for (int i = 0; i < drawCount; i++)
-        {
-            if (initDeck.Count == 0)
-            {
-                // 덱이 없으면 usedDeck에서 리셋
-                if (usedDeck.Count > 0)
-                {
-                    Debug.Log("덱 없음 → 재셔플");
-                    initDeck = usedDeck.OrderBy(x => Random.value).ToList();
-                    usedDeck.Clear();
-                }
-                else
-                {
-                    Debug.LogWarning("덱과 사용된 카드 모두 없음!");
-                    break;
-                }
-            }
-
-            int cardId = initDeck[0];
-            drawn.Add(cardId);
-            initDeck.RemoveAt(0);
-        }
-
-        // 카드 ID 저장
-        player.GameStat.InGameStat.HandCardsId = 
-            (player.GameStat.InGameStat.HandCardsId ?? Array.Empty<int>()).Concat(drawn).ToArray();
-
-        // RPC로 UI 갱신 요청
-        player.RPC_ReceiveToHandCardsData(player.GameStat.InGameStat.HandCardsId);
+        Debug.Log("추가 카드 분배");
     }
 
     

@@ -2576,7 +2576,7 @@ MonoBehaviour:
     sessionNumber: 0
     characterModelNum: 0
     playerInGameStat:
-      hp: 0
+      hp: 5
       bulletRange: 0
       HandCardsId: 0000000000000000000000000000000000000000
       isBang: 0
