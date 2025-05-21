@@ -12,11 +12,13 @@ public class UIManager : MonoBehaviour
     
     public GameObject cardListPanel;
     public GameObject waitingPanel;
-
+    public GameObject playerPanel;
+    
     public TMP_Text waitingUserTurnText;
 
     private void Awake()
     {
         Instance = this;
+        
     }
 }
