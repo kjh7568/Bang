@@ -14,19 +14,18 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public static BasicSpawner Instance { get; private set; }
 
     [SerializeField] private GameObject[] playerPrefabs;
+    [SerializeField] private NetworkObject broadcasterPrefabs;
+
     public NetworkRunner _runner;
 
-    public Dictionary<PlayerRef, NetworkObject> spawnedPlayers;
-    public Dictionary<PlayerRef, string> playerNickNames;
+    public Dictionary<PlayerRef, NetworkObject> spawnedPlayers = new();
+    public Dictionary<PlayerRef, string> playerNickNames = new();
+    public List<string> nicknameBuffer = new();
 
     private string sessionNumber;
-    private Dictionary<PlayerRef, bool> readyStates = new();
 
     private void Awake()
     {
-        spawnedPlayers = new Dictionary<PlayerRef, NetworkObject>();
-        playerNickNames = new Dictionary<PlayerRef, string>();
-
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -41,13 +40,14 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (!_runner.IsServer) return;
 
-        // 플레이어가 들어왔을 때, 플레이어를 스폰하고, 닉네임을 등록하고, UI를 업데이트하고, 시작 조건을 체크합니다.
         var networkPlayer = SpawnPlayer(runner, player);
         RegisterNickname(player, networkPlayer);
         UpdateNicknameUIAndBroadcast();
         DontDestroyOnLoad(networkPlayer);
         CheckStartCondition();
         
+        var myNickname = FindObjectOfType<SavePlayerBasicStat>()?.Nickname;
+        ReceiveNicknameFromClient(_runner.LocalPlayer, myNickname);
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -85,6 +85,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
         });
+
+        _runner.Spawn(broadcasterPrefabs);
     }
 
     public async void StartGame(GameMode mode, string sessionName)
@@ -109,6 +111,14 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
         });
+
+        var broadcaster = await WaitForBroadcasterAsync();
+        if (broadcaster != null)
+        {
+            var savePlayerBasicStat = FindObjectOfType<SavePlayerBasicStat>();
+
+            broadcaster.RPC_SendNicknameToHost(savePlayerBasicStat.Nickname);
+        }
     }
 
     public string GetSessionNumber() => _runner.SessionInfo.Name;
@@ -126,8 +136,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         );
 
         spawnedPlayers.Add(player, networkPlayer);
-        
-        runner.SetPlayerObject(player, networkPlayer); 
+
+        runner.SetPlayerObject(player, networkPlayer);
 
         return networkPlayer;
     }
@@ -151,11 +161,45 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     private void CheckStartCondition()
     {
+        Debug.Log($"입장인원: {spawnedPlayers.Count}");
+        
         if (spawnedPlayers.Count == 2)
         {
             var ui = FindObjectOfType<WatingSetting>();
             ui?.ShowStartButton();
         }
+    }
+
+    private async Task<Broadcaster> WaitForBroadcasterAsync()
+    {
+        Broadcaster broadcaster = null;
+
+        while (broadcaster == null)
+        {
+            await Task.Yield(); // 프레임 넘김
+            broadcaster = FindObjectOfType<Broadcaster>();
+        }
+
+        return broadcaster;
+    }
+
+    public void ReceiveNicknameFromClient(PlayerRef playerRef, string nickname)
+    {
+        // 닉네임 저장
+        playerNickNames[playerRef] = nickname;
+
+        // 플레이어 오브젝트에도 직접 반영
+        if (spawnedPlayers.TryGetValue(playerRef, out var obj))
+        {
+            var player = obj.GetComponent<Player>();
+            if (player != null)
+            {
+                player.BasicStat.nickName = nickname;
+                Debug.Log($"[서버] {playerRef} 닉네임 적용됨: {nickname}");
+            }
+        }
+
+        UpdateNicknameUIAndBroadcast();
     }
 
     #region interface methods

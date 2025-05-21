@@ -30,8 +30,7 @@
         [SerializeField] private LoginButton loginButton;
         
         [SerializeField] private TMP_Text NotificationText; 
-        //[SerializeField] private GameObject PlayerPrefab;
-        [SerializeField] private SavePlayerBasicStat playerBasicStat;
+        [SerializeField] private SavePlayerBasicStat savePlayerBasicStat;
         
         private Dictionary<string, FirebaseAuth> playerAuths = new Dictionary<string, FirebaseAuth>();
         private Dictionary<string, FirebaseFirestore> playerFirestore = new Dictionary<string, FirebaseFirestore>();
@@ -178,7 +177,6 @@
 
 private void SignIn(string email, string password)
 {
-    
     try
     {
         if (!isInitialized)
@@ -293,9 +291,9 @@ private void LoadUserEmailAndPasswordFromFirestore(string userId, string email)
                 Debug.Log($"사용자 비밀번호 (해시): {userPassword}");
                 Debug.Log($"사용자 닉네임: {userNickname}");
 
-                playerBasicStat.Email = userEmail;
-                playerBasicStat.Password = userPassword;
-                playerBasicStat.Nickname = userNickname;
+                savePlayerBasicStat.Email = userEmail;
+                savePlayerBasicStat.Password = userPassword;
+                savePlayerBasicStat.Nickname = userNickname;
             }
             else
             {
