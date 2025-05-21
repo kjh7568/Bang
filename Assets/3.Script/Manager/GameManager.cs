@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        CachePlayerInfo();
+       // CachePlayerInfo();
         
         SetPlayerHuman();
         SetPlayerJob();
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
         GetPlayerInfo();
 
         uiSystem.Init(players[0]);
-        cardSystem.Init();
+        //cardSystem.Init();
     }
 
     private void CachePlayerInfo()
@@ -80,7 +80,9 @@ public class GameManager : MonoBehaviour
         {
             int idx = Random.Range(0, tempList.Count);
             player.GameStat.InGameStat.MyJob = tempList[idx];
+            Debug.Log($"{player.name}:{player.GameStat.InGameStat.MyJob}");
             tempList.RemoveAt(idx);
+            
         }
     }
 }

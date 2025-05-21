@@ -12,6 +12,7 @@ public class BattleTest : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ApplyRandomDamage();
+            victoryCheck.CheckVictoryConditions();
         }
     }
 
