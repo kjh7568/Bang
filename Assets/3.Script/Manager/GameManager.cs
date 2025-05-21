@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-       // CachePlayerInfo();
+       CachePlayerInfo();
         
         SetPlayerHuman();
         SetPlayerJob();
