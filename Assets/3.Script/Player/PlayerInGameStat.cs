@@ -21,6 +21,6 @@ public class PlayerInGameStat
     public bool isMustang;
     public bool isJail;
     public bool isDynamite;
-    
+    //
     
 }
