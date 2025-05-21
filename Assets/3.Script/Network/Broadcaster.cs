@@ -20,9 +20,18 @@ public class Broadcaster : NetworkBehaviour
     }
     
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RPC_SendMessageToHost(string message, RpcInfo info = default)
+    public void RPC_SendNicknameToHost(string nickname, RpcInfo info = default)
     {
-        Debug.Log($"[서버] {info.Source} → 닉네임 수신: {message}");
-        BasicSpawner.Instance.nicknameBuffer.Add(message);
+        PlayerRef playerRef = info.Source;
+
+        // 닉네임을 BasicSpawner에서 갱신
+        if (BasicSpawner.Instance != null)
+        {
+            BasicSpawner.Instance.ReceiveNicknameFromClient(playerRef, nickname);
+        }
+        else
+        {
+            Debug.LogWarning("[Broadcaster] BasicSpawner 인스턴스를 찾을 수 없습니다.");
+        }
     }
 }

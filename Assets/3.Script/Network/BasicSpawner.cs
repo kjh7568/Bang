@@ -18,17 +18,14 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     public NetworkRunner _runner;
 
-    public Dictionary<PlayerRef, NetworkObject> spawnedPlayers;
-    public Dictionary<PlayerRef, string> playerNickNames;
-    public List<string> nicknameBuffer; 
+    public Dictionary<PlayerRef, NetworkObject> spawnedPlayers = new();
+    public Dictionary<PlayerRef, string> playerNickNames = new();
+    public List<string> nicknameBuffer = new();
 
     private string sessionNumber;
 
     private void Awake()
     {
-        spawnedPlayers = new Dictionary<PlayerRef, NetworkObject>();
-        playerNickNames = new Dictionary<PlayerRef, string>();
-
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -48,6 +45,9 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         UpdateNicknameUIAndBroadcast();
         DontDestroyOnLoad(networkPlayer);
         CheckStartCondition();
+        
+        var myNickname = FindObjectOfType<SavePlayerBasicStat>()?.Nickname;
+        ReceiveNicknameFromClient(_runner.LocalPlayer, myNickname);
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -76,7 +76,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         {
             sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
         }
-        
+
         await _runner.StartGame(new StartGameArgs()
         {
             //args 초기화
@@ -86,11 +86,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
         });
 
-        _runner.Spawn(broadcasterPrefabs, inputAuthority: _runner.LocalPlayer);
-
-        var s = FindObjectOfType<SavePlayerBasicStat>().Nickname;
-        Debug.Log($"닉네임은: {s}");
-        nicknameBuffer.Add(FindObjectOfType<SavePlayerBasicStat>().Nickname);
+        _runner.Spawn(broadcasterPrefabs);
     }
 
     public async void StartGame(GameMode mode, string sessionName)
@@ -121,7 +117,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         {
             var savePlayerBasicStat = FindObjectOfType<SavePlayerBasicStat>();
 
-            broadcaster.RPC_SendMessageToHost(savePlayerBasicStat.Nickname);
+            broadcaster.RPC_SendNicknameToHost(savePlayerBasicStat.Nickname);
         }
     }
 
@@ -139,9 +135,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             player
         );
 
-        networkPlayer.GetComponent<Player>().BasicStat.nickName = nicknameBuffer[0];
-        nicknameBuffer.RemoveAt(0);
-        
         spawnedPlayers.Add(player, networkPlayer);
 
         runner.SetPlayerObject(player, networkPlayer);
@@ -168,13 +161,15 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     private void CheckStartCondition()
     {
+        Debug.Log($"입장인원: {spawnedPlayers.Count}");
+        
         if (spawnedPlayers.Count == 2)
         {
             var ui = FindObjectOfType<WatingSetting>();
             ui?.ShowStartButton();
         }
     }
-    
+
     private async Task<Broadcaster> WaitForBroadcasterAsync()
     {
         Broadcaster broadcaster = null;
@@ -186,6 +181,25 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         }
 
         return broadcaster;
+    }
+
+    public void ReceiveNicknameFromClient(PlayerRef playerRef, string nickname)
+    {
+        // 닉네임 저장
+        playerNickNames[playerRef] = nickname;
+
+        // 플레이어 오브젝트에도 직접 반영
+        if (spawnedPlayers.TryGetValue(playerRef, out var obj))
+        {
+            var player = obj.GetComponent<Player>();
+            if (player != null)
+            {
+                player.BasicStat.nickName = nickname;
+                Debug.Log($"[서버] {playerRef} 닉네임 적용됨: {nickname}");
+            }
+        }
+
+        UpdateNicknameUIAndBroadcast();
     }
 
     #region interface methods
