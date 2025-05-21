@@ -163,7 +163,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
         Debug.Log($"입장인원: {spawnedPlayers.Count}");
         
-        if (spawnedPlayers.Count == 2)
+        if (spawnedPlayers.Count == 1)
         {
             var ui = FindObjectOfType<WatingSetting>();
             ui?.ShowStartButton();

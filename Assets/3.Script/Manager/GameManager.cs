@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Fusion;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -9,30 +10,38 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     
+    //[SerializeField] private NetworkObject TurnManager;
+
     [SerializeField] private CardSystem cardSystem;
     [SerializeField] private UINameSynchronizer uiSystem;
     
     [SerializeField] private HumanList humanList;
     [SerializeField] private JobList jobList;
     
+    
     public List<Player> players = new();
-
+    
     private void Awake()
     {
         Instance = this;
+
+        // if (BasicSpawner.Instance._runner.IsServer)
+        // {
+        //     var prefab = Resources.Load<NetworkObject>("TurnManager");
+        //     BasicSpawner.Instance._runner.Spawn(prefab);
+        // }
     }
 
     private void Start()
     {
-       CachePlayerInfo();
+        CachePlayerInfo();
         
         SetPlayerHuman();
         SetPlayerJob();
         
         GetPlayerInfo();
-
-        uiSystem.Init(players[0]);
-        //cardSystem.Init();
+        
+        TurnManager.Instance.InitializeTurnOrder();
     }
 
     private void CachePlayerInfo()
@@ -60,7 +69,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void GetPlayerInfo() //나중에 지울 것
+    private void GetPlayerInfo() 
     {
         foreach (var player in players)
         {
@@ -69,6 +78,9 @@ public class GameManager : MonoBehaviour
             var job = player.GameStat.InGameStat.MyJob.Name;
             
             Debug.Log($"{nickName} 플레이어의 인물은 {human}이며, 직업은 {job}입니다.");
+            
+            cardSystem.Init();
+            uiSystem.Init(player);
         }
     }
     
@@ -80,9 +92,7 @@ public class GameManager : MonoBehaviour
         {
             int idx = Random.Range(0, tempList.Count);
             player.GameStat.InGameStat.MyJob = tempList[idx];
-            Debug.Log($"{player.name}:{player.GameStat.InGameStat.MyJob}");
             tempList.RemoveAt(idx);
-            
         }
     }
 }
