@@ -43,6 +43,21 @@ public class Player : NetworkBehaviour
             // 내 턴이라면
             Debug.Log($"Runner.LocalPlayer :: {Runner.LocalPlayer}");
             UIManager.Instance.cardListPanel.SetActive(true);
+            
+            // 선택된 카드 인덱스를 서버에 보낼 버튼 이벤트 등록
+            TurnManager.Instance.useCardButton.onClick.RemoveAllListeners();
+            TurnManager.Instance.useCardButton.onClick.AddListener(() =>
+            {
+                int[] selectedIndices = UseCard.Instance.cardIndex.ToArray();
+                Debug.Log($"[클라이언트] 선택된 카드 인덱스: {string.Join(",", selectedIndices)}");
+
+                // RPC 호출
+                this.RPC_RequestUseCardList(Runner.LocalPlayer, selectedIndices);
+
+                // UI 정리
+                UIManager.Instance.cardListPanel.SetActive(false);
+            });
+
         }
         else
         {
@@ -53,15 +68,16 @@ public class Player : NetworkBehaviour
     }
     
     [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-    public void RPC_RequestUseCardList(PlayerRef playerRef)
+    public void RPC_RequestUseCardList(PlayerRef playerRef, int[] cardIndices)
     {
         Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
-        Debug.Log($"UseCard.Instance.cardIndex :: {UseCard.Instance.cardIndex.Count}");
-        
-        // foreach (int index in cardIndices)
-        // {
-        //     var card = GameStat.InGameStat.HandCards[index];
-        //     card.UseCard(); 
-        // }
+        Debug.Log($"전달된 카드 인덱스 개수: {cardIndices.Length}");
+
+        foreach (int index in cardIndices)
+        {
+            var card = GameStat.InGameStat.HandCards[index];
+            card.UseCard(); 
+        }
     }
+
 }

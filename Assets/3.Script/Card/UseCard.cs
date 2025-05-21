@@ -15,18 +15,11 @@ public class UseCard : MonoBehaviour
 
     public void OnCardClicked(int index)
     {
-        for (int i = 0; i < cardIndex.Count; i++)
-        {
-            if (cardIndex[i] == index)
-            {
-                cardIndex.Remove(index);
-            }
-            else
-            {
-                cardIndex.Add(index);
-            }
-        }
-        
-        Debug.Log("선택된 카드 Index :: " + index);
+        if (cardIndex.Contains(index))
+            cardIndex.Remove(index);
+        else
+            cardIndex.Add(index);
+
+        Debug.Log("현재 선택된 카드 인덱스: " + string.Join(",", cardIndex));
     }
 }
