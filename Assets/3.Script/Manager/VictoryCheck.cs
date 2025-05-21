@@ -1,8 +1,16 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class VictoryCheck : MonoBehaviour
 {
+    [SerializeField] private TMP_Text gameResultText;
+    
+    private string gameResult;
+    
+    [SerializeField] private GameObject gameResultUI;
+    
+    [SerializeField] private TMP_Text[] playerTexts;
     public void CheckVictoryConditions()
     {
         List<Player> players = GameManager.Instance.players;
@@ -10,6 +18,7 @@ public class VictoryCheck : MonoBehaviour
         Player sheriff = null;
         List<Player> outlaws = new();
         Player renegade = null;
+        
 
         foreach (var player in players)
         {
@@ -49,6 +58,8 @@ public class VictoryCheck : MonoBehaviour
             if (allEnemiesDead)
             {
                 Debug.Log("보안관 승리!");
+                gameResult = "sheriff is win!";
+                OpenGameResultUI();
                 return;
             }
         }
@@ -61,6 +72,8 @@ public class VictoryCheck : MonoBehaviour
                 if (!outlaw.GameStat.InGameStat.IsDead)
                 {
                     Debug.Log("무법자 승리!");
+                    gameResult = "outlaw is win!";
+                    OpenGameResultUI();
                     return;
                 }
             }
@@ -82,6 +95,42 @@ public class VictoryCheck : MonoBehaviour
         if (aliveCount == 1 && lastAlive == renegade)
         {
             Debug.Log("배신자 승리!");
+            gameResult = "renegade is win!";
+            OpenGameResultUI();
         }
+
+        
+    }
+
+    private void OpenGameResultUI()
+    {
+        gameResultUI.SetActive(true);
+        gameResultText.text = gameResult;
+        
+        int outlawIndex = 1; // 무법자용 인덱스 (1번, 2번)
+    
+        foreach (var player in GameManager.Instance.players)
+        {
+            string nickname = player.BasicStat.nickName;
+            string human = player.GameStat.InGameStat.MyHuman.Name;
+            string job = player.GameStat.InGameStat.MyJob.Name;
+
+            string info = $"{nickname}\n{human}\n{job}";
+
+            if (job == "보안관")
+            {
+                playerTexts[0].text = info;
+            }
+            else if (job == "무법자" && outlawIndex <= 2)
+            {
+                playerTexts[outlawIndex].text = info;
+                outlawIndex++;
+            }
+            else if (job == "배신자")
+            {
+                playerTexts[3].text = info;
+            }
+        }
+        
     }
 }
