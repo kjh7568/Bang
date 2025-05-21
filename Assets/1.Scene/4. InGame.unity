@@ -1810,6 +1810,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b9997f36392e49258ee42607a3e267d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardIndex: 
 --- !u!4 &561337592
 Transform:
   m_ObjectHideFlags: 0
@@ -2633,7 +2634,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &895710188
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3312,6 +3313,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TurnManager
       objectReference: {fileID: 0}
+    - target: {fileID: 4076393609181051888, guid: 2920063028b3b9542a2587f05415f7c3,
+        type: 3}
+      propertyPath: useCardButton
+      value: 
+      objectReference: {fileID: 596570427}
     - target: {fileID: 5024998788347197932, guid: 2920063028b3b9542a2587f05415f7c3,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -51,4 +51,17 @@ public class Player : NetworkBehaviour
             UIManager.Instance.waitingUserTurnText.text = "상대가 카드를 선택하는 중입니다.";
         }
     }
+    
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    public void RPC_RequestUseCardList(PlayerRef playerRef)
+    {
+        Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
+        Debug.Log($"UseCard.Instance.cardIndex :: {UseCard.Instance.cardIndex.Count}");
+        
+        // foreach (int index in cardIndices)
+        // {
+        //     var card = GameStat.InGameStat.HandCards[index];
+        //     card.UseCard(); 
+        // }
+    }
 }
