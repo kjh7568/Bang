@@ -1,21 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
+using Fusion;
+using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class BattleTest : MonoBehaviour
+public class BattleTest : NetworkBehaviour
 {
     [SerializeField] private VictoryCheck victoryCheck; // 승리 조건 체크용
-    
+    [SerializeField] private TMP_Text NotifyText; // 전투 결과 텍스트 UI
+        
     private void Update()
     {
+        if (!HasStateAuthority) return; 
+        
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ApplyRandomDamage();
+            string nick = GameManager.Instance.players[Random.Range(0, 4)].BasicStat.nickName;
+            RPC_ShowNotifyText(nick);
             victoryCheck.CheckVictoryConditions();
         }
     }
 
+    
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+    private void RPC_ShowNotifyText(string nickname)
+    {
+        NotifyText.text = $"{nickname} 이(가) 전투를 시작했습니다.";
+        NotifyText.gameObject.SetActive(true);
+    }
+    
     private void ApplyRandomDamage()
     {
         List<Player> players = GameManager.Instance.players;
