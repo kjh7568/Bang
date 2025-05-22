@@ -45,7 +45,7 @@ public class TurnManager : MonoBehaviour
     public void ChangeTurn()
     {
         var player = GameManager.Instance.players[CurrentTurnIndex];
-        int[] selectedIndices = UseCard.Instance.cardIndex.ToArray();
+        int[] selectedIndices = UseCardUI.Instance.cardIndex.ToArray();
         player.RPC_RequestUseCardList(player.Runner.LocalPlayer, selectedIndices);
         
         //player.RPC_RequestUseCardList(turnOrder[CurrentTurnIndex]);

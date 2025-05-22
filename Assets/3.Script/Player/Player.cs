@@ -48,7 +48,7 @@ public class Player : NetworkBehaviour
             TurnManager.Instance.useCardButton.onClick.RemoveAllListeners();
             TurnManager.Instance.useCardButton.onClick.AddListener(() =>
             {
-                int[] selectedIndices = UseCard.Instance.cardIndex.ToArray();
+                int[] selectedIndices = UseCardUI.Instance.cardIndex.ToArray();
                 Debug.Log($"[클라이언트] 선택된 카드 인덱스: {string.Join(",", selectedIndices)}");
 
                 // RPC 호출
