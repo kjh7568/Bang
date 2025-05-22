@@ -11,7 +11,7 @@ public class TurnManager : MonoBehaviour
     
     public int CurrentTurnIndex { get; set; }
 
-    private List<PlayerRef> turnOrder = new List<PlayerRef>();
+    public List<PlayerRef> turnOrder = new List<PlayerRef>();
 
     public Button finishButton;
 
@@ -24,12 +24,19 @@ public class TurnManager : MonoBehaviour
     
     public void InitializeTurnOrder()
     {
+        foreach (var player in GameManager.Instance.players)
+        {
+            if (player.Runner.IsServer)
+            {
+                player.RPC_TurnSync(turnOrder);
+            }
+        }
         
         foreach (var player in GameManager.Instance.players)
         {
             turnOrder.Add(player.Object.InputAuthority);
         }
-
+        
         StartTurn();
     }
 
