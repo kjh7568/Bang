@@ -94,6 +94,18 @@ public class Player : NetworkBehaviour
         //ProcessNextCard();
     }
     
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    public void RPC_RequestFinishTurn(PlayerRef playerRef, int cardIndices)
+    {
+        Debug.Log($"{playerRef} 턴 종료");
+
+        PlayerRef nextPlayer = TurnManager.Instance.EndTurn();
+        
+        RPC_StartPlayerTurn(nextPlayer);
+    }
+    
+    
+    
     // private void ProcessNextCard()
     // {
     //     if (pendingCardIndices.Count == 0)

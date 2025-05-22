@@ -13,13 +13,13 @@ public class TurnManager : MonoBehaviour
 
     private List<PlayerRef> turnOrder = new List<PlayerRef>();
 
-    //public Button useCardButton;
+    public Button finishButton;
 
     private void Awake()
     {
         Instance = this;
             
-        //useCardButton.onClick.AddListener(ChangeTurn);
+        finishButton.onClick.AddListener(ChangeTurn);
     }
     
     public void InitializeTurnOrder()
@@ -45,11 +45,9 @@ public class TurnManager : MonoBehaviour
 
     public void ChangeTurn()
     {
-        // var player = GameManager.Instance.players[CurrentTurnIndex];
-        // int[] selectedIndices = UseCardUI.Instance.cardIndex.ToArray();
-        // player.RPC_RequestUseCardList(player.Runner.LocalPlayer, selectedIndices);
+        var player = GameManager.Instance.players[CurrentTurnIndex];
         
-        //player.RPC_RequestUseCardList(turnOrder[CurrentTurnIndex]);
+        player.RPC_RequestFinishTurn(player.Runner.LocalPlayer, CurrentTurnIndex);
     }
     
     public bool IsMyTurn()
@@ -58,13 +56,13 @@ public class TurnManager : MonoBehaviour
         return turnOrder[CurrentTurnIndex] == player.Runner.LocalPlayer;
     }
 
-    public void EndTurn(PlayerRef fromPlayer)
+    public PlayerRef EndTurn()
     {
-        // if (fromPlayer != ) return;
-        //
-        // CurrentTurnIndex = (CurrentTurnIndex + 1) % turnOrder.Count;
-        // CurrentPlayerRef = turnOrder[CurrentTurnIndex];
-        //
-        // StartTurn();
+        //if (fromPlayer != turnOrder[CurrentTurnIndex]) return;
+        
+        CurrentTurnIndex = (CurrentTurnIndex + 1) % turnOrder.Count;
+        return turnOrder[CurrentTurnIndex + 1];
+        
+        //StartTurn();
     }
 }
