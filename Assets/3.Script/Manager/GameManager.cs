@@ -10,8 +10,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     
-    //[SerializeField] private NetworkObject TurnManager;
-
     [SerializeField] private CardSystem cardSystem;
     [SerializeField] private UINameSynchronizer uiSystem;
     
@@ -26,7 +24,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
-    private IEnumerator Start()
+    private void Start()
     {
         CachePlayerInfo();
         
@@ -34,8 +32,6 @@ public class GameManager : MonoBehaviour
         SetPlayerJob();
         
         GetPlayerInfo();
-
-        yield return new WaitForSeconds(3f); 
         
         SyncPlayersToClients();
         TurnManager.Instance.StartTurn();
@@ -102,6 +98,6 @@ public class GameManager : MonoBehaviour
         var playerClassArray = players.ToArray();  
 
         // 초기 플레이어 정보 동기화
-        NetworkManager.Instance.RPC_SyncSpawnedPlayers(playerRefsArray, playerClassArray);
+        Broadcaster.Instance.RPC_SyncSpawnedPlayers(playerRefsArray, playerClassArray);
     }
 }

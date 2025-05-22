@@ -19,35 +19,35 @@ public class TurnManager : MonoBehaviour
 
     public void StartTurn()
     {
-        Debug.Log($"playersRef: {NetworkManager.Instance.syncedPlayerRefs.Length}, TurnIndex: {NetworkManager.Instance.TurnIndex}");
-        Debug.Log($"playerClass: {NetworkManager.Instance.syncedPlayerClass.Length}");
+        Debug.Log($"playersRef: {Broadcaster.Instance.syncedPlayerRefs.Length}, TurnIndex: {Broadcaster.Instance.TurnIndex}");
+        Debug.Log($"playerClass: {Broadcaster.Instance.syncedPlayerClass.Length}");
 
-        for (int i = 0; i < NetworkManager.Instance.syncedPlayerClass.Length; i++)
+        for (int i = 0; i < Broadcaster.Instance.syncedPlayerClass.Length; i++)
         {
-            Debug.Log($"playerClass{i}: {NetworkManager.Instance.syncedPlayerClass[i]}");
+            Debug.Log($"playerClass{i}: {Broadcaster.Instance.syncedPlayerClass[i]}");
             
-            if (NetworkManager.Instance.syncedPlayerClass[i].GameStat.InGameStat.MyJob.Name == "보안관")
+            if (Broadcaster.Instance.syncedPlayerClass[i].GameStat.InGameStat.MyJob.Name == "보안관")
             {
-                Debug.Log($"{NetworkManager.Instance.syncedPlayerClass[i].BasicStat.nickName}님이 보안관 입니다.");
-                NetworkManager.Instance.TurnIndex = i;
+                Debug.Log($"{Broadcaster.Instance.syncedPlayerClass[i].BasicStat.nickName}님이 보안관 입니다.");
+                Broadcaster.Instance.TurnIndex = i;
                 
                 break;
             }
 
-            NetworkManager.Instance.TurnIndex = 0;
+            Broadcaster.Instance.TurnIndex = 0;
         }
 
-        var currentPlayer = NetworkManager.Instance.syncedPlayerClass[NetworkManager.Instance.TurnIndex];
-        currentPlayer.RPC_StartPlayerTurn(NetworkManager.Instance.syncedPlayerRefs[NetworkManager.Instance.TurnIndex]);
+        var currentPlayer = Broadcaster.Instance.syncedPlayerClass[Broadcaster.Instance.TurnIndex];
+        currentPlayer.RPC_StartPlayerTurn(Broadcaster.Instance.syncedPlayerRefs[Broadcaster.Instance.TurnIndex]);
     }
     
     public void ChangeTurn()
     {
-        Debug.Log($"턴 변경 전: {NetworkManager.Instance.TurnIndex}");
+        Debug.Log($"턴 변경 전: {Broadcaster.Instance.TurnIndex}");
         
-        var player = NetworkManager.Instance.syncedPlayerClass[NetworkManager.Instance.TurnIndex];
+        var player = Broadcaster.Instance.syncedPlayerClass[Broadcaster.Instance.TurnIndex];
 
-        Debug.Log($"턴 변경 후: {NetworkManager.Instance.TurnIndex}");
+        Debug.Log($"턴 변경 후: {Broadcaster.Instance.TurnIndex}");
 
         player.RPC_RequestFinishTurn(player.Runner.LocalPlayer);
     }
@@ -56,12 +56,9 @@ public class TurnManager : MonoBehaviour
     {
         Debug.Log("EndTurn");
         
-        NetworkManager.Instance.TurnIndex = (NetworkManager.Instance.TurnIndex + 1) % NetworkManager.Instance.syncedPlayerClass.Length;
-        Debug.Log($"CurrentTurnIndex:: {NetworkManager.Instance.TurnIndex}");
-        
-        // var player = NetworkManager.Instance.syncedPlayerClass[ NetworkManager.Instance.TurnIndex];
-        // player.RPC_TurnSync(turnOrder.ToArray(), NetworkManager.Instance.TurnIndex);
-        
-        return NetworkManager.Instance.syncedPlayerRefs[NetworkManager.Instance.TurnIndex];
+        Broadcaster.Instance.TurnIndex = (Broadcaster.Instance.TurnIndex + 1) % Broadcaster.Instance.syncedPlayerClass.Length;
+        Debug.Log($"CurrentTurnIndex:: {Broadcaster.Instance.TurnIndex}");
+   
+        return Broadcaster.Instance.syncedPlayerRefs[Broadcaster.Instance.TurnIndex];
     }
 }

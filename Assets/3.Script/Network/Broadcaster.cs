@@ -6,8 +6,15 @@ using UnityEngine;
 
 public class Broadcaster : NetworkBehaviour
 {
+    public static Broadcaster Instance;
+    
+    [Networked] public int TurnIndex {get; set;}
+    public PlayerRef[] syncedPlayerRefs;
+    public Player[] syncedPlayerClass;
+    
     private void Awake()
     {
+        Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
@@ -33,5 +40,25 @@ public class Broadcaster : NetworkBehaviour
         {
             Debug.LogWarning("[Broadcaster] BasicSpawner 인스턴스를 찾을 수 없습니다.");
         }
+    }
+    
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_SyncSpawnedPlayers(PlayerRef[] playerRefs, Player[] playerClass)
+    {
+        syncedPlayerRefs = new PlayerRef[playerRefs.Length];
+        syncedPlayerClass = new Player[playerClass.Length];
+
+        syncedPlayerClass = playerClass;
+        syncedPlayerRefs = playerRefs;
+
+        Debug.Log($"Received {playerRefs.Length} playerRefs");
+        Debug.Log($"Received {playerClass.Length} playerClass");
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_ResetPanel()
+    {
+        UIManager.Instance.waitingPanel.SetActive(false);
+        UIManager.Instance.cardListPanel.SetActive(false);
     }
 }

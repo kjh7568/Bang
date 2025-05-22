@@ -40,19 +40,12 @@ public class WatingSetting : MonoBehaviour
         startButton.gameObject.SetActive(false);
     }
 
-    public async void OnStartButtonClicked()
+    public void OnStartButtonClicked()
     {
         var scene = SceneRef.FromIndex(3);
         if (!scene.IsValid) return;
 
-        var runner = BasicSpawner.Instance._runner;
-
-        Debug.Log("씬 로딩 시작");
-        await runner.LoadScene(scene);
-        Debug.Log("씬 로딩 완료됨");
-
-        runner.Spawn(networkManager, Vector3.zero, Quaternion.identity);
-        Debug.Log("네트워크 매니저 생성 완료");
+        BasicSpawner.Instance._runner.LoadScene(scene);
     }
 
     public void OnBackButtonClicked()

@@ -98,7 +98,7 @@ public class Player : NetworkBehaviour
     public void RPC_RequestFinishTurn(PlayerRef playerRef)
     {
         Debug.Log($"{playerRef} 턴 종료");
-        NetworkManager.Instance.RPC_ResetPanel();
+        Broadcaster.Instance.RPC_ResetPanel();
         
         PlayerRef nextPlayer = TurnManager.Instance.EndTurn();
 
