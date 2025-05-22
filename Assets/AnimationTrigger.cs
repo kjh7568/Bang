@@ -43,6 +43,10 @@ public class AnimationTrigger : NetworkBehaviour
             RPC_PlayAnimation("drinking");
         else if (Input.GetKeyDown(KeyCode.T))
             RPC_PlayAnimation("dying");
+        else if (Input.GetKeyDown(KeyCode.Y))
+            RPC_PlayAnimation("picking");
+        else if (Input.GetKeyDown(KeyCode.U))
+            RPC_PlayAnimation("drawing");
     }
 
     private void PlayAnimation(string trigger)
