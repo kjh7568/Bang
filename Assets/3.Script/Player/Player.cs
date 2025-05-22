@@ -101,6 +101,9 @@ public class Player : NetworkBehaviour
 
         PlayerRef nextPlayer = TurnManager.Instance.EndTurn();
         
+
+        Debug.Log($"턴 변경");
+
         RPC_StartPlayerTurn(nextPlayer);
     }
     

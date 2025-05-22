@@ -59,6 +59,7 @@ public class TurnManager : MonoBehaviour
     public PlayerRef EndTurn()
     {
         //if (fromPlayer != turnOrder[CurrentTurnIndex]) return;
+        Debug.Log("EndTurn");
         
         CurrentTurnIndex = (CurrentTurnIndex + 1) % turnOrder.Count;
         return turnOrder[CurrentTurnIndex + 1];
