@@ -13,13 +13,13 @@ public class TurnManager : MonoBehaviour
 
     private List<PlayerRef> turnOrder = new List<PlayerRef>();
 
-    public Button useCardButton;
+    //public Button useCardButton;
 
     private void Awake()
     {
         Instance = this;
             
-        useCardButton.onClick.AddListener(ChangeTurn);
+        //useCardButton.onClick.AddListener(ChangeTurn);
     }
     
     public void InitializeTurnOrder()
@@ -37,7 +37,6 @@ public class TurnManager : MonoBehaviour
         // int random = Random.Range(0, GameManager.Instance.players.Count);
 
         int random = 0;
-
         CurrentTurnIndex = random;
         
         var player = GameManager.Instance.players[CurrentTurnIndex];
@@ -46,9 +45,9 @@ public class TurnManager : MonoBehaviour
 
     public void ChangeTurn()
     {
-        var player = GameManager.Instance.players[CurrentTurnIndex];
-        int[] selectedIndices = UseCardUI.Instance.cardIndex.ToArray();
-        player.RPC_RequestUseCardList(player.Runner.LocalPlayer, selectedIndices);
+        // var player = GameManager.Instance.players[CurrentTurnIndex];
+        // int[] selectedIndices = UseCardUI.Instance.cardIndex.ToArray();
+        // player.RPC_RequestUseCardList(player.Runner.LocalPlayer, selectedIndices);
         
         //player.RPC_RequestUseCardList(turnOrder[CurrentTurnIndex]);
     }
