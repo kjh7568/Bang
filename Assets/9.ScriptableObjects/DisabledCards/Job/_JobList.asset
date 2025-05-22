@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: _JobList
   m_EditorClassIdentifier: 
   jobList:
-  - {fileID: 11400000, guid: 2a9ac7f0c86c76a45948705acfd0769b, type: 2}
   - {fileID: 11400000, guid: af61cb9684d5d8e439f004a4f28f3c50, type: 2}
+  - {fileID: 11400000, guid: 2a9ac7f0c86c76a45948705acfd0769b, type: 2}
   - {fileID: 11400000, guid: 234524706530dbb4abb367bbeef6981c, type: 2}
   - {fileID: 11400000, guid: 234524706530dbb4abb367bbeef6981c, type: 2}
