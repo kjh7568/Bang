@@ -98,10 +98,8 @@ public class Player : NetworkBehaviour
     public void RPC_RequestFinishTurn(PlayerRef playerRef)
     {
         Debug.Log($"{playerRef} 턴 종료");
+        NetworkManager.Instance.RPC_ResetPanel();
         
-        UIManager.Instance.waitingPanel.SetActive(false);
-        UIManager.Instance.cardListPanel.SetActive(false);
-
         PlayerRef nextPlayer = TurnManager.Instance.EndTurn();
 
         Debug.Log($"{nextPlayer}");
@@ -109,40 +107,4 @@ public class Player : NetworkBehaviour
 
         RPC_StartPlayerTurn(nextPlayer);
     }
-    
-    
-    // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    // public void RPC_TurnSync(PlayerRef[] syncedOrder, int currentTurnIndex)
-    // {
-    //     TurnManager.Instance.turnOrder = new List<PlayerRef>(syncedOrder);
-    //     TurnManager.Instance.CurrentTurnIndex = currentTurnIndex;
-    //     
-    //     Debug.Log($"currentTurnIndex: {currentTurnIndex}, turnOrder.Count: {TurnManager.Instance.turnOrder.Count}");
-    // }
-    
-    // init player sync
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_PlayerSync()
-    {
-        if (Runner.IsServer)
-        {
-            
-        }
-    }
-    
-    
-    // private void ProcessNextCard()
-    // {
-    //     if (pendingCardIndices.Count == 0)
-    //         // 다음플레이어 
-    //     
-    //         return;
-    //
-    //     currentCardIndex = pendingCardIndices.Dequeue();
-    //     var card = GameStat.InGameStat.HandCards[currentCardIndex];
-    //
-    //     card.UseCard(() => {
-    //         ProcessNextCard(); 
-    //     });
-    // }
 }

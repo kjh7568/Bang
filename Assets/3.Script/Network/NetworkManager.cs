@@ -27,6 +27,12 @@ public class NetworkManager : NetworkBehaviour
 
         Debug.Log($"Received {playerRefs.Length} playerRefs");
         Debug.Log($"Received {playerClass.Length} playerClass");
+    }
 
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_ResetPanel()
+    {
+        UIManager.Instance.waitingPanel.SetActive(false);
+        UIManager.Instance.cardListPanel.SetActive(false);
     }
 }
