@@ -24,7 +24,7 @@ public class PlayerUI : MonoBehaviour
 
     private void SetPlayerHumanCardSprite()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        
 
         if (player == null)
         {

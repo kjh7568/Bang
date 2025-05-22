@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,11 +8,22 @@ public class OnPlayerUI : MonoBehaviour
 {
     [SerializeField] private GameObject playerUIObject;
 
-    private void Start()
+    
+
+    private void Update()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 4)
+        if (SceneManager.GetActiveScene().buildIndex == 3)
         {
             playerUIObject.SetActive(true);
+        }
+        else
+        {
+            playerUIObject.SetActive(false);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            Debug.Log(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
