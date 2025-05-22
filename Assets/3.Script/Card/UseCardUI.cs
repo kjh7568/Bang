@@ -17,7 +17,7 @@ public class UseCardUI : MonoBehaviour
     {
         UIManager.Instance.cardListPanel.SetActive(false);
         
-        var player = GameManager.Instance.players[TurnManager.Instance.CurrentTurnIndex];
+        var player = GameManager.Instance.players[Broadcaster.Instance.TurnIndex];
         Debug.Log($"{player.BasicStat.nickName} 님이 선택한 카드:: {index}");
         player.RPC_RequestUseCardList(player.Runner.LocalPlayer, index);
     }

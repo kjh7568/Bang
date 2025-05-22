@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Fusion;
 using TMPro;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
@@ -12,8 +13,9 @@ public class WatingSetting : MonoBehaviour
 {
     [SerializeField] private TMP_Text sessionNumberText;
     [SerializeField] private TMP_Text[] nickNameTexts;
-    
     [SerializeField] private Button startButton;
+
+    public NetworkObject networkManager;
     
     private void Start()
     {
@@ -40,8 +42,10 @@ public class WatingSetting : MonoBehaviour
 
     public void OnStartButtonClicked()
     {
-        var scene = SceneRef.FromIndex(3); 
-        if (scene.IsValid) BasicSpawner.Instance._runner.LoadScene(scene);
+        var scene = SceneRef.FromIndex(3);
+        if (!scene.IsValid) return;
+
+        BasicSpawner.Instance._runner.LoadScene(scene);
     }
 
     public void OnBackButtonClicked()

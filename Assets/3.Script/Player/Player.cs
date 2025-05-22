@@ -94,18 +94,17 @@ public class Player : NetworkBehaviour
         //ProcessNextCard();
     }
     
-    // private void ProcessNextCard()
-    // {
-    //     if (pendingCardIndices.Count == 0)
-    //         // 다음플레이어 
-    //     
-    //         return;
-    //
-    //     currentCardIndex = pendingCardIndices.Dequeue();
-    //     var card = GameStat.InGameStat.HandCards[currentCardIndex];
-    //
-    //     card.UseCard(() => {
-    //         ProcessNextCard(); 
-    //     });
-    // }
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    public void RPC_RequestFinishTurn(PlayerRef playerRef)
+    {
+        Debug.Log($"{playerRef} 턴 종료");
+        Broadcaster.Instance.RPC_ResetPanel();
+        
+        PlayerRef nextPlayer = TurnManager.Instance.EndTurn();
+
+        Debug.Log($"{nextPlayer}");
+        Debug.Log($"턴 변경");
+
+        RPC_StartPlayerTurn(nextPlayer);
+    }
 }
