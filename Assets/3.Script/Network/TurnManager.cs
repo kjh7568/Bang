@@ -8,11 +8,6 @@ using Random = UnityEngine.Random;
 public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
-    
-    //public int CurrentTurnIndex { get; set; }
-
-    //public List<PlayerRef> turnOrder = new List<PlayerRef>();
-
     public Button finishButton;
 
     private void Awake()
@@ -20,24 +15,6 @@ public class TurnManager : MonoBehaviour
         Instance = this;
             
         finishButton.onClick.AddListener(ChangeTurn);
-    }
-    
-    public void InitializeTurnOrder()
-    {
-        foreach (var player in GameManager.Instance.players)
-        {
-            //turnOrder.Add(player.Object.InputAuthority);
-        }
-        
-        foreach (var player in GameManager.Instance.players)
-        {
-            if (player.Runner.IsServer)
-            {
-                //NetworkManager.Instance.TurnIndex = CurrentTurnIndex;
-            }
-        }
-        
-        //StartTurn();
     }
 
     public void StartTurn()

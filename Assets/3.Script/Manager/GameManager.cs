@@ -20,32 +20,11 @@ public class GameManager : MonoBehaviour
     
     public List<Player> players;
     public List<PlayerRef> playerRef;
-
-    // private void OnEnable()
-    // {
-    //     NetworkManager.OnNetworkManagerReady += OnNetworkManagerReadyHandler;
-    // }
-    //
-    // private void OnDisable()
-    // {
-    //     NetworkManager.OnNetworkManagerReady -= OnNetworkManagerReadyHandler;
-    // }
-    //
-    // private void OnNetworkManagerReadyHandler()
-    // {
-    //     SyncPlayersToClients();
-    //     TurnManager.Instance.StartTurn();
-    // }
+    
     
     private void Awake()
     {
         Instance = this;
-
-        // if (BasicSpawner.Instance._runner.IsServer)
-        // {
-        //     var prefab = Resources.Load<NetworkObject>("TurnManager");
-        //     BasicSpawner.Instance._runner.Spawn(prefab);
-        // }
     }
 
     private IEnumerator Start()
@@ -56,10 +35,7 @@ public class GameManager : MonoBehaviour
         SetPlayerJob();
         
         GetPlayerInfo();
-        
-        //TurnManager.Instance.InitializeTurnOrder();
-        //NetworkManager.Instance.SyncAllPlayersToClients();
-        
+
         yield return new WaitForSeconds(3f); 
         
         SyncPlayersToClients();
@@ -74,9 +50,6 @@ public class GameManager : MonoBehaviour
 
             players.Add(playerClass);
             playerRef.Add(player.InputAuthority);
-            
-            Debug.Log($"player ::: {playerClass}");
-            Debug.Log($"playerRef ::: {player.InputAuthority}");
         }
     }
     
@@ -129,6 +102,7 @@ public class GameManager : MonoBehaviour
         var playerRefsArray = playerRef.ToArray();  
         var playerClassArray = players.ToArray();  
 
+        // 초기 플레이어 정보 동기화
         NetworkManager.Instance.RPC_SyncSpawnedPlayers(playerRefsArray, playerClassArray);
     }
 }

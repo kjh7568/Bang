@@ -16,32 +16,6 @@ public class NetworkManager : NetworkBehaviour
         Instance = this;
     }
     
-    // public static event Action OnNetworkManagerReady;
-    //
-    // public override void Spawned()
-    // {
-    //     base.Spawned();
-    //     OnNetworkManagerReady?.Invoke();  
-    // }
-
-    // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    // public void SyncAllPlayersToClients()
-    // {
-    //     players = GameManager.Instance.players.ToArray();
-    // }
-    
-    // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    // public void RPC_SyncPlayerInfo(PlayerRef[] playerRefs, string[] nicknames)
-    // {
-    //     for (int i = 0; i < playerRefs.Length; i++)
-    //     {
-    //         Debug.Log($"Player {i} - Ref: {playerRefs[i]}, Nickname: {nicknames[i]}");
-    //         players[i] = playerRefs[i];
-    //         // 클라이언트에서 각 플레이어 정보를 저장 또는 UI 업데이트
-    //     }
-    // }
-  
-
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_SyncSpawnedPlayers(PlayerRef[] playerRefs, Player[] playerClass)
     {
