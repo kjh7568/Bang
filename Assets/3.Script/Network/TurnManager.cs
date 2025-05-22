@@ -28,7 +28,7 @@ public class TurnManager : MonoBehaviour
         {
             if (player.Runner.IsServer)
             {
-                player.RPC_TurnSync(turnOrder.ToArray());
+                player.RPC_TurnSync(turnOrder.ToArray(), CurrentTurnIndex);
             }
         }
         
@@ -84,7 +84,10 @@ public class TurnManager : MonoBehaviour
         
         CurrentTurnIndex = (CurrentTurnIndex + 1) % turnOrder.Count;
         Debug.Log($"CurrentTurnIndex:: {CurrentTurnIndex}");
-
+        
+        var player = GameManager.Instance.players[CurrentTurnIndex];
+        player.RPC_TurnSync(turnOrder.ToArray(), CurrentTurnIndex);
+        
         return turnOrder[CurrentTurnIndex];
     }
 }

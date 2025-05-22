@@ -113,12 +113,12 @@ public class Player : NetworkBehaviour
     
     
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_TurnSync(PlayerRef[] syncedOrder)
+    public void RPC_TurnSync(PlayerRef[] syncedOrder, int currentTurnIndex)
     {
-        if (Runner.IsServer)
-        {
-            TurnManager.Instance.turnOrder = new List<PlayerRef>(syncedOrder);
-        }
+        TurnManager.Instance.turnOrder = new List<PlayerRef>(syncedOrder);
+        TurnManager.Instance.CurrentTurnIndex = currentTurnIndex;
+        
+        Debug.Log($"currentTurnIndex: {currentTurnIndex}, turnOrder.Count: {TurnManager.Instance.turnOrder.Count}");
     }
 
     
