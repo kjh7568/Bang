@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
     private void SetPlayerHuman()
     {
         //일단 인물 구현이 완료 된 것이 아니기 때문에 그냥 더미로 만듬
-        var tempList = humanList.humanList;
+        var tempList = new List<HumanData>(humanList.humanList);
         
         foreach (var player in players)
         {
@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
     
     private void SetPlayerJob()
     {
-        var tempList = jobList.jobList;
+        var tempList = new List<Job>(jobList.jobList);
         
         foreach (var player in players)
         {
