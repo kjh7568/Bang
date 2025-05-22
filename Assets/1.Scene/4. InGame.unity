@@ -2428,7 +2428,7 @@ GameObject:
   - component: {fileID: 561337592}
   - component: {fileID: 561337591}
   m_Layer: 0
-  m_Name: UseCard
+  m_Name: UseCardUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

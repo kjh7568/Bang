@@ -15,17 +15,22 @@ public class UIManager : MonoBehaviour
     public GameObject playerPanel;
     
     public TMP_Text waitingUserTurnText;
-
     
     public List<GameObject> enemyList = new List<GameObject>();
+    
+    // 선택 완료 시 실행할 콜백
+    private Action<string> onTargetSelected; 
 
+    private bool isPlayerSelectActive = false;
+    
     private void Awake()
     {
         Instance = this;
-        SetPlayerPanel();
+        InitializePlayerPanelButtons();
+        playerPanel.SetActive(false); 
     }
 
-    public void SetPlayerPanel()
+    private void InitializePlayerPanelButtons()
     {
         int index = 0;
 
@@ -33,75 +38,50 @@ public class UIManager : MonoBehaviour
         {
             var player = playerPair.Value.GetComponent<Player>();
 
-            // 본인을 제외하고
             if (player.Object.InputAuthority != BasicSpawner.Instance._runner.LocalPlayer)
             {
                 if (index < enemyList.Count)
                 {
                     GameObject enemySlot = enemyList[index];
 
-                    // 이름 설정
                     TMP_Text nameText = enemySlot.GetComponentInChildren<TMP_Text>();
                     if (nameText != null)
                         nameText.text = player.BasicStat.nickName;
 
-                    // 버튼 설정
                     Button button = enemySlot.GetComponent<Button>();
                     if (button != null)
                     {
-                        Debug.Log(player.BasicStat.nickName);
-                        
+                        string playerName = player.BasicStat.nickName; // 클로저 문제 방지
+
                         button.onClick.RemoveAllListeners();
-                        button.onClick.AddListener(() => OnEnemySlotClicked(player.BasicStat.nickName));
+                        button.onClick.AddListener(() => OnEnemySlotClicked(playerName));
                     }
 
                     index++;
                 }
             }
         }
-
-        // // 남은 슬롯은 비워주기
-        // for (int i = index; i < enemyList.Count; i++)
-        // {
-        //     TMP_Text nameText = enemyList[i].GetComponentInChildren<TMP_Text>();
-        //     if (nameText != null)
-        //         nameText.text = "";
-        //
-        //     Button button = enemyList[i].GetComponent<Button>();
-        //     if (button != null)
-        //         button.onClick.RemoveAllListeners();
-        // }
     }
 
+    public void ShowPlayerSelectPanel(Action<string> onTargetSelectedCallback)
+    {
+        if (isPlayerSelectActive)
+        {
+            Debug.LogWarning("이미 플레이어 선택 UI가 열려있습니다. 중복 호출 방지.");
+            return;
+        }
+    
+        this.onTargetSelected = onTargetSelectedCallback;
+        playerPanel.SetActive(true);
+        isPlayerSelectActive = true;
+    }
+    
     public void OnEnemySlotClicked(string playerName)
     {
-        Debug.Log("클릭된 플레이어 이름: " + playerName);
-    }
-
+        playerPanel.SetActive(false);
+        isPlayerSelectActive = false;
     
-    // public GameObject[] characterPrefabs; // 프리팹 4개
-    // //public Transform spawnParent;         // CharacterSelectionPanel
-    // private List<GameObject> spawned = new List<GameObject>();
-    //
-    // void Start() {
-    //     float spacing = 5f;
-    //     for (int i = 0; i < characterPrefabs.Length; i++) {
-    //         GameObject character = Instantiate(characterPrefabs[i], playerPanel.transform);
-    //         character.transform.localScale = new Vector3(150, 150, 150);
-    //         character.transform.localPosition = new Vector3(i * spacing, 0, 0);
-    //         character.transform.localRotation = Quaternion.Euler(0, 180, 0); 
-    //         spawned.Add(character);
-    //     }
-    // }
-    //
-    // void Update() {
-    //     if (Input.GetMouseButtonDown(0)) {
-    //         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-    //         if (Physics.Raycast(ray, out RaycastHit hit)) {
-    //             GameObject selected = hit.collider.gameObject;
-    //             Debug.Log("선택한 캐릭터: " + selected.name);
-    //             // 선택 처리 로직 추가
-    //         }
-    //     }
-    // }
+        onTargetSelected?.Invoke(playerName);
+        onTargetSelected = null; 
+    }
 }

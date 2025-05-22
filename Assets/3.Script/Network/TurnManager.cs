@@ -34,7 +34,9 @@ public class TurnManager : MonoBehaviour
 
     public void StartTurn()
     {
-        int random = Random.Range(0, GameManager.Instance.players.Count);
+        // int random = Random.Range(0, GameManager.Instance.players.Count);
+
+        int random = 0;
 
         CurrentTurnIndex = random;
         

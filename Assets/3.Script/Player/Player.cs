@@ -33,6 +33,7 @@ public class Player : NetworkBehaviour
         CardUIManager.Instance.UpdateHandCardUI(cards);
     }
     
+    
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_StartPlayerTurn(PlayerRef playerRef)
     {
@@ -67,17 +68,41 @@ public class Player : NetworkBehaviour
         }
     }
     
+    private Queue<int> pendingCardIndices = new();
+    private int currentCardIndex = -1;
+    private bool isWaitingForTarget = false;
+    
     [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
     public void RPC_RequestUseCardList(PlayerRef playerRef, int[] cardIndices)
     {
         Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
         Debug.Log($"전달된 카드 인덱스 개수: {cardIndices.Length}");
 
+        // foreach (int index in cardIndices)
+        // {
+        //     var card = GameStat.InGameStat.HandCards[index];
+        //     card.UseCard(); 
+        // }
+        
+        // 큐에 카드 인덱스 저장
+        pendingCardIndices.Clear();
         foreach (int index in cardIndices)
-        {
-            var card = GameStat.InGameStat.HandCards[index];
-            card.UseCard(); 
-        }
-    }
+            pendingCardIndices.Enqueue(index);
 
+        // 시작
+        ProcessNextCard();
+    }
+    
+    private void ProcessNextCard()
+    {
+        if (pendingCardIndices.Count == 0)
+            return;
+
+        currentCardIndex = pendingCardIndices.Dequeue();
+        var card = GameStat.InGameStat.HandCards[currentCardIndex];
+
+        card.UseCard(() => {
+            ProcessNextCard(); 
+        });
+    }
 }

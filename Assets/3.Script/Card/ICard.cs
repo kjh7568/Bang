@@ -1,3 +1,4 @@
+using System;
 using CardTypeEnum;
 using UnityEngine;
 
@@ -27,5 +28,7 @@ public interface ICard
     CardSymbol CardSymbol { get; }
     Sprite CardSprite { get; }
 
-    public void UseCard();
+    bool RequiresTarget { get; }
+    
+    public void UseCard(Action onComplete);
 }
