@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class PlayerInGameStat
+public class PlayerInGameStat : IDamageAble
 {
     public int hp;
     public bool IsDead => hp <= 0;
@@ -22,5 +22,9 @@ public class PlayerInGameStat
     public bool isJail;
     public bool isDynamite;
     //
-    
+
+    public void TakeDamage(CombatEvent combatEvent)
+    {
+        throw new System.NotImplementedException();
+    }
 }
