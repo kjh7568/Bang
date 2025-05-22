@@ -1616,7 +1616,8 @@ MonoBehaviour:
   SortKey: 654802238
   ObjectInterest: 1
   Flags: 262145
-  NestedObjects: []
+  NestedObjects:
+  - {fileID: 6972720432981651}
   NetworkedBehaviours:
   - {fileID: 5899487425630405010}
   ForceRemoteRenderTimeframe: 0
@@ -2896,6 +2897,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3253455636200791959}
   - component: {fileID: 4260564253779788049}
+  - component: {fileID: 6972720432981651}
   m_Layer: 0
   m_Name: PlayerUI
   m_TagString: Untagged
@@ -2941,6 +2943,25 @@ MonoBehaviour:
   - {fileID: 8743189458764550448}
   - {fileID: 6839038914487966132}
   - {fileID: 7730796868691194283}
+--- !u!114 &6972720432981651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974852455243876649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2591414435
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 4260564253779788049}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &5012801501840787349
 GameObject:
   m_ObjectHideFlags: 0
@@ -2951,7 +2972,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4047071320892216013}
   - component: {fileID: 4885346937580271012}
-  - component: {fileID: 2012646540771415831}
   m_Layer: 0
   m_Name: HumanCard
   m_TagString: Untagged
@@ -3026,20 +3046,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2012646540771415831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5012801501840787349}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91436f6a3c250474f8d85482d371610d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  humanList: {fileID: 11400000, guid: 2fcfa21c6f3ca4849a4319dedb2d2e2b, type: 2}
-  player: {fileID: 0}
 --- !u!1 &6839038914487966132
 GameObject:
   m_ObjectHideFlags: 0

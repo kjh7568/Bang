@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Fusion;
 using UnityEngine;
 
-public class PlayerUI : MonoBehaviour
+public class PlayerUI : NetworkBehaviour
 {
     [SerializeField]private SpriteRenderer spriteRenderer;
 
@@ -39,6 +40,7 @@ public class PlayerUI : MonoBehaviour
             if (humanData.Name == humanName)
             {
                 spriteRenderer.sprite = humanData.CardSprite;
+                RPC_SetPlayerHumanCardSprite(humanName);
                 break;
             }
         }
@@ -52,6 +54,18 @@ public class PlayerUI : MonoBehaviour
         {
             // hp보다 작으면 true, 그 이상이면 false
             Hpcoins[i].SetActive(i < hp);
+        }
+    }
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+    public void RPC_SetPlayerHumanCardSprite(string humanName)
+    {
+        foreach (var humanData in humanList.humanList)
+        {
+            if (humanData.Name == humanName)
+            {
+                spriteRenderer.sprite = humanData.CardSprite;
+                break;
+            }
         }
     }
 }

@@ -2558,7 +2558,8 @@ MonoBehaviour:
   SortKey: 2388570465
   ObjectInterest: 1
   Flags: 262145
-  NestedObjects: []
+  NestedObjects:
+  - {fileID: 4733140486081779884}
   NetworkedBehaviours:
   - {fileID: 5274620086830130402}
   ForceRemoteRenderTimeframe: 0
@@ -2776,6 +2777,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6111412755925703513}
   - component: {fileID: 4224208285689852934}
+  - component: {fileID: 4733140486081779884}
   m_Layer: 0
   m_Name: PlayerUI
   m_TagString: Untagged
@@ -2807,7 +2809,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 193878585659512541}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: adfbca807b4a82741b13ff4b644a7f94, type: 3}
   m_Name: 
@@ -2821,6 +2823,25 @@ MonoBehaviour:
   - {fileID: 3709440402855742059}
   - {fileID: 1015326801665657855}
   - {fileID: 2831125609565016079}
+--- !u!114 &4733140486081779884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193878585659512541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 1771496791
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 4224208285689852934}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &244188864010641647
 GameObject:
   m_ObjectHideFlags: 0
@@ -3035,7 +3056,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4063906209348704113}
   - component: {fileID: 7437625853054027774}
-  - component: {fileID: 1818581038260361496}
   m_Layer: 0
   m_Name: HumanCard
   m_TagString: Untagged
@@ -3110,20 +3130,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1818581038260361496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2719583404413954160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91436f6a3c250474f8d85482d371610d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  humanList: {fileID: 11400000, guid: 2fcfa21c6f3ca4849a4319dedb2d2e2b, type: 2}
-  player: {fileID: 0}
 --- !u!1 &2831125609565016079
 GameObject:
   m_ObjectHideFlags: 0

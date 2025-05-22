@@ -2099,7 +2099,8 @@ MonoBehaviour:
   SortKey: 612040398
   ObjectInterest: 1
   Flags: 262145
-  NestedObjects: []
+  NestedObjects:
+  - {fileID: 5126056834809144307}
   NetworkedBehaviours:
   - {fileID: -4152899911616028343}
   ForceRemoteRenderTimeframe: 0
@@ -3148,6 +3149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2732741198180969171}
   - component: {fileID: 3812830485394730144}
+  - component: {fileID: 5126056834809144307}
   m_Layer: 0
   m_Name: PlayerUI
   m_TagString: Untagged
@@ -3193,6 +3195,25 @@ MonoBehaviour:
   - {fileID: 1459816811839749553}
   - {fileID: 725347238185561034}
   - {fileID: 6070441268152894206}
+--- !u!114 &5126056834809144307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5782352595784955706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2093285403
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 3812830485394730144}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &6070441268152894206
 GameObject:
   m_ObjectHideFlags: 0
@@ -3287,7 +3308,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6621084549561989276}
   - component: {fileID: 1146795429269089978}
-  - component: {fileID: 2451368075050902082}
   m_Layer: 0
   m_Name: HumanCard
   m_TagString: Untagged
@@ -3362,17 +3382,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2451368075050902082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6427003907249254707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91436f6a3c250474f8d85482d371610d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  humanList: {fileID: 11400000, guid: 2fcfa21c6f3ca4849a4319dedb2d2e2b, type: 2}
-  player: {fileID: 0}
