@@ -2,19 +2,24 @@ using System;
 using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
     
-    private int CurrentTurnIndex { get; set; }
+    public int CurrentTurnIndex { get; set; }
 
     private List<PlayerRef> turnOrder = new List<PlayerRef>();
-    
+
+    public Button useCardButton;
+
     private void Awake()
     {
         Instance = this;
+            
+        useCardButton.onClick.AddListener(ChangeTurn);
     }
     
     public void InitializeTurnOrder()
@@ -29,7 +34,9 @@ public class TurnManager : MonoBehaviour
 
     public void StartTurn()
     {
-        int random = Random.Range(0, GameManager.Instance.players.Count);
+        // int random = Random.Range(0, GameManager.Instance.players.Count);
+
+        int random = 0;
 
         CurrentTurnIndex = random;
         
@@ -37,10 +44,20 @@ public class TurnManager : MonoBehaviour
         player.RPC_StartPlayerTurn(turnOrder[CurrentTurnIndex]);
     }
 
-    // public void ChangeTurn()
-    // {
-    //     
-    // }
+    public void ChangeTurn()
+    {
+        var player = GameManager.Instance.players[CurrentTurnIndex];
+        int[] selectedIndices = UseCardUI.Instance.cardIndex.ToArray();
+        player.RPC_RequestUseCardList(player.Runner.LocalPlayer, selectedIndices);
+        
+        //player.RPC_RequestUseCardList(turnOrder[CurrentTurnIndex]);
+    }
+    
+    public bool IsMyTurn()
+    {
+        var player = GameManager.Instance.players[CurrentTurnIndex];
+        return turnOrder[CurrentTurnIndex] == player.Runner.LocalPlayer;
+    }
 
     public void EndTurn(PlayerRef fromPlayer)
     {

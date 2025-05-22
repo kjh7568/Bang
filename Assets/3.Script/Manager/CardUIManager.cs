@@ -25,8 +25,8 @@ public class CardUIManager : MonoBehaviour
     
     public void UpdateHandCardUI(ICard[] cards)
     {
-        Debug.Log("핸드 카드 UI 업데이트 시작");
-        Debug.Log($"cards.Length:: {cards.Length}");
+        //Debug.Log("핸드 카드 UI 업데이트 시작");
+        //Debug.Log($"cards.Length:: {cards.Length}");
         for (int i = 0; i < cards.Length; i++)
         {
             // so id 값으로 조회해서 스프라이트 변경
@@ -55,7 +55,7 @@ public class CardUIManager : MonoBehaviour
         List<CardData> cards = deckData.cardList;
         idToCard = cards.ToDictionary(card => card.CardID, card => card);
 
-        Debug.Log($"[Initialize] 카드 총 개수: {idToCard.Count}");
+        //Debug.Log($"[Initialize] 카드 총 개수: {idToCard.Count}");
     }
 
     public CardData GetCardByID(int id)

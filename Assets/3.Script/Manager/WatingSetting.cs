@@ -43,4 +43,9 @@ public class WatingSetting : MonoBehaviour
         var scene = SceneRef.FromIndex(3); 
         if (scene.IsValid) BasicSpawner.Instance._runner.LoadScene(scene);
     }
+
+    public void OnBackButtonClicked()
+    {
+        BasicSpawner.Instance.LeaveSession();
+    }
 }
