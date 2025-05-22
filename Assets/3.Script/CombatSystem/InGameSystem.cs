@@ -23,7 +23,6 @@ public class InGameSystem : MonoBehaviour
 
     public readonly Callbacks Events = new Callbacks();
 
-    private Dictionary<PlayerRef, IDamageAble> playerDic = new Dictionary<PlayerRef, IDamageAble>();
     private Queue<InGameEvent> inGameEventQueue = new Queue<InGameEvent>();
     private Queue<GameObject> bloodPrefabQueue = new Queue<GameObject>();
     [SerializeField] private GameObject bloodPrefab;
@@ -61,21 +60,14 @@ public class InGameSystem : MonoBehaviour
         }
     }
 
-    public void RegisterMonster(IDamageAble monster)
-    {
-        if (playerDic.TryAdd(monster.MainCollider, monster) == false)
-        {
-            Debug.LogWarning($"{monster.GameObject.name}가 등록되어 있습니다." +
-                             $"{playerDic[monster.MainCollider]}를 대체합니다");
-            playerDic[monster.MainCollider] = monster;
-        }
-    }
-
     public IDamageAble GetPlayerOrNull(PlayerRef player)
     {
+        var playerDic = BasicSpawner.Instance.spawnedPlayers;
+        
         if (playerDic.ContainsKey(player))
         {
-            return playerDic[player];
+            var damageAble = playerDic[player].GetComponent<Player>().GameStat.InGameStat;
+            return damageAble;
         }
 
         return null;
