@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AnimationTrigger : NetworkBehaviour
 {
@@ -9,14 +10,21 @@ public class AnimationTrigger : NetworkBehaviour
 
     private void Start()
     {
+        
         if (!TryGetComponent(out animator))
         {
             Debug.LogWarning("Animator가 이 오브젝트에 없습니다.");
         }
+        animator.enabled = false;
     }
 
     private void Update()
     {
+        if (SceneManager.GetActiveScene().buildIndex  ==3)
+        {
+            animator.enabled = true;
+        }
+
         if (HasInputAuthority) // 자신이 조작하는 캐릭터만 입력 받기
         {
             CheckInput();
