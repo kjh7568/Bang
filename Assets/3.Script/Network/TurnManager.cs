@@ -62,6 +62,8 @@ public class TurnManager : MonoBehaviour
         Debug.Log("EndTurn");
         
         CurrentTurnIndex = (CurrentTurnIndex + 1) % turnOrder.Count;
+        Debug.Log($"CurrentTurnIndex:: {CurrentTurnIndex}");
+
         return turnOrder[CurrentTurnIndex];
         
         //StartTurn();
