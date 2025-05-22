@@ -6,7 +6,7 @@ public class AnimationTrigger : MonoBehaviour
 {
     private Animator animator;
 
-    [SerializeField] private CardData testCard;
+    
 
     private void Start()
     {
@@ -19,22 +19,84 @@ public class AnimationTrigger : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+       
+    }
+    
+    
+    private void PlayAnimation()
+    {
+        if (animator != null)
         {
-            if (testCard != null)
+            if (Input.GetKeyDown(KeyCode.Q))
             {
-                testCard.UseCard(); // ScriptableObject 메서드 실행
+                PlayShooting();
+            }
+            else if (Input.GetKeyDown(KeyCode.W))
+            {
+                PlayPointing();
+                
+            }
+            else if (Input.GetKeyDown(KeyCode.E))
+            {
+                PlayDodging();
+            }
+            else if (Input.GetKeyDown(KeyCode.R))
+            {
+                PlayDrinking();
+            }
+            else if (Input.GetKeyDown(KeyCode.T))
+            {
+                PlayDying();
+            }
 
-                // 필요시 애니메이션 트리거도 설정
-                if (animator != null)
-                {
-                    animator.SetTrigger("shooting"); // Animator에 "Use" 트리거가 있을 경우
-                }
-            }
-            else
-            {
-                Debug.LogWarning("testCard가 할당되지 않았습니다.");
-            }
+
+
+
         }
+        else
+        {
+            Debug.LogWarning("Animator가 이 오브젝트에 없습니다.");
+        }
+    }
+
+    private void PlayShooting()
+    {
+        animator.SetTrigger("shooting");
+    }
+    private void PlayDying()
+    {
+        ActivateRagdoll();
+        //animator.SetTrigger("dying");
+    }
+
+    private void PlayDodging()
+    {
+        animator.SetTrigger("dodging");
+    }
+
+    private void PlayDrinking()
+    {
+        animator.SetTrigger("drinking");
+    }
+    private void PlayPointing()
+    {
+        animator.SetTrigger("pointing");
+    }
+    private void ActivateRagdoll()
+    {
+        animator.enabled = false; // 애니메이션 멈춤
+
+        foreach (var rb in GetComponentsInChildren<Rigidbody>())
+        {
+            rb.isKinematic = false;
+            rb.velocity = Vector3.zero; // 깔끔한 전환
+        }
+
+        foreach (var col in GetComponentsInChildren<Collider>())
+        {
+            col.enabled = true;
+        }
+
+        Debug.Log("레그돌 활성화됨");
     }
 }

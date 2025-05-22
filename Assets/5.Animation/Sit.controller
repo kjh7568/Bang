@@ -65,7 +65,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: pointingt
+    m_ConditionEvent: pointing
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -8574629691538740226}
@@ -203,7 +203,7 @@ AnimatorController:
   m_Name: Sit
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: pointingt
+  - m_Name: pointing
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -215,7 +215,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: drink
+  - m_Name: drinking
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -497,7 +497,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: drink
+    m_ConditionEvent: drinking
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8935672431589590558}
