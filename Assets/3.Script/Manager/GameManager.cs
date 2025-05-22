@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
     public List<Player> players;
     public List<PlayerRef> playerRef;
     
-    
     private void Awake()
     {
         Instance = this;

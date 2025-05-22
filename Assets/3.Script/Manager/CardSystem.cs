@@ -40,6 +40,7 @@ public class CardSystem : MonoBehaviour
     public void Init()
     {
         MakeDeck();
+        
         InitDistributeHandCards();
         
         //CardUIManager.Instance.SetHandCardImageList();
@@ -58,7 +59,7 @@ public class CardSystem : MonoBehaviour
     {
         Debug.Log("초기 핸드 카드 분배");
     
-        foreach (var player in NetworkManager.Instance.syncedPlayerClass)
+        foreach (var player in GameManager.Instance.players)
         {
             int[] hand = new int[] {0, 0, 0, 0, 0};
            
