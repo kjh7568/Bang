@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Remington", menuName = "Card/Passive/Remington")]
 public class Remington : CardData
 {
-    public override void UseCard()
+    public override void UseCard(Action onComplete)
     {
         Debug.Log("레밍턴 장착");
     }

@@ -16,11 +16,8 @@ public class UINameSynchronizer : MonoBehaviour
     [SerializeField]private TMP_Text humanInfoText;
     [SerializeField]private Image humanImage;
     
-    //일단은 호스트만 바뀌게 만듬
     public void Init(Player player)
     {
-        Debug.Log($"player.BasicStat.nickName:: {player.BasicStat.nickName}");
-        
         nickNameText.text = player.BasicStat.nickName;
 
         jobNameText.text = player.GameStat.InGameStat.MyJob.Name;

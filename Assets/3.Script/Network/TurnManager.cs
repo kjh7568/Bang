@@ -2,53 +2,63 @@ using System;
 using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
-    
-    private int CurrentTurnIndex { get; set; }
+    public Button finishButton;
 
-    private List<PlayerRef> turnOrder = new List<PlayerRef>();
-    
     private void Awake()
     {
         Instance = this;
-    }
-    
-    public void InitializeTurnOrder()
-    {
-        foreach (var player in GameManager.Instance.players)
-        {
-            turnOrder.Add(player.Object.InputAuthority);
-        }
-
-        StartTurn();
+            
+        finishButton.onClick.AddListener(ChangeTurn);
     }
 
     public void StartTurn()
     {
-        int random = Random.Range(0, GameManager.Instance.players.Count);
+        Debug.Log($"playersRef: {Broadcaster.Instance.syncedPlayerRefs.Length}, TurnIndex: {Broadcaster.Instance.TurnIndex}");
+        Debug.Log($"playerClass: {Broadcaster.Instance.syncedPlayerClass.Length}");
 
-        CurrentTurnIndex = random;
-        
-        var player = GameManager.Instance.players[CurrentTurnIndex];
-        player.RPC_StartPlayerTurn(turnOrder[CurrentTurnIndex]);
+        for (int i = 0; i < Broadcaster.Instance.syncedPlayerClass.Length; i++)
+        {
+            Debug.Log($"playerClass{i}: {Broadcaster.Instance.syncedPlayerClass[i]}");
+            
+            if (Broadcaster.Instance.syncedPlayerClass[i].GameStat.InGameStat.MyJob.Name == "보안관")
+            {
+                Debug.Log($"{Broadcaster.Instance.syncedPlayerClass[i].BasicStat.nickName}님이 보안관 입니다.");
+                Broadcaster.Instance.TurnIndex = i;
+                
+                break;
+            }
+
+            Broadcaster.Instance.TurnIndex = 0;
+        }
+
+        var currentPlayer = Broadcaster.Instance.syncedPlayerClass[Broadcaster.Instance.TurnIndex];
+        currentPlayer.RPC_StartPlayerTurn(Broadcaster.Instance.syncedPlayerRefs[Broadcaster.Instance.TurnIndex]);
     }
-
-    // public void ChangeTurn()
-    // {
-    //     
-    // }
-
-    public void EndTurn(PlayerRef fromPlayer)
+    
+    public void ChangeTurn()
     {
-        // if (fromPlayer != ) return;
-        //
-        // CurrentTurnIndex = (CurrentTurnIndex + 1) % turnOrder.Count;
-        // CurrentPlayerRef = turnOrder[CurrentTurnIndex];
-        //
-        // StartTurn();
+        Debug.Log($"턴 변경 전: {Broadcaster.Instance.TurnIndex}");
+        
+        var player = Broadcaster.Instance.syncedPlayerClass[Broadcaster.Instance.TurnIndex];
+
+        Debug.Log($"턴 변경 후: {Broadcaster.Instance.TurnIndex}");
+
+        player.RPC_RequestFinishTurn(player.Runner.LocalPlayer);
+    }
+    
+    public PlayerRef EndTurn()
+    {
+        Debug.Log("EndTurn");
+        
+        Broadcaster.Instance.TurnIndex = (Broadcaster.Instance.TurnIndex + 1) % Broadcaster.Instance.syncedPlayerClass.Length;
+        Debug.Log($"CurrentTurnIndex:: {Broadcaster.Instance.TurnIndex}");
+   
+        return Broadcaster.Instance.syncedPlayerRefs[Broadcaster.Instance.TurnIndex];
     }
 }

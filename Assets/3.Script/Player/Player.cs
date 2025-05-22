@@ -43,6 +43,23 @@ public class Player : NetworkBehaviour
             // 내 턴이라면
             Debug.Log($"Runner.LocalPlayer :: {Runner.LocalPlayer}");
             UIManager.Instance.cardListPanel.SetActive(true);
+            
+            // 선택된 카드 인덱스를 서버에 보낼 버튼 이벤트 등록
+            
+            
+            // TurnManager.Instance.useCardButton.onClick.RemoveAllListeners();
+            // TurnManager.Instance.useCardButton.onClick.AddListener(() =>
+            // {
+            //     int[] selectedIndices = UseCardUI.Instance.cardIndex.ToArray();
+            //     Debug.Log($"[클라이언트] 선택된 카드 인덱스: {string.Join(",", selectedIndices)}");
+            //
+            //     // RPC 호출
+            //     this.RPC_RequestUseCardList(Runner.LocalPlayer, selectedIndices);
+            //
+            //     // UI 정리
+            //     UIManager.Instance.cardListPanel.SetActive(false);
+            // });
+
         }
         else
         {
@@ -50,5 +67,44 @@ public class Player : NetworkBehaviour
             UIManager.Instance.waitingPanel.SetActive(true);
             UIManager.Instance.waitingUserTurnText.text = "상대가 카드를 선택하는 중입니다.";
         }
+    }
+    
+    // private Queue<int> pendingCardIndices = new();
+    // private int currentCardIndex = -1;
+    // private bool isWaitingForTarget = false;
+    
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    public void RPC_RequestUseCardList(PlayerRef playerRef, int cardIndices)
+    {
+        Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
+        Debug.Log($"전달된 카드 Number: {cardIndices}");
+
+        // foreach (int index in cardIndices)
+        // {
+        //     var card = GameStat.InGameStat.HandCards[index];
+        //     card.UseCard(); 
+        // }
+        
+        // 큐에 카드 인덱스 저장
+        // pendingCardIndices.Clear();
+        // foreach (int index in cardIndices)
+        //     pendingCardIndices.Enqueue(index);
+
+        // 시작
+        //ProcessNextCard();
+    }
+    
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    public void RPC_RequestFinishTurn(PlayerRef playerRef)
+    {
+        Debug.Log($"{playerRef} 턴 종료");
+        Broadcaster.Instance.RPC_ResetPanel();
+        
+        PlayerRef nextPlayer = TurnManager.Instance.EndTurn();
+
+        Debug.Log($"{nextPlayer}");
+        Debug.Log($"턴 변경");
+
+        RPC_StartPlayerTurn(nextPlayer);
     }
 }

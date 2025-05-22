@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class CardData : ScriptableObject, ICard
     [SerializeField] private CardType cardType;
     [SerializeField] private CardSymbol cardSymbol;
     [SerializeField] private Sprite cardSprite;
-    
+
     public int CardID => cardID;
     public string Name => name;
     public int Number => number;
@@ -19,7 +20,9 @@ public class CardData : ScriptableObject, ICard
     public CardSymbol CardSymbol => cardSymbol;
     public Sprite CardSprite => cardSprite;
 
-    public virtual void UseCard()
+    public virtual bool RequiresTarget => false;
+    
+    public virtual void UseCard(Action onComplete)
     {
         // 기능 구현
         var target = InGameSystem.Instance.GetPlayerOrNull(/*지목 대상 플레이어의 playerRef를 받아와야함*/);

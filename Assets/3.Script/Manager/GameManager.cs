@@ -10,26 +10,18 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     
-    //[SerializeField] private NetworkObject TurnManager;
-
     [SerializeField] private CardSystem cardSystem;
     [SerializeField] private UINameSynchronizer uiSystem;
     
     [SerializeField] private HumanList humanList;
     [SerializeField] private JobList jobList;
     
-    
-    public List<Player> players = new();
+    public List<Player> players;
+    public List<PlayerRef> playerRef;
     
     private void Awake()
     {
         Instance = this;
-
-        // if (BasicSpawner.Instance._runner.IsServer)
-        // {
-        //     var prefab = Resources.Load<NetworkObject>("TurnManager");
-        //     BasicSpawner.Instance._runner.Spawn(prefab);
-        // }
     }
 
     private void Start()
@@ -41,15 +33,18 @@ public class GameManager : MonoBehaviour
         
         GetPlayerInfo();
         
-        TurnManager.Instance.InitializeTurnOrder();
+        SyncPlayersToClients();
+        TurnManager.Instance.StartTurn();
     }
 
     private void CachePlayerInfo()
     {
         foreach (var player in BasicSpawner.Instance.spawnedPlayers.Values)
         {
-            var playerTemp = player.GetComponent<Player>();
-            players.Add(playerTemp);
+            var playerClass = player.GetComponent<Player>();
+
+            players.Add(playerClass);
+            playerRef.Add(player.InputAuthority);
         }
     }
     
@@ -94,5 +89,15 @@ public class GameManager : MonoBehaviour
             player.GameStat.InGameStat.MyJob = tempList[idx];
             tempList.RemoveAt(idx);
         }
+    }
+    
+
+    public void SyncPlayersToClients()
+    {
+        var playerRefsArray = playerRef.ToArray();  
+        var playerClassArray = players.ToArray();  
+
+        // 초기 플레이어 정보 동기화
+        Broadcaster.Instance.RPC_SyncSpawnedPlayers(playerRefsArray, playerClassArray);
     }
 }
