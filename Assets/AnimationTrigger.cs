@@ -22,13 +22,12 @@ public class AnimationTrigger : NetworkBehaviour
     {
         if (SceneManager.GetActiveScene().buildIndex  ==3)
         {
+
             animator.enabled = true;
         }
+        
 
-        if (HasInputAuthority) // 자신이 조작하는 캐릭터만 입력 받기
-        {
-            CheckInput();
-        }
+        
     }
 
     private void CheckInput()
