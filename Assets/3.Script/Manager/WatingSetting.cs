@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Fusion;
 using TMPro;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
@@ -12,8 +13,9 @@ public class WatingSetting : MonoBehaviour
 {
     [SerializeField] private TMP_Text sessionNumberText;
     [SerializeField] private TMP_Text[] nickNameTexts;
-    
     [SerializeField] private Button startButton;
+
+    public NetworkObject networkManager;
     
     private void Start()
     {
@@ -38,10 +40,19 @@ public class WatingSetting : MonoBehaviour
         startButton.gameObject.SetActive(false);
     }
 
-    public void OnStartButtonClicked()
+    public async void OnStartButtonClicked()
     {
-        var scene = SceneRef.FromIndex(3); 
-        if (scene.IsValid) BasicSpawner.Instance._runner.LoadScene(scene);
+        var scene = SceneRef.FromIndex(3);
+        if (!scene.IsValid) return;
+
+        var runner = BasicSpawner.Instance._runner;
+
+        Debug.Log("씬 로딩 시작");
+        await runner.LoadScene(scene);
+        Debug.Log("씬 로딩 완료됨");
+
+        runner.Spawn(networkManager, Vector3.zero, Quaternion.identity);
+        Debug.Log("네트워크 매니저 생성 완료");
     }
 
     public void OnBackButtonClicked()

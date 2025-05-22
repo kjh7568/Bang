@@ -95,32 +95,40 @@ public class Player : NetworkBehaviour
     }
     
     [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-    public void RPC_RequestFinishTurn(PlayerRef playerRef, int cardIndices)
+    public void RPC_RequestFinishTurn(PlayerRef playerRef)
     {
         Debug.Log($"{playerRef} 턴 종료");
+        
         UIManager.Instance.waitingPanel.SetActive(false);
         UIManager.Instance.cardListPanel.SetActive(false);
 
         PlayerRef nextPlayer = TurnManager.Instance.EndTurn();
 
         Debug.Log($"{nextPlayer}");
-
-
         Debug.Log($"턴 변경");
 
         RPC_StartPlayerTurn(nextPlayer);
     }
     
     
+    // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    // public void RPC_TurnSync(PlayerRef[] syncedOrder, int currentTurnIndex)
+    // {
+    //     TurnManager.Instance.turnOrder = new List<PlayerRef>(syncedOrder);
+    //     TurnManager.Instance.CurrentTurnIndex = currentTurnIndex;
+    //     
+    //     Debug.Log($"currentTurnIndex: {currentTurnIndex}, turnOrder.Count: {TurnManager.Instance.turnOrder.Count}");
+    // }
+    
+    // init player sync
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_TurnSync(PlayerRef[] syncedOrder, int currentTurnIndex)
+    public void RPC_PlayerSync()
     {
-        TurnManager.Instance.turnOrder = new List<PlayerRef>(syncedOrder);
-        TurnManager.Instance.CurrentTurnIndex = currentTurnIndex;
-        
-        Debug.Log($"currentTurnIndex: {currentTurnIndex}, turnOrder.Count: {TurnManager.Instance.turnOrder.Count}");
+        if (Runner.IsServer)
+        {
+            
+        }
     }
-
     
     
     // private void ProcessNextCard()

@@ -9,9 +9,9 @@ public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
     
-    public int CurrentTurnIndex { get; set; }
+    //public int CurrentTurnIndex { get; set; }
 
-    public List<PlayerRef> turnOrder = new List<PlayerRef>();
+    //public List<PlayerRef> turnOrder = new List<PlayerRef>();
 
     public Button finishButton;
 
@@ -26,68 +26,65 @@ public class TurnManager : MonoBehaviour
     {
         foreach (var player in GameManager.Instance.players)
         {
-            if (player.Runner.IsServer)
-            {
-                player.RPC_TurnSync(turnOrder.ToArray(), CurrentTurnIndex);
-            }
+            //turnOrder.Add(player.Object.InputAuthority);
         }
         
         foreach (var player in GameManager.Instance.players)
         {
-            turnOrder.Add(player.Object.InputAuthority);
+            if (player.Runner.IsServer)
+            {
+                //NetworkManager.Instance.TurnIndex = CurrentTurnIndex;
+            }
         }
         
-        StartTurn();
+        //StartTurn();
     }
 
     public void StartTurn()
     {
-        Debug.Log($"players.Count: {GameManager.Instance.players.Count}, turnOrder.Count: {turnOrder.Count}");
-        
-        for (int i = 0; i < GameManager.Instance.players.Count; i++)
-        {
-            var player = GameManager.Instance.players[i];
+        Debug.Log($"playersRef: {NetworkManager.Instance.syncedPlayerRefs.Length}, TurnIndex: {NetworkManager.Instance.TurnIndex}");
+        Debug.Log($"playerClass: {NetworkManager.Instance.syncedPlayerClass.Length}");
 
-            if (player.GameStat.InGameStat.MyJob.Name == "보안관")
+        for (int i = 0; i < NetworkManager.Instance.syncedPlayerClass.Length; i++)
+        {
+            Debug.Log($"playerClass{i}: {NetworkManager.Instance.syncedPlayerClass[i]}");
+            
+            if (NetworkManager.Instance.syncedPlayerClass[i].GameStat.InGameStat.MyJob.Name == "보안관")
             {
-                Debug.Log($"{player.BasicStat.nickName}님이 보안관 입니다.");
-                CurrentTurnIndex = i;
+                Debug.Log($"{NetworkManager.Instance.syncedPlayerClass[i].BasicStat.nickName}님이 보안관 입니다.");
+                NetworkManager.Instance.TurnIndex = i;
                 
                 break;
             }
 
-            CurrentTurnIndex = 0;
+            NetworkManager.Instance.TurnIndex = 0;
         }
 
-        var currentPlayer = GameManager.Instance.players[CurrentTurnIndex];
-        
-        currentPlayer.RPC_StartPlayerTurn(turnOrder[CurrentTurnIndex]);
-    }
-
-
-    public void ChangeTurn()
-    {
-        var player = GameManager.Instance.players[CurrentTurnIndex];
-        
-        player.RPC_RequestFinishTurn(player.Runner.LocalPlayer, CurrentTurnIndex);
+        var currentPlayer = NetworkManager.Instance.syncedPlayerClass[NetworkManager.Instance.TurnIndex];
+        currentPlayer.RPC_StartPlayerTurn(NetworkManager.Instance.syncedPlayerRefs[NetworkManager.Instance.TurnIndex]);
     }
     
-    public bool IsMyTurn()
+    public void ChangeTurn()
     {
-        var player = GameManager.Instance.players[CurrentTurnIndex];
-        return turnOrder[CurrentTurnIndex] == player.Runner.LocalPlayer;
-    }
+        Debug.Log($"턴 변경 전: {NetworkManager.Instance.TurnIndex}");
+        
+        var player = NetworkManager.Instance.syncedPlayerClass[NetworkManager.Instance.TurnIndex];
 
+        Debug.Log($"턴 변경 후: {NetworkManager.Instance.TurnIndex}");
+
+        player.RPC_RequestFinishTurn(player.Runner.LocalPlayer);
+    }
+    
     public PlayerRef EndTurn()
     {
         Debug.Log("EndTurn");
         
-        CurrentTurnIndex = (CurrentTurnIndex + 1) % turnOrder.Count;
-        Debug.Log($"CurrentTurnIndex:: {CurrentTurnIndex}");
+        NetworkManager.Instance.TurnIndex = (NetworkManager.Instance.TurnIndex + 1) % NetworkManager.Instance.syncedPlayerClass.Length;
+        Debug.Log($"CurrentTurnIndex:: {NetworkManager.Instance.TurnIndex}");
         
-        var player = GameManager.Instance.players[CurrentTurnIndex];
-        player.RPC_TurnSync(turnOrder.ToArray(), CurrentTurnIndex);
+        // var player = NetworkManager.Instance.syncedPlayerClass[ NetworkManager.Instance.TurnIndex];
+        // player.RPC_TurnSync(turnOrder.ToArray(), NetworkManager.Instance.TurnIndex);
         
-        return turnOrder[CurrentTurnIndex];
+        return NetworkManager.Instance.syncedPlayerRefs[NetworkManager.Instance.TurnIndex];
     }
 }

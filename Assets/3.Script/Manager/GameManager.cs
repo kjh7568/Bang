@@ -18,8 +18,24 @@ public class GameManager : MonoBehaviour
     [SerializeField] private HumanList humanList;
     [SerializeField] private JobList jobList;
     
-    
-    public List<Player> players = new();
+    public List<Player> players;
+    public List<PlayerRef> playerRef;
+
+    // private void OnEnable()
+    // {
+    //     NetworkManager.OnNetworkManagerReady += OnNetworkManagerReadyHandler;
+    // }
+    //
+    // private void OnDisable()
+    // {
+    //     NetworkManager.OnNetworkManagerReady -= OnNetworkManagerReadyHandler;
+    // }
+    //
+    // private void OnNetworkManagerReadyHandler()
+    // {
+    //     SyncPlayersToClients();
+    //     TurnManager.Instance.StartTurn();
+    // }
     
     private void Awake()
     {
@@ -32,7 +48,7 @@ public class GameManager : MonoBehaviour
         // }
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
         CachePlayerInfo();
         
@@ -41,15 +57,26 @@ public class GameManager : MonoBehaviour
         
         GetPlayerInfo();
         
-        TurnManager.Instance.InitializeTurnOrder();
+        //TurnManager.Instance.InitializeTurnOrder();
+        //NetworkManager.Instance.SyncAllPlayersToClients();
+        
+        yield return new WaitForSeconds(3f); 
+        
+        SyncPlayersToClients();
+        TurnManager.Instance.StartTurn();
     }
 
     private void CachePlayerInfo()
     {
         foreach (var player in BasicSpawner.Instance.spawnedPlayers.Values)
         {
-            var playerTemp = player.GetComponent<Player>();
-            players.Add(playerTemp);
+            var playerClass = player.GetComponent<Player>();
+
+            players.Add(playerClass);
+            playerRef.Add(player.InputAuthority);
+            
+            Debug.Log($"player ::: {playerClass}");
+            Debug.Log($"playerRef ::: {player.InputAuthority}");
         }
     }
     
@@ -94,5 +121,14 @@ public class GameManager : MonoBehaviour
             player.GameStat.InGameStat.MyJob = tempList[idx];
             tempList.RemoveAt(idx);
         }
+    }
+    
+
+    public void SyncPlayersToClients()
+    {
+        var playerRefsArray = playerRef.ToArray();  
+        var playerClassArray = players.ToArray();  
+
+        NetworkManager.Instance.RPC_SyncSpawnedPlayers(playerRefsArray, playerClassArray);
     }
 }
