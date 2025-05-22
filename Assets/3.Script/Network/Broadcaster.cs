@@ -11,10 +11,15 @@ public class Broadcaster : NetworkBehaviour
     [Networked] public int TurnIndex {get; set;}
     public PlayerRef[] syncedPlayerRefs;
     public Player[] syncedPlayerClass;
+    public Player LocalPlayer;
+    
+    private NetworkRunner networkRunner;
     
     private void Awake()
     {
         Instance = this;
+        networkRunner = FindObjectOfType<NetworkRunner>();
+        
         DontDestroyOnLoad(gameObject);
     }
 
@@ -50,9 +55,12 @@ public class Broadcaster : NetworkBehaviour
 
         syncedPlayerClass = playerClass;
         syncedPlayerRefs = playerRefs;
-
+        
         Debug.Log($"Received {playerRefs.Length} playerRefs");
         Debug.Log($"Received {playerClass.Length} playerClass");
+
+        UIManager.Instance.SetTargetSelectionUI();
+        GameManager.Instance.SetLocalPlayer(syncedPlayerRefs);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
