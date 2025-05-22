@@ -34,14 +34,24 @@ public class TurnManager : MonoBehaviour
 
     public void StartTurn()
     {
-        // int random = Random.Range(0, GameManager.Instance.players.Count);
+        for (int i = 0; i < GameManager.Instance.players.Count; i++)
+        {
+            var player = GameManager.Instance.players[i];
 
-        int random = 0;
-        CurrentTurnIndex = random;
+            if (player.GameStat.InGameStat.MyJob.Name == "보안관")
+            {
+                Debug.Log($"{player.BasicStat.nickName}님이 보안관 입니다.");
+                CurrentTurnIndex = i;
+                
+                break;
+            }
+        }
+
+        var currentPlayer = GameManager.Instance.players[CurrentTurnIndex];
         
-        var player = GameManager.Instance.players[CurrentTurnIndex];
-        player.RPC_StartPlayerTurn(turnOrder[CurrentTurnIndex]);
+        currentPlayer.RPC_StartPlayerTurn(turnOrder[CurrentTurnIndex]);
     }
+
 
     public void ChangeTurn()
     {
@@ -58,14 +68,11 @@ public class TurnManager : MonoBehaviour
 
     public PlayerRef EndTurn()
     {
-        //if (fromPlayer != turnOrder[CurrentTurnIndex]) return;
         Debug.Log("EndTurn");
         
         CurrentTurnIndex = (CurrentTurnIndex + 1) % turnOrder.Count;
         Debug.Log($"CurrentTurnIndex:: {CurrentTurnIndex}");
 
         return turnOrder[CurrentTurnIndex];
-        
-        //StartTurn();
     }
 }

@@ -100,7 +100,9 @@ public class Player : NetworkBehaviour
         Debug.Log($"{playerRef} 턴 종료");
 
         PlayerRef nextPlayer = TurnManager.Instance.EndTurn();
-        
+
+        Debug.Log($"{nextPlayer}");
+
 
         Debug.Log($"턴 변경");
 
