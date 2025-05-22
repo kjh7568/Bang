@@ -1619,6 +1619,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 5899487425630405010}
+  - {fileID: 8577810841607768586}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &5899487425630405010
 MonoBehaviour:

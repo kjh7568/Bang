@@ -12,16 +12,6 @@ public class Player : NetworkBehaviour
     public PlayerGameStat GameStat => playerGameStat;
     public PlayerBasicStat BasicStat => playerBasicStat;
 
-    public override void Spawned()
-    {
-        if (Object.InputAuthority == BasicSpawner.Instance._runner.LocalPlayer)
-        {
-            GetComponent<PlayerCameraController>().enabled = true;
-            
-            Debug.Log($"Camera On ::: {BasicStat.nickName}");
-        }
-    }
-    
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_ReceiveToHandCardsData(int[] handCardIds, RpcInfo info = default)
     {
