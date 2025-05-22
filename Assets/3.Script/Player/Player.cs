@@ -51,4 +51,6 @@ public class Player : NetworkBehaviour
             UIManager.Instance.waitingUserTurnText.text = "상대가 카드를 선택하는 중입니다.";
         }
     }
+    
+    
 }
