@@ -28,7 +28,7 @@ public class TurnManager : MonoBehaviour
         {
             if (player.Runner.IsServer)
             {
-                player.RPC_TurnSync(turnOrder);
+                player.RPC_TurnSync(turnOrder.ToArray());
             }
         }
         

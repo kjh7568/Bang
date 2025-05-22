@@ -113,13 +113,14 @@ public class Player : NetworkBehaviour
     
     
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_TurnSync(List<PlayerRef> syncedOrder)
+    public void RPC_TurnSync(PlayerRef[] syncedOrder)
     {
         if (Runner.IsServer)
         {
             TurnManager.Instance.turnOrder = new List<PlayerRef>(syncedOrder);
         }
     }
+
     
     
     // private void ProcessNextCard()
