@@ -33,7 +33,6 @@ public class Player : NetworkBehaviour
         CardUIManager.Instance.UpdateHandCardUI(cards);
     }
     
-    
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_StartPlayerTurn(PlayerRef playerRef)
     {
