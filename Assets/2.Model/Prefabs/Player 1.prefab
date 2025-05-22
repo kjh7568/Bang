@@ -2492,6 +2492,7 @@ GameObject:
   - component: {fileID: 5274620086830130402}
   - component: {fileID: 4916743800787335890}
   - component: {fileID: 7399578532287264705}
+  - component: {fileID: -2112872088060104108}
   m_Layer: 0
   m_Name: Player 1
   m_TagString: Untagged
@@ -2565,6 +2566,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 5274620086830130402}
   - {fileID: 4916743800787335890}
+  - {fileID: -2112872088060104108}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &5274620086830130402
 MonoBehaviour:
@@ -2627,6 +2629,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerUIObject: {fileID: 193878585659512541}
+--- !u!114 &-2112872088060104108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1942289980213182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a37aeaa9ea719f489206422f325d793, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1954743680365594
 GameObject:
   m_ObjectHideFlags: 0

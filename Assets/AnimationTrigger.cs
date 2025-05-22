@@ -45,10 +45,12 @@ public class AnimationTrigger : NetworkBehaviour
         }
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
     private void RPC_PlayAnimation(string trigger)
     {
         PlayAnimation(trigger);
     }
+    
+    
     
 }
