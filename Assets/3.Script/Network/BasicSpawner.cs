@@ -35,7 +35,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
+    
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (!_runner.IsServer) return;
@@ -61,6 +61,11 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         }
     }
 
+    public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
+    {
+        Instance = null;
+        LoadMenuScene();
+    }
     public async void StartGame(GameMode mode)
     {
         string randSessionName = Random.Range(0, 10000).ToString();
@@ -201,7 +206,25 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
         UpdateNicknameUIAndBroadcast();
     }
-
+    
+    public void LeaveSession()
+    {
+        if (_runner != null)
+        {
+            _runner.Shutdown(); 
+        }
+        else
+        {
+            Debug.LogWarning("러너가 존재하지 않습니다.");
+        }
+    }
+    
+    private void LoadMenuScene()
+    {
+        //되돌아갈 씬의 Build Index 또는 이름
+        SceneManager.LoadScene(1);
+    }
+    
     #region interface methods
 
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
@@ -209,10 +232,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     }
 
     public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
-    {
-    }
-
-    public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
     }
 
