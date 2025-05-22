@@ -6,7 +6,7 @@ using UnityEngine;
 public class UseCardUI : MonoBehaviour
 {
     public static UseCardUI Instance;
-    public List<int> cardIndex = new List<int>();
+    //public List<int> cardIndex = new List<int>();
     
     private void Awake()
     {
@@ -15,11 +15,10 @@ public class UseCardUI : MonoBehaviour
 
     public void OnCardClicked(int index)
     {
-        if (cardIndex.Contains(index))
-            cardIndex.Remove(index);
-        else
-            cardIndex.Add(index);
-
-        Debug.Log("현재 선택된 카드 인덱스: " + string.Join(",", cardIndex));
+        UIManager.Instance.cardListPanel.SetActive(false);
+        
+        var player = GameManager.Instance.players[TurnManager.Instance.CurrentTurnIndex];
+        Debug.Log($"{player.BasicStat.nickName} 님이 선택한 카드:: {index}");
+        player.RPC_RequestUseCardList(player.Runner.LocalPlayer, index);
     }
 }
