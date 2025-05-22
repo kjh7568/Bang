@@ -1592,7 +1592,7 @@ Animator:
   m_GameObject: {fileID: 1506550050545096}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4837235d67e136e4b883adb2bafc73e8, type: 3}
-  m_Controller: {fileID: 9100000, guid: 9799a0c9e3b73bb478f0894e6f48c0f5, type: 2}
+  m_Controller: {fileID: 9100000, guid: cc7482c05a48a894185ea15225b1efa8, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1618,7 +1618,8 @@ MonoBehaviour:
   SortKey: 654802238
   ObjectInterest: 1
   Flags: 262145
-  NestedObjects: [{fileID: 6972720432981651}]
+  NestedObjects:
+  - {fileID: 6972720432981651}
   NetworkedBehaviours:
   - {fileID: 5899487425630405010}
   - {fileID: 8577810841607768586}
@@ -2788,37 +2789,6 @@ Transform:
   - {fileID: 4902465235768680}
   m_Father: {fileID: 4582552949801604}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5392625055535778362
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 662381413503819156}
-  m_Layer: 0
-  m_Name: CameraTransform
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &662381413503819156
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5392625055535778362}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4666828869267124}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1170833923898492919
 GameObject:
   m_ObjectHideFlags: 0
@@ -3098,6 +3068,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &5392625055535778362
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 662381413503819156}
+  m_Layer: 0
+  m_Name: CameraTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &662381413503819156
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5392625055535778362}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4666828869267124}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6839038914487966132
 GameObject:
   m_ObjectHideFlags: 0

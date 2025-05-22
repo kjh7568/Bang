@@ -1,16 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Fusion;
 using UnityEngine;
 
-public class AnimationTrigger : MonoBehaviour
+public class AnimationTrigger : NetworkBehaviour
 {
     private Animator animator;
 
-    
-
     private void Start()
     {
-        // Animator 안전하게 가져오기
         if (!TryGetComponent(out animator))
         {
             Debug.LogWarning("Animator가 이 오브젝트에 없습니다.");
@@ -19,84 +17,38 @@ public class AnimationTrigger : MonoBehaviour
 
     private void Update()
     {
-       
+        if (HasInputAuthority) // 자신이 조작하는 캐릭터만 입력 받기
+        {
+            CheckInput();
+        }
     }
-    
-    
-    private void PlayAnimation()
+
+    private void CheckInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+            RPC_PlayAnimation("shooting");
+        else if (Input.GetKeyDown(KeyCode.W))
+            RPC_PlayAnimation("pointing");
+        else if (Input.GetKeyDown(KeyCode.E))
+            RPC_PlayAnimation("dodging");
+        else if (Input.GetKeyDown(KeyCode.R))
+            RPC_PlayAnimation("drinking");
+        else if (Input.GetKeyDown(KeyCode.T))
+            RPC_PlayAnimation("dying");
+    }
+
+    private void PlayAnimation(string trigger)
     {
         if (animator != null)
         {
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                PlayShooting();
-            }
-            else if (Input.GetKeyDown(KeyCode.W))
-            {
-                PlayPointing();
-                
-            }
-            else if (Input.GetKeyDown(KeyCode.E))
-            {
-                PlayDodging();
-            }
-            else if (Input.GetKeyDown(KeyCode.R))
-            {
-                PlayDrinking();
-            }
-            else if (Input.GetKeyDown(KeyCode.T))
-            {
-                PlayDying();
-            }
-
-
-
-
-        }
-        else
-        {
-            Debug.LogWarning("Animator가 이 오브젝트에 없습니다.");
+            animator.SetTrigger(trigger);
         }
     }
 
-    private void PlayShooting()
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RPC_PlayAnimation(string trigger)
     {
-        animator.SetTrigger("shooting");
+        PlayAnimation(trigger);
     }
-    private void PlayDying()
-    {
-        ActivateRagdoll();
-        //animator.SetTrigger("dying");
-    }
-
-    private void PlayDodging()
-    {
-        animator.SetTrigger("dodging");
-    }
-
-    private void PlayDrinking()
-    {
-        animator.SetTrigger("drinking");
-    }
-    private void PlayPointing()
-    {
-        animator.SetTrigger("pointing");
-    }
-    private void ActivateRagdoll()
-    {
-        animator.enabled = false; // 애니메이션 멈춤
-
-        foreach (var rb in GetComponentsInChildren<Rigidbody>())
-        {
-            rb.isKinematic = false;
-            rb.velocity = Vector3.zero; // 깔끔한 전환
-        }
-
-        foreach (var col in GetComponentsInChildren<Collider>())
-        {
-            col.enabled = true;
-        }
-
-        Debug.Log("레그돌 활성화됨");
-    }
+    
 }
