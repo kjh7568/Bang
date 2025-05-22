@@ -24,6 +24,7 @@ public class TurnManager : MonoBehaviour
     
     public void InitializeTurnOrder()
     {
+        
         foreach (var player in GameManager.Instance.players)
         {
             turnOrder.Add(player.Object.InputAuthority);
@@ -34,6 +35,8 @@ public class TurnManager : MonoBehaviour
 
     public void StartTurn()
     {
+        Debug.Log($"players.Count: {GameManager.Instance.players.Count}, turnOrder.Count: {turnOrder.Count}");
+        
         for (int i = 0; i < GameManager.Instance.players.Count; i++)
         {
             var player = GameManager.Instance.players[i];
@@ -45,6 +48,8 @@ public class TurnManager : MonoBehaviour
                 
                 break;
             }
+
+            CurrentTurnIndex = 0;
         }
 
         var currentPlayer = GameManager.Instance.players[CurrentTurnIndex];

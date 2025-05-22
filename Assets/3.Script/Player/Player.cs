@@ -98,6 +98,8 @@ public class Player : NetworkBehaviour
     public void RPC_RequestFinishTurn(PlayerRef playerRef, int cardIndices)
     {
         Debug.Log($"{playerRef} 턴 종료");
+        UIManager.Instance.waitingPanel.SetActive(false);
+        UIManager.Instance.cardListPanel.SetActive(false);
 
         PlayerRef nextPlayer = TurnManager.Instance.EndTurn();
 
