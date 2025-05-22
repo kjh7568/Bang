@@ -43,10 +43,11 @@ public class Player : NetworkBehaviour
             // 내 턴이라면
             Debug.Log($"Runner.LocalPlayer :: {Runner.LocalPlayer}");
             UIManager.Instance.cardListPanel.SetActive(true);
-            
+            // PlayerSelectCardSetting.Instance.isPanelOn = true;
+
             // 선택된 카드 인덱스를 서버에 보낼 버튼 이벤트 등록
-            
-            
+
+
             // TurnManager.Instance.useCardButton.onClick.RemoveAllListeners();
             // TurnManager.Instance.useCardButton.onClick.AddListener(() =>
             // {

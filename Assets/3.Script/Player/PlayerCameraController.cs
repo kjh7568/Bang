@@ -30,6 +30,8 @@ public class PlayerCameraController : NetworkBehaviour
     private bool isLocalPlayer = false;
     private bool isCameraActive = false;
 
+    private PlayerSelectCardSetting selectCardSetting;
+    
     public override void Spawned()
     {
         // Fusion 권한 검사
@@ -67,15 +69,19 @@ public class PlayerCameraController : NetworkBehaviour
         // 호스트 쪽에서만 일어나서 권한이 세팅됐던 시점엔 Initialize 안 됐을 수 있으니
         if (isLocalPlayer && isCameraActive)
         {
+            selectCardSetting = GetComponent<PlayerSelectCardSetting>();
+            
             InitializeCamera();
         }
     }
 
     private void InitializeCamera()
     {
-        // 이거 나중에 켜줘야 합니다.
-        // Cursor.lockState = CursorLockMode.Locked;
-        // Cursor.visible    = false;
+        if (selectCardSetting.isPanelOn)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible    = false;
+        }
 
         headOffset = headTransform.localRotation;
         pitchOffset = 0f;
@@ -93,7 +99,7 @@ public class PlayerCameraController : NetworkBehaviour
     private void Update()
     {
         // 로컬 + 인게임 씬일 때만
-        if (!isLocalPlayer || !isCameraActive)
+        if (!isLocalPlayer || !isCameraActive || selectCardSetting.isPanelOn)
             return;
 
         float mouseX = Input.GetAxis("Mouse X") * sensitivity;
