@@ -77,6 +77,7 @@ public class Broadcaster : NetworkBehaviour
 
         if (target == LocalPlayer)
         {
+            Debug.Log($"{LocalPlayer.BasicStat.nickName}님의 카드선택");
             UIManager.Instance.ShowCardSelectionPanel((selectedCardID) =>
             {                   
                 // 카드 선택 완료 후
