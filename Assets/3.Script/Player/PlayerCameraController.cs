@@ -39,16 +39,12 @@ public class PlayerCameraController : NetworkBehaviour
 
         // 로컬 플레이어만 활성화
         enabled = isLocalPlayer;
-
-        // 씬이 이미 InGame 상태라면—OnSceneLoaded는 이미 지나갔으니—여기서 직접 초기화
-        if (isLocalPlayer && isCameraActive)
-        {
-            InitializeCamera();
-        }
     }
 
     private void Awake()
     {
+        selectCardSetting = GetComponent<PlayerSelectCardSetting>();
+        
         // 최초엔 꺼두고, Spawned()에서 켜집니다
         enabled = false;
         
@@ -69,8 +65,6 @@ public class PlayerCameraController : NetworkBehaviour
         // 호스트 쪽에서만 일어나서 권한이 세팅됐던 시점엔 Initialize 안 됐을 수 있으니
         if (isLocalPlayer && isCameraActive)
         {
-            selectCardSetting = GetComponent<PlayerSelectCardSetting>();
-            
             InitializeCamera();
         }
     }

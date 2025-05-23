@@ -23,12 +23,6 @@ public class PlayerSelectCardSetting : NetworkBehaviour
 
         // 로컬 플레이어만 활성화
         enabled = isLocalPlayer;
-
-        // 씬이 이미 InGame 상태라면—OnSceneLoaded는 이미 지나갔으니—여기서 직접 초기화
-        if (isLocalPlayer && isPanelActive)
-        {
-            InitializePanel();
-        }
     }
 
     private void Awake()
