@@ -62,7 +62,7 @@ public class PlayerCameraController : NetworkBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        isCameraActive = (scene.name == "4. InGame");
+        isCameraActive = (scene.name == "4. InGame Test");
 
         // 호스트 쪽에서만 일어나서 권한이 세팅됐던 시점엔 Initialize 안 됐을 수 있으니
         if (isLocalPlayer && isCameraActive)
@@ -95,15 +95,30 @@ public class PlayerCameraController : NetworkBehaviour
     private void Update()
     {
         // 로컬 + 인게임 씬일 때만
-        if (!isLocalPlayer || !isCameraActive || UIManager.Instance.isPanelOn)
+        // if (!isLocalPlayer || !isCameraActive || UIManager.Instance.isPanelOn)
+        //     return;
+        
+        if (!isCameraActive || UIManager.Instance.isPanelOn)
             return;
-
+        
         float mouseX = Input.GetAxis("Mouse X") * sensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * sensitivity;
 
+        RPC_UpdateCamera(mouseX, mouseY);
+    }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    private void RPC_UpdateCamera(float mouseX, float mouseY)
+    {
+        Debug.Log("123");
+        RotateCamera(mouseX, mouseY);
+    }
+
+    private void RotateCamera(float mouseX, float mouseY)
+    {
         yawOffset = Mathf.Clamp(yawOffset + mouseX, minYawOffset, maxYawOffset);
         pitchOffset = Mathf.Clamp(pitchOffset - mouseY, minPitch, maxPitch);
-
+        
         // 머리(고개) = 초기 오프셋 * 상대 회전
         Quaternion rel = Quaternion.Euler(pitchOffset, yawOffset, 0f);
         headTransform.localRotation   = headOffset * rel;

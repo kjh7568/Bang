@@ -14,7 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1.Scene/3. Waiting.unity
     guid: 4268d9255c42e724984de8c77efdffbd
-  - enabled: 1
+  - enabled: 0
     path: Assets/1.Scene/4. InGame.unity
     guid: 1670cd9793d843241afec599eb9dd97c
+  - enabled: 1
+    path: Assets/1.Scene/4. InGame Test.unity
+    guid: 01621277d795c7a46921b7feb7301509
   m_configObjects: {}
