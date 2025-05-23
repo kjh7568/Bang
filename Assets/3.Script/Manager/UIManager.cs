@@ -92,4 +92,10 @@ public class UIManager : MonoBehaviour
         cardListPanel.SetActive(false);
         waitingPanel.SetActive(true);
     }
+    
+    public void ShowCardTargetPanel()
+    {
+        cardListPanel.SetActive(true);
+        waitingPanel.SetActive(false);
+    }
 }

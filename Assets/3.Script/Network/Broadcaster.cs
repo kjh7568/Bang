@@ -101,12 +101,18 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_TargetSelectedCard(PlayerRef attacker, PlayerRef target, int cardId)
     {
-        var selectedCard = GameManager.Instance.GetPlayer(attacker).GameStat.InGameStat.HandCards[cardId];
+        Debug.Log($"attacker:: {attacker}");
+        Debug.Log($"target:: {target}");
 
+        if (Runner.LocalPlayer != attacker) return; 
+        
+        var attackPlayer = GameManager.Instance.GetPlayer(attacker);
         var targetPlayer = GameManager.Instance.GetPlayer(target);
-    
+        var selectedCard = GameManager.Instance.GetPlayer(target).GameStat.InGameStat.HandCards[cardId];
+
         if (targetPlayer != null)
         {
+            Debug.Log($"{attackPlayer.BasicStat.nickName}님의 공격이 끝났습니다.");
             Debug.Log($"{targetPlayer.BasicStat.nickName}님이 {selectedCard.Name}, {selectedCard.CardID} 카드를 선택함");
         }
         else

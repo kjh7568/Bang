@@ -68,6 +68,6 @@ public class TurnManager : MonoBehaviour
         
         Debug.Log($"{player.BasicStat.nickName}의 턴 계속됨");
         
-        UIManager.Instance.cardListPanel.SetActive(true);
+        UIManager.Instance.ShowCardTargetPanel();
     }
 }

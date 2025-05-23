@@ -74,12 +74,14 @@ public class Player : NetworkBehaviour
         }
     }
     
-    //[Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
     public void RPC_RequestUseCardList(PlayerRef playerRef, int cardIndices)
     {
         Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
         Debug.Log($"전달된 카드 Number: {cardIndices}");
+        
+        // 내 플레이어가 아니면 무시
+        if (Runner.LocalPlayer != playerRef) return; 
 
         var player = GameManager.Instance.GetPlayer(playerRef);
         var card = player.GameStat.InGameStat.HandCards[cardIndices];
