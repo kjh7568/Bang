@@ -29,7 +29,7 @@ public class PlayerCameraController : NetworkBehaviour
 
     private bool isLocalPlayer = false;
     private bool isCameraActive = false;
-
+    
     public override void Spawned()
     {
         // Fusion 권한 검사
@@ -37,8 +37,8 @@ public class PlayerCameraController : NetworkBehaviour
 
         // 로컬 플레이어만 활성화
         enabled = isLocalPlayer;
-
-        // 씬이 이미 InGame 상태라면—OnSceneLoaded는 이미 지나갔으니—여기서 직접 초기화
+        
+        // 씬이 이미 인게임 씬이라면, 여기서도 반드시 카메라 초기화
         if (isLocalPlayer && isCameraActive)
         {
             InitializeCamera();
@@ -62,7 +62,7 @@ public class PlayerCameraController : NetworkBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        isCameraActive = (scene.name == "4. InGame");
+        isCameraActive = (scene.name == "4. InGame Test");
 
         // 호스트 쪽에서만 일어나서 권한이 세팅됐던 시점엔 Initialize 안 됐을 수 있으니
         if (isLocalPlayer && isCameraActive)
@@ -73,9 +73,11 @@ public class PlayerCameraController : NetworkBehaviour
 
     private void InitializeCamera()
     {
-        // 이거 나중에 켜줘야 합니다.
-        // Cursor.lockState = CursorLockMode.Locked;
-        // Cursor.visible    = false;
+        if (UIManager.Instance.isPanelOn)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible    = false;
+        }
 
         headOffset = headTransform.localRotation;
         pitchOffset = 0f;
@@ -93,15 +95,29 @@ public class PlayerCameraController : NetworkBehaviour
     private void Update()
     {
         // 로컬 + 인게임 씬일 때만
-        if (!isLocalPlayer || !isCameraActive)
+        // if (!isLocalPlayer || !isCameraActive || UIManager.Instance.isPanelOn)
+        //     return;
+        
+        if (!isCameraActive || UIManager.Instance.isPanelOn)
             return;
-
+        
         float mouseX = Input.GetAxis("Mouse X") * sensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * sensitivity;
 
+        RotateCamera(mouseX, mouseY);
+    }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    private void RPC_UpdateCamera(float mouseX, float mouseY)
+    {
+        RotateCamera(mouseX, mouseY);
+    }
+
+    private void RotateCamera(float mouseX, float mouseY)
+    {
         yawOffset = Mathf.Clamp(yawOffset + mouseX, minYawOffset, maxYawOffset);
         pitchOffset = Mathf.Clamp(pitchOffset - mouseY, minPitch, maxPitch);
-
+        
         // 머리(고개) = 초기 오프셋 * 상대 회전
         Quaternion rel = Quaternion.Euler(pitchOffset, yawOffset, 0f);
         headTransform.localRotation   = headOffset * rel;
