@@ -74,7 +74,8 @@ public class Player : NetworkBehaviour
         }
     }
     
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    //[Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_RequestUseCardList(PlayerRef playerRef, int cardIndices)
     {
         Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
