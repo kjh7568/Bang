@@ -12,6 +12,7 @@ public class CardData : ScriptableObject, ICard
     [SerializeField] private CardType cardType;
     [SerializeField] private CardSymbol cardSymbol;
     [SerializeField] private Sprite cardSprite;
+    private ICard _cardImplementation;
 
     public int CardID => cardID;
     public string Name => name;
@@ -20,10 +21,7 @@ public class CardData : ScriptableObject, ICard
     public CardSymbol CardSymbol => cardSymbol;
     public Sprite CardSprite => cardSprite;
 
-    public virtual bool RequiresTarget => false;
+    public virtual void UseCard() { }
     
-    public virtual void UseCard(Action onComplete)
-    {
-        // 기능 구현
-    }
+    public virtual void UseCard(Action onComplete) { }
 }

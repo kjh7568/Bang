@@ -70,29 +70,24 @@ public class Player : NetworkBehaviour
         }
     }
     
-    // private Queue<int> pendingCardIndices = new();
-    // private int currentCardIndex = -1;
-    // private bool isWaitingForTarget = false;
-    
     [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
     public void RPC_RequestUseCardList(PlayerRef playerRef, int cardIndices)
     {
         Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
         Debug.Log($"전달된 카드 Number: {cardIndices}");
 
-        // foreach (int index in cardIndices)
-        // {
-        //     var card = GameStat.InGameStat.HandCards[index];
-        //     card.UseCard(); 
-        // }
-        
-        // 큐에 카드 인덱스 저장
-        // pendingCardIndices.Clear();
-        // foreach (int index in cardIndices)
-        //     pendingCardIndices.Enqueue(index);
+        var card = GameStat.InGameStat.HandCards[cardIndices];
 
-        // 시작
-        //ProcessNextCard();
+        card.UseCard(() => {
+            Debug.Log("카드 효과 완료 → 다음 카드 선택 패널 표시");
+        
+            
+            
+            // 지연실행 ( 다시 카드 선택 )
+            // Runner.Invoke(() => { 
+            //     UIManager.Instance.cardListPanel.SetActive(true);
+            // }, delay: 0.5f); // 약간의 딜레이를 주는 것이 부드러움
+        });
     }
     
     [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
