@@ -91,7 +91,12 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
         });
 
-        _runner.Spawn(broadcasterPrefabs);
+        _runner.Spawn(
+            broadcasterPrefabs,
+            Vector3.zero,
+            Quaternion.identity,
+            _runner.LocalPlayer    // ← 여기에 권한을 줄 PlayerRef
+        );
     }
 
     public async void StartGame(GameMode mode, string sessionName)

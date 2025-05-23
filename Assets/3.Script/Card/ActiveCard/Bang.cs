@@ -27,20 +27,7 @@ public class Bang : CardData
 
     public void EffectBang()
     {
-        // 뱅 효과 처리// 기능 구현
-        var senderRef = BasicSpawner.Instance._runner.LocalPlayer;
-        var target = InGameSystem.Instance.GetPlayerOrNull(senderRef/*지목 대상 플레이어의 playerRef를 받아와야함. 즉, 다시 바꿀 것*/);
-
-        if (target != null)
-        {
-            CombatEvent combatEvent = new CombatEvent
-            {
-                Sender = BasicSpawner.Instance.spawnedPlayers[senderRef].GetComponent<Player>().GameStat.InGameStat,
-                Receiver = target,
-                Damage = 1
-            };
-
-            InGameSystem.Instance.AddInGameEvent(combatEvent);
-        }
+        Debug.Log($"{BasicSpawner.Instance._runner.LocalPlayer}가 뱅을 사용!");
+        GameManager.Instance.broadcaster.RPC_MakeCombatEvent(BasicSpawner.Instance._runner.LocalPlayer, BasicSpawner.Instance._runner.LocalPlayer, 1);
     }
 }

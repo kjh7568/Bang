@@ -70,26 +70,6 @@ public class Player : NetworkBehaviour
     }
     
     [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-    public void RPC_RequestUseCardList(PlayerRef playerRef, int cardIndices)
-    {
-        Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
-        Debug.Log($"전달된 카드 Number: {cardIndices}");
-
-        var card = GameStat.InGameStat.HandCards[cardIndices];
-
-        card.UseCard(() => {
-            Debug.Log("카드 효과 완료 → 다음 카드 선택 패널 표시");
-        
-            
-            
-            // 지연실행 ( 다시 카드 선택 )
-            // Runner.Invoke(() => { 
-            //     UIManager.Instance.cardListPanel.SetActive(true);
-            // }, delay: 0.5f); // 약간의 딜레이를 주는 것이 부드러움
-        });
-    }
-    
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
     public void RPC_RequestFinishTurn(PlayerRef playerRef)
     {
         Debug.Log($"{playerRef} 턴 종료");

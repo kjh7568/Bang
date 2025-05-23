@@ -25,8 +25,6 @@ public class PlayerUI : NetworkBehaviour
 
     private void SetPlayerHumanCardSprite()
     {
-        
-
         if (player == null)
         {
             Debug.LogError("Player 참조가 비어있습니다.");

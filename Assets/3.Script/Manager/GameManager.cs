@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        if(!BasicSpawner.Instance._runner.IsServer) return;
+        
         CachePlayerInfo();
         
         SetPlayerHuman();
