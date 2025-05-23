@@ -75,6 +75,9 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_AttackPlayerNotify(PlayerRef localRef, PlayerRef targetRef)
     {
+        Debug.Log($"local::{localRef}");
+        Debug.Log($"target::{targetRef}");
+        
         var local = GameManager.Instance.GetPlayer(localRef);
         var target = GameManager.Instance.GetPlayer(targetRef);
 
@@ -98,27 +101,6 @@ public class Broadcaster : NetworkBehaviour
             UIManager.Instance.ShowWaitingForTargetPanel();
         }
     }
-
-    
-    // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    // public void RPC_AttackPlayerNotify(Player local, Player target)
-    // {
-    //     Debug.Log($"{local.BasicStat.nickName}님이 {target.BasicStat.nickName}을(를) 공격 대상으로 선택함");
-    //
-    //     if (target == LocalPlayer)
-    //     {
-    //         Debug.Log($"{LocalPlayer.BasicStat.nickName}님의 카드선택");
-    //         UIManager.Instance.ShowCardSelectionPanel((selectedCardID) =>
-    //         {                   
-    //             // 카드 선택 완료 후
-    //             RPC_TargetSelectedCard(local, target, selectedCardID);
-    //         });
-    //     }
-    //     else if (local == LocalPlayer)
-    //     {
-    //         UIManager.Instance.ShowWaitingForTargetPanel();
-    //     }
-    // }
     
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_TargetSelectedCard(PlayerRef attacker, PlayerRef target, int cardId)

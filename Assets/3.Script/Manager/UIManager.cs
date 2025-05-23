@@ -18,6 +18,10 @@ public class UIManager : MonoBehaviour
     
     public TMP_Text waitingUserTurnText;
 
+    [SerializeField] Button targetButtonPrefab; 
+    [SerializeField] Transform buttonParent; 
+    
+    public PlayerRef localPlayer;
     
     private void Awake()
     {
@@ -25,10 +29,6 @@ public class UIManager : MonoBehaviour
         playerPanel.SetActive(false); 
     }
     
-    [SerializeField] Button targetButtonPrefab; 
-    [SerializeField] Transform buttonParent; 
-    
-    public PlayerRef localPlayer;
 
     public void SetTargetSelectionUI()
     {
