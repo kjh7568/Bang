@@ -29,8 +29,6 @@ public class PlayerCameraController : NetworkBehaviour
 
     private bool isLocalPlayer = false;
     private bool isCameraActive = false;
-
-    private PlayerSelectCardSetting selectCardSetting;
     
     public override void Spawned()
     {
@@ -39,12 +37,16 @@ public class PlayerCameraController : NetworkBehaviour
 
         // 로컬 플레이어만 활성화
         enabled = isLocalPlayer;
+        
+        // 씬이 이미 인게임 씬이라면, 여기서도 반드시 카메라 초기화
+        if (isLocalPlayer && isCameraActive)
+        {
+            InitializeCamera();
+        }
     }
 
     private void Awake()
     {
-        selectCardSetting = GetComponent<PlayerSelectCardSetting>();
-        
         // 최초엔 꺼두고, Spawned()에서 켜집니다
         enabled = false;
         
@@ -71,7 +73,7 @@ public class PlayerCameraController : NetworkBehaviour
 
     private void InitializeCamera()
     {
-        if (selectCardSetting.isPanelOn)
+        if (UIManager.Instance.isPanelOn)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible    = false;
@@ -93,7 +95,7 @@ public class PlayerCameraController : NetworkBehaviour
     private void Update()
     {
         // 로컬 + 인게임 씬일 때만
-        if (!isLocalPlayer || !isCameraActive || selectCardSetting.isPanelOn)
+        if (!isLocalPlayer || !isCameraActive || UIManager.Instance.isPanelOn)
             return;
 
         float mouseX = Input.GetAxis("Mouse X") * sensitivity;

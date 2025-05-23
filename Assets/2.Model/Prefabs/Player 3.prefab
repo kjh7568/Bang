@@ -2031,7 +2031,6 @@ GameObject:
   - component: {fileID: 2275522254084607655}
   - component: {fileID: -4152899911616028343}
   - component: {fileID: 3920541320501227212}
-  - component: {fileID: -8102419602779349277}
   - component: {fileID: 5246096359772628058}
   m_Layer: 0
   m_Name: Player 3
@@ -2106,7 +2105,6 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: -4152899911616028343}
   - {fileID: 3920541320501227212}
-  - {fileID: -8102419602779349277}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &-4152899911616028343
 MonoBehaviour:
@@ -2156,20 +2154,6 @@ MonoBehaviour:
   maxPitch: 15
   minYawOffset: -45
   maxYawOffset: 45
---- !u!114 &-8102419602779349277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1800371080893130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 029a0a623013fc34388125050a2cd549, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectCardPanel: {fileID: 0}
-  isPanelOn: 0
 --- !u!114 &5246096359772628058
 MonoBehaviour:
   m_ObjectHideFlags: 0

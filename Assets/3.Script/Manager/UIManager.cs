@@ -23,12 +23,45 @@ public class UIManager : MonoBehaviour
     //private Action<string> onTargetSelected; 
 
     private bool isPlayerSelectActive = false;
+    public bool isPanelOn = false;
     
     private void Awake()
     {
         Instance = this;
         //InitializePlayerPanelButtons();
         playerPanel.SetActive(false); 
+    }
+    
+    private void Update()
+    {
+        if (cardListPanel.activeInHierarchy)
+        {
+            isPanelOn = true;
+        }
+        else
+        {
+            isPanelOn = false;
+        }
+        
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            if (cardListPanel.activeInHierarchy)
+            {
+                cardListPanel.SetActive(false);
+                isPanelOn = false;
+                
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible    = false;
+            }
+            else
+            {
+                cardListPanel.SetActive(true);
+                isPanelOn = true;
+                
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible    = true;
+            }
+        }
     }
     
     [SerializeField] Button targetButtonPrefab; // 버튼 프리팹
