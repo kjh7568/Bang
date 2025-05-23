@@ -32,7 +32,7 @@ public class VictoryCheck : MonoBehaviour
         string result = GetGameResult();
         if (string.IsNullOrEmpty(result)) return;
         
-        GameManager.Instance.broadcaster.RPC_ShowResult(result, playerInfos);
+        Broadcaster.Instance.RPC_ShowResult(result, playerInfos);
     }
     private string GetGameResult()
     {

@@ -167,21 +167,21 @@ public class Broadcaster : NetworkBehaviour
         });
     }
 
-    //[Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-    //public void RPC_MakeCombatEvent(PlayerRef senderRef, PlayerRef targetRef, int damage, RpcInfo info = default)
-    //{
-    //    Debug.Log($"호출 주체 {senderRef}");
-
-    //    // var target = InGameSystem.Instance.GetPlayerOrNull(targetRef);
-    //    var target = InGameSystem.Instance.GetPlayerOrNull(BasicSpawner.Instance._runner.LocalPlayer);
-
-    //    CombatEvent combatEvent = new CombatEvent
-    //    {
-    //        Sender = BasicSpawner.Instance.spawnedPlayers[senderRef].GetComponent<Player>().GameStat.InGameStat,
-    //        Receiver = target,
-    //        Damage = damage
-    //    };
-
-    //    InGameSystem.Instance.AddInGameEvent(combatEvent);
-    //}
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    public void RPC_MakeCombatEvent(PlayerRef senderRef, PlayerRef targetRef, int damage, RpcInfo info = default)
+    {
+        // Debug.Log($"호출 주체 {senderRef}");
+        //
+        // // var target = InGameSystem.Instance.GetPlayerOrNull(targetRef);
+        // var target = InGameSystem.Instance.GetPlayerOrNull(BasicSpawner.Instance._runner.LocalPlayer);
+        //
+        // CombatEvent combatEvent = new CombatEvent
+        // {
+        //     Sender = BasicSpawner.Instance.spawnedPlayers[senderRef].GetComponent<Player>().GameStat.InGameStat,
+        //     Receiver = target,
+        //     Damage = damage
+        // };
+        //
+        // InGameSystem.Instance.AddInGameEvent(combatEvent);
+    }
 }

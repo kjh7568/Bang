@@ -78,7 +78,7 @@ public class Player : NetworkBehaviour
         // 내 플레이어가 아니면 무시
         if (Runner.LocalPlayer != playerRef) return; 
 
-        var player = GameManager.Instance.GetPlayer(playerRef);
+        var player = Broadcaster.Instance.GetPlayer(playerRef);
         var card = player.GameStat.InGameStat.HandCards[cardIndices];
         
         Debug.Log($"card instance: {card},  name: {card.Name} ,type: {card.GetType()}");

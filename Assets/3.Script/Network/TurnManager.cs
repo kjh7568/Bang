@@ -64,7 +64,7 @@ public class TurnManager : MonoBehaviour
     
     public void ContinueTurn(PlayerRef playerRef)
     {
-        var player = GameManager.Instance.GetPlayer(playerRef);
+        var player = Broadcaster.Instance.GetPlayer(playerRef);
         
         Debug.Log($"{player.BasicStat.nickName}의 턴 계속됨");
         

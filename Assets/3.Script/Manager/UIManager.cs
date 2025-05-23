@@ -25,8 +25,8 @@ public class UIManager : MonoBehaviour
     private bool isPlayerSelectActive = false;
     public bool isPanelOn = false;
 
-    [SerializeField] Button targetButtonPrefab; 
-    [SerializeField] Transform buttonParent; 
+    [SerializeField] private Button targetButtonPrefab; 
+    [SerializeField] private Transform buttonParent; 
     
     public PlayerRef localPlayer;
     
@@ -68,14 +68,9 @@ public class UIManager : MonoBehaviour
         }
     }
     
-    [SerializeField] Button targetButtonPrefab; // 버튼 프리팹
-    [SerializeField] Transform buttonParent; // 버튼들 넣을 위치 (Vertical Layout Group 사용 추천)
-
     // List<GameObject> allPlayers;
     // GameObject currentPlayer;
     
-    public Player localPlayer;
-
     public void SetTargetSelectionUI()
     {
         List<PlayerRef> targets = new List<PlayerRef>();
