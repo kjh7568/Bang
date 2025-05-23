@@ -98,6 +98,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             _runner.LocalPlayer    // ← 여기에 권한을 줄 PlayerRef
         );
     }
+    
 
     public async void StartGame(GameMode mode, string sessionName)
     {
@@ -128,6 +129,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             var savePlayerBasicStat = FindObjectOfType<SavePlayerBasicStat>();
 
             broadcaster.RPC_SendNicknameToHost(savePlayerBasicStat.Nickname);
+            Broadcaster.Instance.LocalRef = _runner.LocalPlayer;
         }
     }
 

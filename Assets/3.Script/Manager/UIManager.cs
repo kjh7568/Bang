@@ -24,11 +24,15 @@ public class UIManager : MonoBehaviour
 
     private bool isPlayerSelectActive = false;
     public bool isPanelOn = false;
+
+    [SerializeField] Button targetButtonPrefab; 
+    [SerializeField] Transform buttonParent; 
+    
+    public PlayerRef localPlayer;
     
     private void Awake()
     {
         Instance = this;
-        //InitializePlayerPanelButtons();
         playerPanel.SetActive(false); 
     }
     
@@ -74,21 +78,21 @@ public class UIManager : MonoBehaviour
 
     public void SetTargetSelectionUI()
     {
-        List<Player> targets = new List<Player>();
+        List<PlayerRef> targets = new List<PlayerRef>();
         
-        for (int i = 0; i < Broadcaster.Instance.syncedPlayerClass.Length ; i++)
+        for (int i = 0; i < Broadcaster.Instance.syncedPlayerRefs.Length ; i++)
         {
-            var player = Broadcaster.Instance.syncedPlayerClass[i];
+            var player = Broadcaster.Instance.syncedPlayerRefs[i];
             if (player == localPlayer)
                 continue;
     
             targets.Add(player);
         }
 
-        foreach (Player target in targets)
+        foreach (PlayerRef target in targets)
         {
             Button btn = Instantiate(targetButtonPrefab, buttonParent);
-            btn.GetComponentInChildren<TextMeshProUGUI>().text = target.name;
+            //btn.GetComponentInChildren<TextMeshProUGUI>().text = target.name;
         
             btn.onClick.AddListener(() =>
             {
@@ -97,83 +101,47 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void SelectTarget(Player target)
+    void SelectTarget(PlayerRef target)
     {
-        Debug.Log($"{target.name}을(를) 공격 대상으로 선택함!");
         playerPanel.SetActive(false);
 
-        // 공격 로직 실행
+        Debug.Log($"SelectTarget:: {localPlayer}");
+        
+        Broadcaster.Instance.RPC_AttackPlayerNotify(localPlayer, target);
     }
-
-    // private void InitializePlayerPanelButtons()
-    // {
-    //     int index = 0;
-    //
-    //     foreach (var playerPair in BasicSpawner.Instance.spawnedPlayers)
-    //     {
-    //         var playerObj = playerPair.Value;
-    //         var player = playerObj.GetComponent<Player>();
-    //         
-    //         if (player.Object.InputAuthority == BasicSpawner.Instance._runner.LocalPlayer)
-    //             continue;
-    //
-    //         if (index < enemyList.Count)
-    //         {
-    //             GameObject slot = enemyList[index];
-    //
-    //             Player enemySlot = slot.GetComponent<Player>();
-    //             enemySlot = player;
-    //
-    //             TMP_Text nameText = slot.GetComponentInChildren<TMP_Text>();
-    //             if (nameText != null)
-    //                 nameText.text = player.BasicStat.nickName;
-    //
-    //             index++;
-    //         }
-    //     }
-    // }
-    
-    // private void InitializePlayerPanelButtons()
-    // {
-    //     int index = 0;
-    //
-    //     foreach (var playerPair in BasicSpawner.Instance.spawnedPlayers)
-    //     {
-    //         var player = playerPair.Value.GetComponent<Player>();
-    //
-    //         if (player.Object.InputAuthority != BasicSpawner.Instance._runner.LocalPlayer)
-    //         {
-    //             if (index < enemyList.Count)
-    //             {
-    //                 GameObject enemySlot = enemyList[index];
-    //
-    //                 TMP_Text nameText = enemySlot.GetComponentInChildren<TMP_Text>();
-    //                 if (nameText != null)
-    //                     nameText.text = player.BasicStat.nickName;
-    //
-    //                 Button button = enemySlot.GetComponent<Button>();
-    //                 if (button != null)
-    //                 {
-    //                     string playerName = player.BasicStat.nickName; // 클로저 문제 방지
-    //
-    //                     button.onClick.RemoveAllListeners();
-    //                     button.onClick.AddListener(() => OnEnemySlotClicked(playerName));
-    //                 }
-    //
-    //                 index++;
-    //             }
-    //         }
-    //     }
-    // }
 
     public void ShowPlayerSelectPanel(Action<string> onTargetSelectedCallback)
     {
         playerPanel.SetActive(true);
     }
     
-    public void OnEnemySlotClicked(string playerName)
+    private Action<int> _onCardSelectedCallback;
+    
+    public void ShowCardSelectionPanel(Action<int> onCardSelectedID)
     {
-        playerPanel.SetActive(false);
-        isPlayerSelectActive = false;
+        cardListPanel.SetActive(true);
+        waitingPanel.SetActive(false);
+
+        _onCardSelectedCallback = onCardSelectedID;
+    }
+    
+    public void OnCardSelected(int index)
+    {
+        cardListPanel.SetActive(false);
+        
+        _onCardSelectedCallback?.Invoke(index);
+        _onCardSelectedCallback = null;
+    }
+    
+    public void ShowWaitingForTargetPanel()
+    {
+        cardListPanel.SetActive(false);
+        waitingPanel.SetActive(true);
+    }
+    
+    public void ShowCardTargetPanel()
+    {
+        cardListPanel.SetActive(true);
+        waitingPanel.SetActive(false);
     }
 }

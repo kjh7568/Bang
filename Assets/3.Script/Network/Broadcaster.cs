@@ -11,15 +11,14 @@ public class Broadcaster : NetworkBehaviour
     [Networked] public int TurnIndex { get; set; }
     public PlayerRef[] syncedPlayerRefs;
     public Player[] syncedPlayerClass;
+
     public Player LocalPlayer;
-
-    private NetworkRunner networkRunner;
-
+    public PlayerRef LocalRef;
+    
     private void Awake()
     {
         Instance = this;
-        networkRunner = FindObjectOfType<NetworkRunner>();
-
+        
         DontDestroyOnLoad(gameObject);
     }
 
@@ -30,7 +29,7 @@ public class Broadcaster : NetworkBehaviour
         if (ui != null)
             ui.UpdateNicknameTexts(nicknames);
     }
-
+    
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_SendNicknameToHost(string nickname, RpcInfo info = default)
     {
@@ -59,8 +58,8 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log($"Received {playerRefs.Length} playerRefs");
         Debug.Log($"Received {playerClass.Length} playerClass");
 
-        UIManager.Instance.SetTargetSelectionUI();
         GameManager.Instance.SetLocalPlayer(syncedPlayerRefs);
+        UIManager.Instance.SetTargetSelectionUI();
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -69,6 +68,81 @@ public class Broadcaster : NetworkBehaviour
         UIManager.Instance.waitingPanel.SetActive(false);
         UIManager.Instance.cardListPanel.SetActive(false);
     }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_AttackPlayerNotify(PlayerRef localRef, PlayerRef targetRef)
+    {
+        Debug.Log($"local::{localRef}");
+        Debug.Log($"target::{targetRef}");
+        
+        var local = GetPlayer(localRef);
+        var target = GetPlayer(targetRef);
+        
+        Debug.Log($"{local.BasicStat.nickName}님이 {target.BasicStat.nickName}을(를) 공격 대상으로 선택함");
+
+        if (targetRef == Runner.LocalPlayer)
+        {
+            Debug.Log($"{target.BasicStat.nickName}님의 카드선택");
+
+            UIManager.Instance.ShowCardSelectionPanel((selectedCardID) =>
+            {
+                RPC_TargetSelectedCard(localRef, targetRef, selectedCardID);
+            });
+        }
+        else if (localRef == Runner.LocalPlayer)
+        {
+            UIManager.Instance.ShowWaitingForTargetPanel();
+        }
+    }
+    
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_TargetSelectedCard(PlayerRef attacker, PlayerRef target, int cardIndex)
+    {
+        Debug.Log($"attacker:: {attacker}");
+        Debug.Log($"target:: {target}");
+        Debug.Log($"cardId:: {cardIndex}");
+
+        if (Runner.LocalPlayer != attacker) return; 
+        var attackPlayer = GetPlayer(attacker);
+        var targetPlayer = GetPlayer(target);
+        
+        Debug.Log($"targetPlayer:: {targetPlayer.GameStat.InGameStat.HandCards[cardIndex]}");
+        
+        var selectedCard = targetPlayer.GameStat.InGameStat.HandCards[cardIndex];
+        
+        Debug.Log($"selectedCard:: {selectedCard}");
+        
+        if (targetPlayer != null)
+        {
+            Debug.Log($"{attackPlayer.BasicStat.nickName}님의 공격이 끝났습니다.");
+            
+            Debug.Log($"{targetPlayer.BasicStat.nickName}님이 {selectedCard.Name}, {selectedCard.CardID} 카드를 선택함");
+        }
+        else
+        {
+            Debug.LogWarning("Target Player를 찾을 수 없습니다.");
+        }
+
+        TurnManager.Instance.ContinueTurn(attacker);
+    }
+    
+    public Player GetPlayer(PlayerRef playerRef)
+    {
+        for (int i = 0; i < syncedPlayerClass.Length; i++)
+        {
+            if (syncedPlayerRefs[i] == playerRef)
+                return syncedPlayerClass[i];
+        }
+
+        return null;
+    }
+    
+    // [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    // public void RPC_SetLocalPlayerRef(PlayerRef refToSet)
+    // {
+    //     LocalRef = refToSet;
+    //     Debug.Log($"[서버] Broadcaster에 LocalRef 저장: {refToSet}");
+    // }
 
     [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
     public void RPC_ShowResult(string result, string[] playerInfos)
@@ -93,21 +167,21 @@ public class Broadcaster : NetworkBehaviour
         });
     }
 
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-    public void RPC_MakeCombatEvent(PlayerRef senderRef, PlayerRef targetRef, int damage, RpcInfo info = default)
-    {
-        Debug.Log($"호출 주체 {senderRef}");
+    //[Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    //public void RPC_MakeCombatEvent(PlayerRef senderRef, PlayerRef targetRef, int damage, RpcInfo info = default)
+    //{
+    //    Debug.Log($"호출 주체 {senderRef}");
 
-        // var target = InGameSystem.Instance.GetPlayerOrNull(targetRef);
-        var target = InGameSystem.Instance.GetPlayerOrNull(BasicSpawner.Instance._runner.LocalPlayer);
+    //    // var target = InGameSystem.Instance.GetPlayerOrNull(targetRef);
+    //    var target = InGameSystem.Instance.GetPlayerOrNull(BasicSpawner.Instance._runner.LocalPlayer);
 
-        CombatEvent combatEvent = new CombatEvent
-        {
-            Sender = BasicSpawner.Instance.spawnedPlayers[senderRef].GetComponent<Player>().GameStat.InGameStat,
-            Receiver = target,
-            Damage = damage
-        };
+    //    CombatEvent combatEvent = new CombatEvent
+    //    {
+    //        Sender = BasicSpawner.Instance.spawnedPlayers[senderRef].GetComponent<Player>().GameStat.InGameStat,
+    //        Receiver = target,
+    //        Damage = damage
+    //    };
 
-        InGameSystem.Instance.AddInGameEvent(combatEvent);
-    }
+    //    InGameSystem.Instance.AddInGameEvent(combatEvent);
+    //}
 }

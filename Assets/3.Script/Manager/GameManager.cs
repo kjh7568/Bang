@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Fusion;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -19,14 +20,11 @@ public class GameManager : MonoBehaviour
 
     public List<Player> players;
     public List<PlayerRef> playerRef;
-    public Broadcaster broadcaster;
     
     
     private void Awake()
     {
         Instance = this;
-        
-        broadcaster = FindObjectOfType<Broadcaster>();
     }
 
     private void Start()
@@ -126,18 +124,51 @@ public class GameManager : MonoBehaviour
 
     public void SetLocalPlayer(PlayerRef[] playerRefs)
     {
+        Debug.Log($"SetLocalPlayer 실행");
+
         foreach (var playerRef in playerRefs)
         {
+            Debug.Log($"SetLocalPlayer ::{Broadcaster.Instance.LocalRef}");
+           
             if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
             {
                 var player = obj.GetComponent<Player>();
+
                 Broadcaster.Instance.LocalPlayer = player;
-                UIManager.Instance.localPlayer = player;
-                
+                Broadcaster.Instance.LocalRef = playerRef;
+                UIManager.Instance.localPlayer = playerRef;
+
                 Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
-                
-                break;
             }
+            else
+            {
+                Debug.LogWarning($"[SetLocalPlayer] spawnedPlayers에 {playerRef}가 없습니다.");
+            }
+
+            break; // 찾았으니까 루프 종료
+            
+            // if (playerRef == Broadcaster.Instance.LocalRef)
+            // {
+            //
+            // }
         }
     }
+    
+    // public void SetLocalPlayer(PlayerRef[] playerRefs)
+    // {
+    //     foreach (var playerRef in playerRefs)
+    //     {
+    //         if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
+    //         {
+    //             var player = obj.GetComponent<Player>();
+    //             Broadcaster.Instance.LocalPlayer = player;
+    //             UIManager.Instance.localPlayer = playerRef;
+    //             Broadcaster.Instance.LocalRef = playerRef;
+    //             
+    //             Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
+    //             
+    //             break;
+    //         }
+    //     }
+    // }
 }
