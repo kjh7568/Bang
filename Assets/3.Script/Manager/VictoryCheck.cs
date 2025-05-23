@@ -30,9 +30,10 @@ public class VictoryCheck : MonoBehaviour
         }
         
         string result = GetGameResult();
-        Debug.Log(result);
         if (string.IsNullOrEmpty(result)) return;
         OpenGameResultUI(playerInfos);
+
+        
         // RPC_ShowResult(result, playerInfos);
     }
     private string GetGameResult()

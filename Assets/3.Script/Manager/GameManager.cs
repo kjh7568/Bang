@@ -20,9 +20,13 @@ public class GameManager : MonoBehaviour
     public List<Player> players;
     public List<PlayerRef> playerRef;
     
+    public Broadcaster broadcaster;
+    
     private void Awake()
     {
         Instance = this;
+        
+        broadcaster = FindObjectOfType<Broadcaster>();
     }
 
     private void Start()
