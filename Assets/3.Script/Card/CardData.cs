@@ -23,21 +23,5 @@ public class CardData : ScriptableObject, ICard
 
     public virtual void UseCard() { }
     
-    public virtual void UseCard(Action onComplete)
-    {
-        // 기능 구현
-        var target = InGameSystem.Instance.GetPlayerOrNull(/*지목 대상 플레이어의 playerRef를 받아와야함*/);
-
-        if (target != null)
-        {
-            CombatEvent combatEvent = new CombatEvent
-            {
-                Sender = /*자신의 playerRef*/,
-                Receiver = target,
-                Damage = 1
-            };
-
-            InGameSystem.Instance.AddInGameEvent(combatEvent);
-        }
-    }
+    public virtual void UseCard(Action onComplete) { }
 }

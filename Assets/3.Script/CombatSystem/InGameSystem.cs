@@ -14,7 +14,7 @@ public class InGameSystem : MonoBehaviour
 
     [SerializeField] private Transform bloodPrefabParent;
     private WaitForSeconds bloodWait = new WaitForSeconds(2f);
-    
+
     public class Callbacks
     {
         //CombatEvent가 발생하면의 의미로 쓸거임
@@ -31,17 +31,18 @@ public class InGameSystem : MonoBehaviour
     {
         Instance = this;
 
-        for (int i = 0; i < MAX_BLOOD_COUNT; i++)
-        {
-            var blood = Instantiate(bloodPrefab, bloodPrefabParent);
-            bloodPrefabQueue.Enqueue(blood);
-            blood.SetActive(false);
-        }
+        // for (int i = 0; i < MAX_BLOOD_COUNT; i++)
+        // {
+        //     var blood = Instantiate(bloodPrefab, bloodPrefabParent);
+        //     bloodPrefabQueue.Enqueue(blood);
+        //     blood.SetActive(false);
+        // }
     }
 
     private void Update()
     {
         int processCount = 0;
+        
         while (inGameEventQueue.Count > 0 && processCount < MAX_EVENT_PROCESS_COUNT)
         {
             var inGameEvent = inGameEventQueue.Dequeue();
@@ -51,7 +52,7 @@ public class InGameSystem : MonoBehaviour
                 case InGameEvent.EventType.Combat:
                     var combatEvent = inGameEvent as CombatEvent;
                     inGameEvent.Receiver.TakeDamage(combatEvent);
-                    StartCoroutine(SpawnBloodEffect(combatEvent.HitPosition));
+                    // StartCoroutine(SpawnBloodEffect(combatEvent.HitPosition));
                     Events.OnCombatEvent?.Invoke(combatEvent);
                     break;
                 default:
@@ -63,7 +64,7 @@ public class InGameSystem : MonoBehaviour
     public IDamageAble GetPlayerOrNull(PlayerRef player)
     {
         var playerDic = BasicSpawner.Instance.spawnedPlayers;
-        
+
         if (playerDic.ContainsKey(player))
         {
             var damageAble = playerDic[player].GetComponent<Player>().GameStat.InGameStat;
@@ -83,9 +84,9 @@ public class InGameSystem : MonoBehaviour
         var blood = bloodPrefabQueue.Dequeue();
         blood.transform.position = hitPosition;
         blood.SetActive(true);
-        
+
         yield return bloodWait;
-        
+
         blood.SetActive(false);
         bloodPrefabQueue.Enqueue(blood);
     }
