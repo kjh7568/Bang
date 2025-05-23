@@ -105,19 +105,46 @@ public class GameManager : MonoBehaviour
     {
         foreach (var playerRef in playerRefs)
         {
-            if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
+            if (playerRef == Broadcaster.Instance.LocalRef)
             {
-                var player = obj.GetComponent<Player>();
-                Broadcaster.Instance.LocalPlayer = player;
-                UIManager.Instance.localPlayer = playerRef;
-                Broadcaster.Instance.LocalRef = playerRef;
-                
-                Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
-                
+                if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
+                {
+                    var player = obj.GetComponent<Player>();
+
+                    Broadcaster.Instance.LocalPlayer = player;
+                    Broadcaster.Instance.LocalRef = playerRef;
+                    UIManager.Instance.localPlayer = playerRef;
+
+                    Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
+                }
+                else
+                {
+                    Debug.LogWarning($"[SetLocalPlayer] spawnedPlayers에 {playerRef}가 없습니다.");
+                }
+
                 break;
             }
         }
     }
+
+    
+    // public void SetLocalPlayer(PlayerRef[] playerRefs)
+    // {
+    //     foreach (var playerRef in playerRefs)
+    //     {
+    //         if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
+    //         {
+    //             var player = obj.GetComponent<Player>();
+    //             Broadcaster.Instance.LocalPlayer = player;
+    //             UIManager.Instance.localPlayer = playerRef;
+    //             Broadcaster.Instance.LocalRef = playerRef;
+    //             
+    //             Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
+    //             
+    //             break;
+    //         }
+    //     }
+    // }
     
     public Player GetPlayer(PlayerRef playerRef)
     {

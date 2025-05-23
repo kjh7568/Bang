@@ -9,8 +9,11 @@ public class Broadcaster : NetworkBehaviour
     public static Broadcaster Instance;
     
     [Networked] public int TurnIndex {get; set;}
-    [Networked] public PlayerRef[] syncedPlayerRefs {get; set;}
-    [Networked] public Player[] syncedPlayerClass {get; set;}
+    //[Networked] public NetworkLinkedList<PlayerRef> SyncedPlayerRefs => default;
+    //[Networked] public NetworkLinkedList<Player> syncedPlayerClass => default;
+    
+    public PlayerRef[] syncedPlayerRefs {get; private set;}
+    public Player[] syncedPlayerClass {get; private set;}
     
     public Player LocalPlayer;
     public PlayerRef LocalRef;
