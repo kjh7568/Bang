@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Fusion;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -103,8 +104,12 @@ public class GameManager : MonoBehaviour
 
     public void SetLocalPlayer(PlayerRef[] playerRefs)
     {
+        Debug.Log($"SetLocalPlayer 실행");
+
         foreach (var playerRef in playerRefs)
         {
+            Debug.Log($"SetLocalPlayer ::{Broadcaster.Instance.LocalRef}");
+            
             if (playerRef == Broadcaster.Instance.LocalRef)
             {
                 if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
@@ -126,8 +131,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-
     
     // public void SetLocalPlayer(PlayerRef[] playerRefs)
     // {
