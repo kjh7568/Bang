@@ -17,25 +17,16 @@ public class UIManager : MonoBehaviour
     public GameObject playerPanel;
     
     public TMP_Text waitingUserTurnText;
-    //public List<GameObject> enemyList = new List<GameObject>();
-    
-    // 선택 완료 시 실행할 콜백
-    //private Action<string> onTargetSelected; 
 
-    private bool isPlayerSelectActive = false;
     
     private void Awake()
     {
         Instance = this;
-        //InitializePlayerPanelButtons();
         playerPanel.SetActive(false); 
     }
     
-    [SerializeField] Button targetButtonPrefab; // 버튼 프리팹
-    [SerializeField] Transform buttonParent; // 버튼들 넣을 위치 (Vertical Layout Group 사용 추천)
-
-    // List<GameObject> allPlayers;
-    // GameObject currentPlayer;
+    [SerializeField] Button targetButtonPrefab; 
+    [SerializeField] Transform buttonParent; 
     
     public Player localPlayer;
 
@@ -71,75 +62,32 @@ public class UIManager : MonoBehaviour
         Broadcaster.Instance.RPC_AttackPlayerNotify(localPlayer, target);
     }
 
-    // private void InitializePlayerPanelButtons()
-    // {
-    //     int index = 0;
-    //
-    //     foreach (var playerPair in BasicSpawner.Instance.spawnedPlayers)
-    //     {
-    //         var playerObj = playerPair.Value;
-    //         var player = playerObj.GetComponent<Player>();
-    //         
-    //         if (player.Object.InputAuthority == BasicSpawner.Instance._runner.LocalPlayer)
-    //             continue;
-    //
-    //         if (index < enemyList.Count)
-    //         {
-    //             GameObject slot = enemyList[index];
-    //
-    //             Player enemySlot = slot.GetComponent<Player>();
-    //             enemySlot = player;
-    //
-    //             TMP_Text nameText = slot.GetComponentInChildren<TMP_Text>();
-    //             if (nameText != null)
-    //                 nameText.text = player.BasicStat.nickName;
-    //
-    //             index++;
-    //         }
-    //     }
-    // }
-    
-    // private void InitializePlayerPanelButtons()
-    // {
-    //     int index = 0;
-    //
-    //     foreach (var playerPair in BasicSpawner.Instance.spawnedPlayers)
-    //     {
-    //         var player = playerPair.Value.GetComponent<Player>();
-    //
-    //         if (player.Object.InputAuthority != BasicSpawner.Instance._runner.LocalPlayer)
-    //         {
-    //             if (index < enemyList.Count)
-    //             {
-    //                 GameObject enemySlot = enemyList[index];
-    //
-    //                 TMP_Text nameText = enemySlot.GetComponentInChildren<TMP_Text>();
-    //                 if (nameText != null)
-    //                     nameText.text = player.BasicStat.nickName;
-    //
-    //                 Button button = enemySlot.GetComponent<Button>();
-    //                 if (button != null)
-    //                 {
-    //                     string playerName = player.BasicStat.nickName; // 클로저 문제 방지
-    //
-    //                     button.onClick.RemoveAllListeners();
-    //                     button.onClick.AddListener(() => OnEnemySlotClicked(playerName));
-    //                 }
-    //
-    //                 index++;
-    //             }
-    //         }
-    //     }
-    // }
-
     public void ShowPlayerSelectPanel(Action<string> onTargetSelectedCallback)
     {
         playerPanel.SetActive(true);
     }
     
-    public void OnEnemySlotClicked(string playerName)
+    private Action<int> _onCardSelectedCallback;
+    
+    public void ShowCardSelectionPanel(Action<int> onCardSelectedID)
     {
-        playerPanel.SetActive(false);
-        isPlayerSelectActive = false;
+        cardListPanel.SetActive(true);
+        waitingPanel.SetActive(false);
+
+        _onCardSelectedCallback = onCardSelectedID;
+    }
+    
+    public void OnCardSelected(int index)
+    {
+        cardListPanel.SetActive(false);
+        
+        _onCardSelectedCallback?.Invoke(index);
+        _onCardSelectedCallback = null;
+    }
+    
+    public void ShowWaitingForTargetPanel()
+    {
+        cardListPanel.SetActive(false);
+        waitingPanel.SetActive(true);
     }
 }

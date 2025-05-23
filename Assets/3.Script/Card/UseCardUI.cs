@@ -13,12 +13,27 @@ public class UseCardUI : MonoBehaviour
         Instance = this;
     }
 
+    // public void OnCardClicked(int index)
+    // {
+    //     UIManager.Instance.cardListPanel.SetActive(false);
+    //     
+    //     var player = GameManager.Instance.players[Broadcaster.Instance.TurnIndex];
+    //     Debug.Log($"{player.BasicStat.nickName} 님이 선택한 카드:: {index}");
+    //     player.RPC_RequestUseCardList(player.Runner.LocalPlayer, index);
+    //     UIManager.Instance.OnCardSelected(index);
+    // }
+    
     public void OnCardClicked(int index)
     {
         UIManager.Instance.cardListPanel.SetActive(false);
-        
+
         var player = GameManager.Instance.players[Broadcaster.Instance.TurnIndex];
-        Debug.Log($"{player.BasicStat.nickName} 님이 선택한 카드:: {index}");
+        var selectedCard = player.GameStat.InGameStat.HandCards[index];
+    
+        Debug.Log($"{player.BasicStat.nickName} 님이 선택한 카드: {selectedCard.Name}");
+
         player.RPC_RequestUseCardList(player.Runner.LocalPlayer, index);
+
+        UIManager.Instance.OnCardSelected(index);
     }
 }

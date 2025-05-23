@@ -61,4 +61,11 @@ public class TurnManager : MonoBehaviour
    
         return Broadcaster.Instance.syncedPlayerRefs[Broadcaster.Instance.TurnIndex];
     }
+    
+    public void ContinueTurn(Player player)
+    {
+        Debug.Log($"{player.BasicStat.nickName}의 턴 계속됨");
+        
+        //UIManager.Instance.OnCardSelected();
+    }
 }
