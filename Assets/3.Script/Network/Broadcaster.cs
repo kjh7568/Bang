@@ -12,13 +12,11 @@ public class Broadcaster : NetworkBehaviour
     public PlayerRef[] syncedPlayerRefs;
     public Player[] syncedPlayerClass;
     public Player LocalPlayer;
-    
-    private NetworkRunner networkRunner;
+    public PlayerRef LocalRef;
     
     private void Awake()
     {
         Instance = this;
-        networkRunner = FindObjectOfType<NetworkRunner>();
         
         DontDestroyOnLoad(gameObject);
     }
@@ -69,32 +67,66 @@ public class Broadcaster : NetworkBehaviour
         UIManager.Instance.waitingPanel.SetActive(false);
         UIManager.Instance.cardListPanel.SetActive(false);
     }
-    
+
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_AttackPlayerNotify(Player local, Player target)
+    public void RPC_AttackPlayerNotify(PlayerRef localRef, PlayerRef targetRef)
     {
+        var local = GameManager.Instance.GetPlayer(localRef);
+        var target = GameManager.Instance.GetPlayer(targetRef);
+
         Debug.Log($"{local.BasicStat.nickName}님이 {target.BasicStat.nickName}을(를) 공격 대상으로 선택함");
 
-        if (target == LocalPlayer)
+        if (targetRef == Runner.LocalPlayer)
         {
-            Debug.Log($"{LocalPlayer.BasicStat.nickName}님의 카드선택");
+            Debug.Log($"{target.BasicStat.nickName}님의 카드선택");
+
             UIManager.Instance.ShowCardSelectionPanel((selectedCardID) =>
-            {                   
-                // 카드 선택 완료 후
-                RPC_TargetSelectedCard(local, target, selectedCardID);
+            {
+                RPC_TargetSelectedCard(localRef, targetRef, selectedCardID);
             });
         }
-        else if (local == LocalPlayer)
+        else if (localRef == Runner.LocalPlayer)
         {
             UIManager.Instance.ShowWaitingForTargetPanel();
         }
     }
+
+    
+    // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    // public void RPC_AttackPlayerNotify(Player local, Player target)
+    // {
+    //     Debug.Log($"{local.BasicStat.nickName}님이 {target.BasicStat.nickName}을(를) 공격 대상으로 선택함");
+    //
+    //     if (target == LocalPlayer)
+    //     {
+    //         Debug.Log($"{LocalPlayer.BasicStat.nickName}님의 카드선택");
+    //         UIManager.Instance.ShowCardSelectionPanel((selectedCardID) =>
+    //         {                   
+    //             // 카드 선택 완료 후
+    //             RPC_TargetSelectedCard(local, target, selectedCardID);
+    //         });
+    //     }
+    //     else if (local == LocalPlayer)
+    //     {
+    //         UIManager.Instance.ShowWaitingForTargetPanel();
+    //     }
+    // }
     
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RPC_TargetSelectedCard(Player attacker, Player target, int cardId)
+    public void RPC_TargetSelectedCard(PlayerRef attacker, PlayerRef target, int cardId)
     {
-        var selectedCard = UIManager.Instance.localPlayer.GameStat.InGameStat.HandCards[cardId];
-        Debug.Log($"{target.BasicStat.nickName}님이 {selectedCard.Name},{selectedCard.CardID} 카드를 선택함");
+        var selectedCard = GameManager.Instance.GetPlayer(attacker).GameStat.InGameStat.HandCards[cardId];
+
+        var targetPlayer = GameManager.Instance.GetPlayer(target);
+    
+        if (targetPlayer != null)
+        {
+            Debug.Log($"{targetPlayer.BasicStat.nickName}님이 {selectedCard.Name}, {selectedCard.CardID} 카드를 선택함");
+        }
+        else
+        {
+            Debug.LogWarning("Target Player를 찾을 수 없습니다.");
+        }
 
         TurnManager.Instance.ContinueTurn(attacker);
     }

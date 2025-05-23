@@ -109,12 +109,24 @@ public class GameManager : MonoBehaviour
             {
                 var player = obj.GetComponent<Player>();
                 Broadcaster.Instance.LocalPlayer = player;
-                UIManager.Instance.localPlayer = player;
+                UIManager.Instance.localPlayer = playerRef;
+                Broadcaster.Instance.LocalRef = playerRef;
                 
                 Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
                 
                 break;
             }
         }
+    }
+    
+    public Player GetPlayer(PlayerRef playerRef)
+    {
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i].Object.InputAuthority == playerRef)
+                return players[i];
+        }
+
+        return null;
     }
 }

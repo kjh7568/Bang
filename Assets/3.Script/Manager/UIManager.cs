@@ -28,25 +28,25 @@ public class UIManager : MonoBehaviour
     [SerializeField] Button targetButtonPrefab; 
     [SerializeField] Transform buttonParent; 
     
-    public Player localPlayer;
+    public PlayerRef localPlayer;
 
     public void SetTargetSelectionUI()
     {
-        List<Player> targets = new List<Player>();
+        List<PlayerRef> targets = new List<PlayerRef>();
         
-        for (int i = 0; i < Broadcaster.Instance.syncedPlayerClass.Length ; i++)
+        for (int i = 0; i < Broadcaster.Instance.syncedPlayerRefs.Length ; i++)
         {
-            var player = Broadcaster.Instance.syncedPlayerClass[i];
+            var player = Broadcaster.Instance.syncedPlayerRefs[i];
             if (player == localPlayer)
                 continue;
     
             targets.Add(player);
         }
 
-        foreach (Player target in targets)
+        foreach (PlayerRef target in targets)
         {
             Button btn = Instantiate(targetButtonPrefab, buttonParent);
-            btn.GetComponentInChildren<TextMeshProUGUI>().text = target.name;
+            //btn.GetComponentInChildren<TextMeshProUGUI>().text = target.name;
         
             btn.onClick.AddListener(() =>
             {
@@ -55,7 +55,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void SelectTarget(Player target)
+    void SelectTarget(PlayerRef target)
     {
         playerPanel.SetActive(false);
 
