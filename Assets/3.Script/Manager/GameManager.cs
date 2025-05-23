@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
         GetPlayerInfo();
         
         SyncPlayersToClients();
+        
         TurnManager.Instance.StartTurn();
     }
 

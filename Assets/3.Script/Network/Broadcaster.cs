@@ -120,4 +120,11 @@ public class Broadcaster : NetworkBehaviour
 
         TurnManager.Instance.ContinueTurn(attacker);
     }
+    
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_SetLocalPlayerRef(PlayerRef refToSet)
+    {
+        LocalRef = refToSet;
+        Debug.Log($"[서버] Broadcaster에 LocalRef 저장: {refToSet}");
+    }
 }

@@ -92,20 +92,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         });
 
         _runner.Spawn(broadcasterPrefabs);
-
-        WaitAndSetLocalPlayer();
     }
     
-    public async void WaitAndSetLocalPlayer()
-    {
-        while (Broadcaster.Instance == null)
-        {
-            await Task.Yield(); 
-        }
-
-        await Task.Delay(100); 
-        Broadcaster.Instance.LocalRef = _runner.LocalPlayer;
-    }
 
     public async void StartGame(GameMode mode, string sessionName)
     {
@@ -137,8 +125,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
             broadcaster.RPC_SendNicknameToHost(savePlayerBasicStat.Nickname);
         }
-        
-        WaitAndSetLocalPlayer();
     }
 
     public string GetSessionNumber() => _runner.SessionInfo.Name;
