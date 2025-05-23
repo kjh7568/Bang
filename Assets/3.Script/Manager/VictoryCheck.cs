@@ -10,7 +10,7 @@ public class VictoryCheck : MonoBehaviour
     [SerializeField] private TMP_Text gameResultText;
     [SerializeField] private TMP_Text[] playerTexts;
     
-    private string gameResult;
+    public string gameResult;
     
     public void CheckVictoryConditions()
     {
@@ -31,10 +31,8 @@ public class VictoryCheck : MonoBehaviour
         
         string result = GetGameResult();
         if (string.IsNullOrEmpty(result)) return;
-        OpenGameResultUI(playerInfos);
-
         
-        // RPC_ShowResult(result, playerInfos);
+        GameManager.Instance.broadcaster.RPC_ShowResult(result, playerInfos);
     }
     private string GetGameResult()
     {
@@ -84,10 +82,7 @@ public class VictoryCheck : MonoBehaviour
         return ""; // 아직 승리 조건이 안 됨
     }
 
-// Rpc는 간단히 결과만 전달
-    
-
-    private void OpenGameResultUI(string[] playerInfos)
+    public void OpenGameResultUI(string[] playerInfos)
     {
         gameResultUI.SetActive(true);
         gameResultText.text = gameResult;

@@ -70,10 +70,12 @@ public class Broadcaster : NetworkBehaviour
         UIManager.Instance.cardListPanel.SetActive(false);
     }
     
-    // [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
-    // private void RPC_ShowResult(string result, string[] playerInfos)
-    // {
-    //     gameResult = result;
-    //     OpenGameResultUI(playerInfos);
-    // }
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+    public void RPC_ShowResult(string result, string[] playerInfos)
+    {
+        var victoryCheck = FindObjectOfType<VictoryCheck>();
+        
+        victoryCheck.gameResult = result;
+        victoryCheck.OpenGameResultUI(playerInfos);
+    }
 }
