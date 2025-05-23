@@ -28,7 +28,6 @@ public interface ICard
     CardSymbol CardSymbol { get; }
     Sprite CardSprite { get; }
 
-    bool RequiresTarget { get; }
-    
-    public void UseCard(Action onComplete);
+    void UseCard();
+    void UseCard(Action onComplete);
 }

@@ -6,8 +6,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Jail", menuName = "Card/Passive/Jail")]
 public class Jail : CardData
 {
-    public override bool RequiresTarget => true;
-    
     public override void UseCard(Action onComplete)
     {
         Debug.Log("Jail : 플레이어 선택 중"); 

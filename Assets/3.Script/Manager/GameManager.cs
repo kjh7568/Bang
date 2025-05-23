@@ -100,4 +100,21 @@ public class GameManager : MonoBehaviour
         // 초기 플레이어 정보 동기화
         Broadcaster.Instance.RPC_SyncSpawnedPlayers(playerRefsArray, playerClassArray);
     }
+
+    public void SetLocalPlayer(PlayerRef[] playerRefs)
+    {
+        foreach (var playerRef in playerRefs)
+        {
+            if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
+            {
+                var player = obj.GetComponent<Player>();
+                Broadcaster.Instance.LocalPlayer = player;
+                UIManager.Instance.localPlayer = player;
+                
+                Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
+                
+                break;
+            }
+        }
+    }
 }
