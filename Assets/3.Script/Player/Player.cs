@@ -80,8 +80,11 @@ public class Player : NetworkBehaviour
         Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
         Debug.Log($"전달된 카드 Number: {cardIndices}");
 
-        var card = GameStat.InGameStat.HandCards[cardIndices];
-
+        var player = GameManager.Instance.GetPlayer(playerRef);
+        var card = player.GameStat.InGameStat.HandCards[cardIndices];
+        
+        Debug.Log($"card instance: {card},  name: {card.Name} ,type: {card.GetType()}");
+        
         card.UseCard(() => {
             Debug.Log("카드 효과 완료 → 다음 카드 선택 패널 표시");
             

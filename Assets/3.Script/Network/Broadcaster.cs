@@ -80,9 +80,6 @@ public class Broadcaster : NetworkBehaviour
         
         var local = GameManager.Instance.GetPlayer(localRef);
         var target = GameManager.Instance.GetPlayer(targetRef);
-
-        Debug.Log($"local::{local}");
-        Debug.Log($"target::{target}");
         
         Debug.Log($"{local.BasicStat.nickName}님이 {target.BasicStat.nickName}을(를) 공격 대상으로 선택함");
 
