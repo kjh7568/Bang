@@ -99,20 +99,26 @@ public class Broadcaster : NetworkBehaviour
     }
     
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RPC_TargetSelectedCard(PlayerRef attacker, PlayerRef target, int cardId)
+    public void RPC_TargetSelectedCard(PlayerRef attacker, PlayerRef target, int cardIndex)
     {
         Debug.Log($"attacker:: {attacker}");
         Debug.Log($"target:: {target}");
+        Debug.Log($"cardId:: {cardIndex}");
 
         if (Runner.LocalPlayer != attacker) return; 
+        var attackPlayer = GetPlayer(attacker);
+        var targetPlayer = GetPlayer(target);
         
-        var attackPlayer = GameManager.Instance.GetPlayer(attacker);
-        var targetPlayer = GameManager.Instance.GetPlayer(target);
-        var selectedCard = GameManager.Instance.GetPlayer(target).GameStat.InGameStat.HandCards[cardId];
-
+        Debug.Log($"targetPlayer:: {targetPlayer.GameStat.InGameStat.HandCards[cardIndex]}");
+        
+        var selectedCard = targetPlayer.GameStat.InGameStat.HandCards[cardIndex];
+        
+        Debug.Log($"selectedCard:: {selectedCard}");
+        
         if (targetPlayer != null)
         {
             Debug.Log($"{attackPlayer.BasicStat.nickName}님의 공격이 끝났습니다.");
+            
             Debug.Log($"{targetPlayer.BasicStat.nickName}님이 {selectedCard.Name}, {selectedCard.CardID} 카드를 선택함");
         }
         else
@@ -121,6 +127,17 @@ public class Broadcaster : NetworkBehaviour
         }
 
         TurnManager.Instance.ContinueTurn(attacker);
+    }
+    
+    public Player GetPlayer(PlayerRef playerRef)
+    {
+        for (int i = 0; i < syncedPlayerClass.Length; i++)
+        {
+            if (syncedPlayerRefs[i] == playerRef)
+                return syncedPlayerClass[i];
+        }
+
+        return null;
     }
     
     // [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

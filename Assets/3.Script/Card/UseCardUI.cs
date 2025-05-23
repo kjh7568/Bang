@@ -30,13 +30,11 @@ public class UseCardUI : MonoBehaviour
         Debug.Log($"Player:: {BasicSpawner.Instance._runner.LocalPlayer}");
         Debug.Log($"Broadcaster.Instance.TurnIndex:: {Broadcaster.Instance.TurnIndex}");
         Debug.Log($"Broadcaster.Instance.syncedPlayerClass[Broadcaster.Instance.TurnIndex]:: { Broadcaster.Instance.syncedPlayerClass[Broadcaster.Instance.TurnIndex]}");
-
         
         var player = GameManager.Instance.GetPlayer(BasicSpawner.Instance._runner.LocalPlayer);
         
         var selectedCard = player.GameStat.InGameStat.HandCards[index];
         Debug.Log($"{player.BasicStat.nickName} 님이 {selectedCard.Name} / {selectedCard.CardID} 카드를 사용하였습니다.");
-
 
         player.RPC_RequestUseCardList(player.Runner.LocalPlayer, index);
 

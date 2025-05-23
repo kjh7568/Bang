@@ -154,15 +154,4 @@ public class GameManager : MonoBehaviour
     //         }
     //     }
     // }
-    
-    public Player GetPlayer(PlayerRef playerRef)
-    {
-        for (int i = 0; i < Broadcaster.Instance.syncedPlayerClass.Length; i++)
-        {
-            if (Broadcaster.Instance.syncedPlayerRefs[i] == playerRef)
-                return Broadcaster.Instance.syncedPlayerClass[i];
-        }
-
-        return null;
-    }
 }
