@@ -61,31 +61,31 @@ public class CardSystem : MonoBehaviour
     
         foreach (var player in GameManager.Instance.players)
         {
-            // int[] hand = new int[5];
-            //
-            // for (int i = 0; i <= 2; i++)
-            // {
-            //     hand[i] = initDeck[0];
-            //     initDeck.RemoveAt(0);
-            // }
+            int[] hand = new int[5];
             
-            int[] hand = new int[] {0, 0, 0, 0, 0};
-            if (player.Object.HasStateAuthority)
+            for (int i = 0; i <= 2; i++)
             {
-                hand[0] = 11;
-                hand[1] = 64;
-                hand[2] = 14;
-                hand[3] = 0;
-                hand[4] = 0;
+                hand[i] = initDeck[0];
+                initDeck.RemoveAt(0);
             }
-            else
-            {
-                for (int i = 0; i <= 2; i++)
-                {
-                    hand[i] = initDeck[0];
-                    initDeck.RemoveAt(0);
-                }
-            }
+            
+            // int[] hand = new int[] {0, 0, 0, 0, 0};
+            // if (player.Object.HasStateAuthority)
+            // {
+            //     hand[0] = 11;
+            //     hand[1] = 64;
+            //     hand[2] = 14;
+            //     hand[3] = 0;
+            //     hand[4] = 0;
+            // }
+            // else
+            // {
+            //     for (int i = 0; i <= 2; i++)
+            //     {
+            //         hand[i] = initDeck[0];
+            //         initDeck.RemoveAt(0);
+            //     }
+            // }
     
             player.GameStat.InGameStat.HandCardsId = hand;
             player.RPC_ReceiveToHandCardsData(hand);

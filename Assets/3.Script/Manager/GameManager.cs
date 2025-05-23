@@ -105,29 +105,28 @@ public class GameManager : MonoBehaviour
     {
         foreach (var playerRef in playerRefs)
         {
-            if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
+            if (playerRef == Broadcaster.Instance.LocalRef)
             {
-                var player = obj.GetComponent<Player>();
+                if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
+                {
+                    var player = obj.GetComponent<Player>();
 
-                Broadcaster.Instance.LocalPlayer = player;
-                Broadcaster.Instance.LocalRef = playerRef;
-                UIManager.Instance.localPlayer = playerRef;
+                    Broadcaster.Instance.LocalPlayer = player;
+                    Broadcaster.Instance.LocalRef = playerRef;
+                    UIManager.Instance.localPlayer = playerRef;
 
-                Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
+                    Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
+                }
+                else
+                {
+                    Debug.LogWarning($"[SetLocalPlayer] spawnedPlayers에 {playerRef}가 없습니다.");
+                }
+
+                break; // 찾았으니까 루프 종료
             }
-            else
-            {
-                Debug.LogWarning($"[SetLocalPlayer] spawnedPlayers에 {playerRef}가 없습니다.");
-            }
-
-            break;
-            
-            // if (playerRef == Broadcaster.Instance.LocalRef)
-            // {
-            //     
-            // }
         }
     }
+
 
     
     // public void SetLocalPlayer(PlayerRef[] playerRefs)
@@ -150,10 +149,10 @@ public class GameManager : MonoBehaviour
     
     public Player GetPlayer(PlayerRef playerRef)
     {
-        for (int i = 0; i < players.Count; i++)
+        for (int i = 0; i < Broadcaster.Instance.syncedPlayerClass.Length; i++)
         {
-            if (players[i].Object.InputAuthority == playerRef)
-                return players[i];
+            if (Broadcaster.Instance.syncedPlayerRefs[i] == playerRef)
+                return Broadcaster.Instance.syncedPlayerClass[i];
         }
 
         return null;

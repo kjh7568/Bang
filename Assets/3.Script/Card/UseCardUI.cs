@@ -27,10 +27,18 @@ public class UseCardUI : MonoBehaviour
     {
         UIManager.Instance.cardListPanel.SetActive(false);
 
-        var player = GameManager.Instance.players[Broadcaster.Instance.TurnIndex];
+        Debug.Log($"Player:: {Broadcaster.Instance.LocalPlayer}");
+
+        
+        Debug.Log($"Broadcaster.Instance.TurnIndex:: {Broadcaster.Instance.TurnIndex}");
+        Debug.Log($"Broadcaster.Instance.syncedPlayerClass[Broadcaster.Instance.TurnIndex]:: { Broadcaster.Instance.syncedPlayerClass[Broadcaster.Instance.TurnIndex]}");
+
+        var player = Broadcaster.Instance.syncedPlayerClass[Broadcaster.Instance.TurnIndex];
+        Debug.Log(player);
         var selectedCard = player.GameStat.InGameStat.HandCards[index];
-    
-        Debug.Log($"{player.BasicStat.nickName} 님이 선택한 카드: {selectedCard.Name}");
+        Debug.Log(selectedCard);
+
+        //Debug.Log($"{player.BasicStat.nickName} 님이 선택한 카드: {selectedCard.Name}");
 
         player.RPC_RequestUseCardList(player.Runner.LocalPlayer, index);
 

@@ -92,6 +92,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         });
 
         _runner.Spawn(broadcasterPrefabs);
+        
+        Broadcaster.Instance.LocalRef = _runner.LocalPlayer;
     }
 
     public async void StartGame(GameMode mode, string sessionName)
@@ -124,6 +126,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
             broadcaster.RPC_SendNicknameToHost(savePlayerBasicStat.Nickname);
         }
+        
+        Broadcaster.Instance.LocalRef = _runner.LocalPlayer;
     }
 
     public string GetSessionNumber() => _runner.SessionInfo.Name;
