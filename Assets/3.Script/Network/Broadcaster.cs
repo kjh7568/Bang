@@ -84,7 +84,6 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log($"local::{local}");
         Debug.Log($"target::{target}");
         
-        
         Debug.Log($"{local.BasicStat.nickName}님이 {target.BasicStat.nickName}을(를) 공격 대상으로 선택함");
 
         if (targetRef == Runner.LocalPlayer)

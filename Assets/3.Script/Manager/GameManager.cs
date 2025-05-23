@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        Broadcaster.Instance.LocalRef = BasicSpawner.Instance._runner.LocalPlayer;
     }
 
     private void Start()
@@ -109,26 +110,28 @@ public class GameManager : MonoBehaviour
         foreach (var playerRef in playerRefs)
         {
             Debug.Log($"SetLocalPlayer ::{Broadcaster.Instance.LocalRef}");
-            
-            if (playerRef == Broadcaster.Instance.LocalRef)
+           
+            if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
             {
-                if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
-                {
-                    var player = obj.GetComponent<Player>();
+                var player = obj.GetComponent<Player>();
 
-                    Broadcaster.Instance.LocalPlayer = player;
-                    Broadcaster.Instance.LocalRef = playerRef;
-                    UIManager.Instance.localPlayer = playerRef;
+                Broadcaster.Instance.LocalPlayer = player;
+                Broadcaster.Instance.LocalRef = playerRef;
+                UIManager.Instance.localPlayer = playerRef;
 
-                    Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
-                }
-                else
-                {
-                    Debug.LogWarning($"[SetLocalPlayer] spawnedPlayers에 {playerRef}가 없습니다.");
-                }
-
-                break; // 찾았으니까 루프 종료
+                Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
             }
+            else
+            {
+                Debug.LogWarning($"[SetLocalPlayer] spawnedPlayers에 {playerRef}가 없습니다.");
+            }
+
+            break; // 찾았으니까 루프 종료
+            
+            // if (playerRef == Broadcaster.Instance.LocalRef)
+            // {
+            //
+            // }
         }
     }
     
