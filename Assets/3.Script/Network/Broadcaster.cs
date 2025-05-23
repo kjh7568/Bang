@@ -69,4 +69,11 @@ public class Broadcaster : NetworkBehaviour
         UIManager.Instance.waitingPanel.SetActive(false);
         UIManager.Instance.cardListPanel.SetActive(false);
     }
+    
+    // [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+    // private void RPC_ShowResult(string result, string[] playerInfos)
+    // {
+    //     gameResult = result;
+    //     OpenGameResultUI(playerInfos);
+    // }
 }

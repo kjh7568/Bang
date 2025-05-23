@@ -15,7 +15,8 @@ public class GameManager : MonoBehaviour
     
     [SerializeField] private HumanList humanList;
     [SerializeField] private JobList jobList;
-    
+    [SerializeField] private VictoryCheck victoryCheck; // 승리 조건 체크용
+
     public List<Player> players;
     public List<PlayerRef> playerRef;
     
@@ -35,6 +36,13 @@ public class GameManager : MonoBehaviour
         
         SyncPlayersToClients();
         TurnManager.Instance.StartTurn();
+    }
+
+    private void Update()
+    {
+        if (!BasicSpawner.Instance._runner.IsServer) return;
+        
+        victoryCheck.CheckVictoryConditions();
     }
 
     private void CachePlayerInfo()
@@ -83,13 +91,22 @@ public class GameManager : MonoBehaviour
     {
         var tempList = new List<Job>(jobList.jobList);
         
-        foreach (var player in players)
-        {
-            int idx = Random.Range(0, tempList.Count);
-            player.GameStat.InGameStat.MyJob = tempList[idx];
-            tempList.RemoveAt(idx);
-        }
+        players[0].GameStat.InGameStat.MyJob = tempList[0];
+        players[1].GameStat.InGameStat.MyJob = tempList[1];
+        players[2].GameStat.InGameStat.MyJob = tempList[2];
+        players[3].GameStat.InGameStat.MyJob = tempList[3];
     }
+    // private void SetPlayerJob()
+    // {
+    //     var tempList = new List<Job>(jobList.jobList);
+    //     
+    //     foreach (var player in players)
+    //     {
+    //         int idx = Random.Range(0, tempList.Count);
+    //         player.GameStat.InGameStat.MyJob = tempList[idx];
+    //         tempList.RemoveAt(idx);
+    //     }
+    // }
     
 
     public void SyncPlayersToClients()

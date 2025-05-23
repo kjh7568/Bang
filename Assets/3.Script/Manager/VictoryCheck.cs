@@ -3,20 +3,17 @@ using Fusion;
 using TMPro;
 using UnityEngine;
 
-public class VictoryCheck : NetworkBehaviour
+public class VictoryCheck : MonoBehaviour
 {
+    [SerializeField] private GameObject gameResultUI;
+    
     [SerializeField] private TMP_Text gameResultText;
+    [SerializeField] private TMP_Text[] playerTexts;
     
     private string gameResult;
     
-    [SerializeField] private GameObject gameResultUI;
-    
-    [SerializeField] private TMP_Text[] playerTexts;
-    
     public void CheckVictoryConditions()
     {
-        if (!HasStateAuthority) return;
-
         string[] playerInfos = new string[4]; // 플레이어 순서 보안관/무법자/무법자/배신자
         int outlawIndex = 1;
 
@@ -33,8 +30,10 @@ public class VictoryCheck : NetworkBehaviour
         }
         
         string result = GetGameResult();
+        Debug.Log(result);
         if (string.IsNullOrEmpty(result)) return;
-        RPC_ShowResult(result, playerInfos);
+        OpenGameResultUI(playerInfos);
+        // RPC_ShowResult(result, playerInfos);
     }
     private string GetGameResult()
     {
@@ -85,12 +84,7 @@ public class VictoryCheck : NetworkBehaviour
     }
 
 // Rpc는 간단히 결과만 전달
-    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
-    private void RPC_ShowResult(string result, string[] playerInfos)
-    {
-        gameResult = result;
-        OpenGameResultUI(playerInfos);
-    }
+    
 
     private void OpenGameResultUI(string[] playerInfos)
     {

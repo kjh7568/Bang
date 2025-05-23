@@ -26,7 +26,10 @@ public class PlayerInGameStat : IDamageAble
     public void TakeDamage(CombatEvent combatEvent)
     {
         hp -= combatEvent.Damage;
-        Debug.Log($"{BasicSpawner.Instance.spawnedPlayers[BasicSpawner.Instance._runner.LocalPlayer]}가 데미지 받았어유");
-        Debug.Log($"{combatEvent.Damage}만큼 데미지 받았고 현재 체력은 {hp}여유");
+
+        if (hp <= 0)
+        {
+            Debug.Log("죽었슈");
+        }
     }
 }

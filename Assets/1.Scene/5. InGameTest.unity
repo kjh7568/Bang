@@ -3035,6 +3035,7 @@ GameObject:
   m_Component:
   - component: {fileID: 726887971}
   - component: {fileID: 726887970}
+  - component: {fileID: 726887972}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3058,6 +3059,7 @@ MonoBehaviour:
   uiSystem: {fileID: 1286567634}
   humanList: {fileID: 11400000, guid: 2fcfa21c6f3ca4849a4319dedb2d2e2b, type: 2}
   jobList: {fileID: 11400000, guid: 1f96b6aa8e58bcb40a94d9ac756f8f2a, type: 2}
+  victoryCheck: {fileID: 726887972}
   players: []
   playerRef: []
 --- !u!4 &726887971
@@ -3075,6 +3077,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2096215117}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &726887972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726887969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e7cae88361a83d47a3abc3cbc4007af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameResultUI: {fileID: 107413108}
+  gameResultText: {fileID: 524362641}
+  playerTexts:
+  - {fileID: 235639802}
+  - {fileID: 1871722130}
+  - {fileID: 1929209957}
+  - {fileID: 1569299022}
 --- !u!1 &765854397
 GameObject:
   m_ObjectHideFlags: 0
@@ -3183,8 +3204,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e7cae88361a83d47a3abc3cbc4007af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameResultText: {fileID: 524362641}
   gameResultUI: {fileID: 107413108}
+  gameResultText: {fileID: 524362641}
   playerTexts:
   - {fileID: 235639802}
   - {fileID: 1871722130}
@@ -3206,8 +3227,7 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 857259239}
+  NetworkedBehaviours: []
   ForceRemoteRenderTimeframe: 0
 --- !u!4 &857259241
 Transform:
