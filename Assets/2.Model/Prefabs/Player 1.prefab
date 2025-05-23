@@ -1604,6 +1604,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4597578240417162}
+  - component: {fileID: 8803833809756537277}
+  - component: {fileID: 621696146712966263}
   m_Layer: 0
   m_Name: Head
   m_TagString: Untagged
@@ -1629,6 +1631,44 @@ Transform:
   - {fileID: 7418958674623317885}
   m_Father: {fileID: 4713579137159020}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8803833809756537277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743251274109906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 940068133
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 621696146712966263}
+  ForceRemoteRenderTimeframe: 0
+--- !u!114 &621696146712966263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743251274109906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b350d683bbd19ff4ebddd31b24817ffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  headTransform: {fileID: 4597578240417162}
+  cameraTransform: {fileID: 7418958674623317885}
+  sensitivity: 1
+  minPitch: -15
+  maxPitch: 15
+  minYawOffset: -45
+  maxYawOffset: 45
 --- !u!1 &1758328521381202
 GameObject:
   m_ObjectHideFlags: 0
@@ -2490,7 +2530,6 @@ GameObject:
   - component: {fileID: 95918252503098470}
   - component: {fileID: 8107617641382066571}
   - component: {fileID: 5274620086830130402}
-  - component: {fileID: 4916743800787335890}
   - component: {fileID: 7399578532287264705}
   m_Layer: 0
   m_Name: Player 1
@@ -2561,10 +2600,10 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 262145
   NestedObjects:
+  - {fileID: 8803833809756537277}
   - {fileID: 4733140486081779884}
   NetworkedBehaviours:
   - {fileID: 5274620086830130402}
-  - {fileID: 4916743800787335890}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &5274620086830130402
 MonoBehaviour:
@@ -2595,25 +2634,6 @@ MonoBehaviour:
     iD: 
     password: 
     nickName: Noh
---- !u!114 &4916743800787335890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1942289980213182}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b350d683bbd19ff4ebddd31b24817ffb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  headTransform: {fileID: 4597578240417162}
-  cameraTransform: {fileID: 7418958674623317885}
-  sensitivity: 1
-  minPitch: -15
-  maxPitch: 15
-  minYawOffset: -45
-  maxYawOffset: 45
 --- !u!114 &7399578532287264705
 MonoBehaviour:
   m_ObjectHideFlags: 0

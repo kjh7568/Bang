@@ -110,7 +110,6 @@ public class PlayerCameraController : NetworkBehaviour
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
     private void RPC_UpdateCamera(float mouseX, float mouseY)
     {
-        Debug.Log("123");
         RotateCamera(mouseX, mouseY);
     }
 
