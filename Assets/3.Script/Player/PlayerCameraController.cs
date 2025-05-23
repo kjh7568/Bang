@@ -104,7 +104,7 @@ public class PlayerCameraController : NetworkBehaviour
         float mouseX = Input.GetAxis("Mouse X") * sensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * sensitivity;
 
-        RPC_UpdateCamera(mouseX, mouseY);
+        RotateCamera(mouseX, mouseY);
     }
 
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
