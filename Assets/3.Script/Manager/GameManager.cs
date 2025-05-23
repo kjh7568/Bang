@@ -23,7 +23,9 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        Broadcaster.Instance.LocalRef = BasicSpawner.Instance._runner.LocalPlayer;
+        
+        //Broadcaster.Instance.RPC_SetLocalPlayerRef(BasicSpawner.Instance._runner.LocalPlayer);
+        //Broadcaster.Instance.LocalRef = BasicSpawner.Instance._runner.LocalPlayer;
     }
 
     private void Start()

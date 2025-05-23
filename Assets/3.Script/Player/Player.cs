@@ -14,7 +14,7 @@ public class Player : NetworkBehaviour
 
     private void Awake()
     {
-        Broadcaster.Instance.RPC_SetLocalPlayerRef(Runner.LocalPlayer);
+        //Broadcaster.Instance.RPC_SetLocalPlayerRef(Runner.LocalPlayer);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -84,7 +84,6 @@ public class Player : NetworkBehaviour
 
         card.UseCard(() => {
             Debug.Log("카드 효과 완료 → 다음 카드 선택 패널 표시");
-        
             
             
             // 지연실행 ( 다시 카드 선택 )
