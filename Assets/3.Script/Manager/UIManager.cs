@@ -59,6 +59,8 @@ public class UIManager : MonoBehaviour
     {
         playerPanel.SetActive(false);
 
+        Debug.Log($"SelectTarget:: {localPlayer}");
+        
         Broadcaster.Instance.RPC_AttackPlayerNotify(localPlayer, target);
     }
 
