@@ -124,6 +124,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             var savePlayerBasicStat = FindObjectOfType<SavePlayerBasicStat>();
 
             broadcaster.RPC_SendNicknameToHost(savePlayerBasicStat.Nickname);
+            Broadcaster.Instance.LocalRef = _runner.LocalPlayer;
         }
     }
 

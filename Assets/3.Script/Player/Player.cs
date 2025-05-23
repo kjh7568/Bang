@@ -12,10 +12,10 @@ public class Player : NetworkBehaviour
     public PlayerGameStat GameStat => playerGameStat;
     public PlayerBasicStat BasicStat => playerBasicStat;
 
-    private void Awake()
-    {
-        Broadcaster.Instance.LocalRef = Runner.LocalPlayer;
-    }
+    // private void Awake()
+    // {
+    //     Broadcaster.Instance.LocalRef = Runner.LocalPlayer;
+    // }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_ReceiveToHandCardsData(int[] handCardIds, RpcInfo info = default)

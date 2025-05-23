@@ -63,7 +63,7 @@ public class CardSystem : MonoBehaviour
         {
             int[] hand = new int[5];
             
-            for (int i = 0; i <= 2; i++)
+            for (int i = 0; i <= 4; i++)
             {
                 hand[i] = initDeck[0];
                 initDeck.RemoveAt(0);

@@ -28,8 +28,6 @@ public class UseCardUI : MonoBehaviour
         UIManager.Instance.cardListPanel.SetActive(false);
 
         Debug.Log($"Player:: {Broadcaster.Instance.LocalPlayer}");
-
-        
         Debug.Log($"Broadcaster.Instance.TurnIndex:: {Broadcaster.Instance.TurnIndex}");
         Debug.Log($"Broadcaster.Instance.syncedPlayerClass[Broadcaster.Instance.TurnIndex]:: { Broadcaster.Instance.syncedPlayerClass[Broadcaster.Instance.TurnIndex]}");
 
