@@ -66,10 +66,9 @@ public class UIManager : MonoBehaviour
 
     void SelectTarget(Player target)
     {
-        Debug.Log($"{target.name}을(를) 공격 대상으로 선택함!");
         playerPanel.SetActive(false);
 
-        // 공격 로직 실행
+        Broadcaster.Instance.RPC_AttackPlayerNotify(localPlayer, target);
     }
 
     // private void InitializePlayerPanelButtons()

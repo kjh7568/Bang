@@ -69,4 +69,10 @@ public class Broadcaster : NetworkBehaviour
         UIManager.Instance.waitingPanel.SetActive(false);
         UIManager.Instance.cardListPanel.SetActive(false);
     }
+    
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_AttackPlayerNotify(Player local, Player target)
+    {
+        Debug.Log($"{local.BasicStat.nickName}님이 {target.BasicStat.nickName}을(를) 공격 대상으로 선택함!");
+    }
 }
