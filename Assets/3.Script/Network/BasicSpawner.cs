@@ -98,7 +98,6 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
             _runner.LocalPlayer    // ← 여기에 권한을 줄 PlayerRef
         );
     }
-    
 
     public async void StartGame(GameMode mode, string sessionName)
     {
