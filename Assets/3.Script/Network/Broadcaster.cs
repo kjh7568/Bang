@@ -223,5 +223,7 @@ public class Broadcaster : NetworkBehaviour
 
         LocalRef = Server.Instance._runner.LocalPlayer;
         LocalPlayer = allPlayerClass[allPlayerRefs.ToList().IndexOf(LocalRef)];
+        
+        Debug.Log($"나는 {LocalPlayer}이다.");
     }
 }
