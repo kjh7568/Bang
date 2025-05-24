@@ -192,38 +192,36 @@ public class Broadcaster : NetworkBehaviour
     
     public void SetLocalPlayer(PlayerRef[] playerRefs)
     {
-        // Debug.Log($"SetLocalPlayer 실행");
-        //
-        // foreach (var playerRef in playerRefs)
-        // {
-        //     Debug.Log($"SetLocalPlayer ::{Broadcaster.Instance.LocalRef}");
-        //    
-        //     if (Server.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
-        //     {
-        //         var player = obj.GetComponent<Player>();
-        //
-        //         Broadcaster.Instance.LocalPlayer = player;
-        //         Broadcaster.Instance.LocalRef = playerRef;
-        //         UIManager.Instance.localPlayer = playerRef;
-        //
-        //         Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
-        //     }
-        //     else
-        //     {
-        //         Debug.LogWarning($"[SetLocalPlayer] spawnedPlayers에 {playerRef}가 없습니다.");
-        //     }
-        //
-        //     break; // 찾았으니까 루프 종료
-        //     
-        //     // if (playerRef == Broadcaster.Instance.LocalRef)
-        //     // {
-        //     //
-        //     // }
-        // }
+        Debug.Log($"SetLocalPlayer 실행");
+
+        foreach (var playerRef in playerRefs)
+        {
+            Debug.Log($"SetLocalPlayer ::{Broadcaster.Instance.LocalRef}");
+           
+            if (Server.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
+            {
+                var player = obj.GetComponent<Player>();
+
+                Broadcaster.Instance.LocalPlayer = player;
+                Broadcaster.Instance.LocalRef = playerRef;
+                UIManager.Instance.localPlayer = playerRef;
+
+                Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
+            }
+            else
+            {
+                Debug.LogWarning($"[SetLocalPlayer] spawnedPlayers에 {playerRef}가 없습니다.");
+            }
+
+            break; // 찾았으니까 루프 종료
+            
+            // if (playerRef == Broadcaster.Instance.LocalRef)
+            // {
+            //
+            // }
+        }
 
         LocalRef = Server.Instance._runner.LocalPlayer;
         LocalPlayer = allPlayerClass[allPlayerRefs.ToList().IndexOf(LocalRef)];
-        
-        Debug.Log($"나는 {LocalPlayer}이다.");
     }
 }
