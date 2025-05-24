@@ -27,12 +27,12 @@ public class UseCardUI : MonoBehaviour
     {
         UIManager.Instance.cardListPanel.SetActive(false);
 
-        Debug.Log($"Player:: {BasicSpawner.Instance._runner.LocalPlayer}");
+        Debug.Log($"Player:: {Server.Instance._runner.LocalPlayer}");
         Debug.Log($"Broadcaster.Instance.TurnIndex:: {Broadcaster.Instance.TurnIndex}");
-        Debug.Log($"Broadcaster.Instance.syncedPlayerClass[Broadcaster.Instance.TurnIndex]:: { Broadcaster.Instance.syncedPlayerClass[Broadcaster.Instance.TurnIndex]}");
+        Debug.Log($"Broadcaster.Instance.syncedPlayerClass[Broadcaster.Instance.TurnIndex]:: { Broadcaster.Instance.allPlayerClass[Broadcaster.Instance.TurnIndex]}");
         
         var broadCaster = FindObjectOfType<Broadcaster>();
-        broadCaster.RPC_RequestUseCardList(BasicSpawner.Instance._runner.LocalPlayer, index);
+        broadCaster.RPC_RequestUseCardList(Server.Instance._runner.LocalPlayer, index);
         
         //var player = GameManager.Instance.GetPlayer(BasicSpawner.Instance._runner.LocalPlayer);
         //

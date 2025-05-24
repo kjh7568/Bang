@@ -1,16 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Fusion;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Broadcaster : NetworkBehaviour
 {
     public static Broadcaster Instance;
 
     [Networked] public int TurnIndex { get; set; }
-    public PlayerRef[] syncedPlayerRefs;
-    public Player[] syncedPlayerClass;
+    
+    public PlayerRef[] allPlayerRefs;
+    public Player[] allPlayerClass;
 
     public Player LocalPlayer;
     public PlayerRef LocalRef;
@@ -36,9 +39,9 @@ public class Broadcaster : NetworkBehaviour
         PlayerRef playerRef = info.Source;
 
         // 닉네임을 BasicSpawner에서 갱신
-        if (BasicSpawner.Instance != null)
+        if (Server.Instance != null)
         {
-            BasicSpawner.Instance.ReceiveNicknameFromClient(playerRef, nickname);
+            Server.Instance.ReceiveNicknameFromClient(playerRef, nickname);
         }
         else
         {
@@ -49,16 +52,16 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_SyncSpawnedPlayers(PlayerRef[] playerRefs, Player[] playerClass)
     {
-        syncedPlayerRefs = new PlayerRef[playerRefs.Length];
-        syncedPlayerClass = new Player[playerClass.Length];
+        allPlayerRefs = new PlayerRef[playerRefs.Length];
+        allPlayerClass = new Player[playerClass.Length];
 
-        syncedPlayerClass = playerClass;
-        syncedPlayerRefs = playerRefs;
-
+        allPlayerRefs = playerRefs;
+        allPlayerClass = playerClass;
+        
         Debug.Log($"Received {playerRefs.Length} playerRefs");
         Debug.Log($"Received {playerClass.Length} playerClass");
 
-        GameManager.Instance.SetLocalPlayer(syncedPlayerRefs);
+        SetLocalPlayer(allPlayerRefs);
         UIManager.Instance.SetTargetSelectionUI();
     }
 
@@ -128,10 +131,10 @@ public class Broadcaster : NetworkBehaviour
     
     public Player GetPlayer(PlayerRef playerRef)
     {
-        for (int i = 0; i < syncedPlayerClass.Length; i++)
+        for (int i = 0; i < allPlayerClass.Length; i++)
         {
-            if (syncedPlayerRefs[i] == playerRef)
-                return syncedPlayerClass[i];
+            if (allPlayerRefs[i] == playerRef)
+                return allPlayerClass[i];
         }
 
         return null;
@@ -159,7 +162,7 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
         Debug.Log($"전달된 카드 Number: {cardIdx}");
 
-        var playerComponent = BasicSpawner.Instance.spawnedPlayers[playerRef].GetComponent<Player>();
+        var playerComponent = Server.Instance.spawnedPlayers[playerRef].GetComponent<Player>();
         var card = playerComponent.GameStat.InGameStat.HandCards[cardIdx];
         
         card.UseCard(() => {
@@ -183,5 +186,42 @@ public class Broadcaster : NetworkBehaviour
         // };
         //
         // InGameSystem.Instance.AddInGameEvent(combatEvent);
+    }
+    
+    /*=============================================================================================================*/
+    
+    public void SetLocalPlayer(PlayerRef[] playerRefs)
+    {
+        Debug.Log($"SetLocalPlayer 실행");
+
+        foreach (var playerRef in playerRefs)
+        {
+            Debug.Log($"SetLocalPlayer ::{Broadcaster.Instance.LocalRef}");
+           
+            if (Server.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
+            {
+                var player = obj.GetComponent<Player>();
+
+                Broadcaster.Instance.LocalPlayer = player;
+                Broadcaster.Instance.LocalRef = playerRef;
+                UIManager.Instance.localPlayer = playerRef;
+
+                Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
+            }
+            else
+            {
+                Debug.LogWarning($"[SetLocalPlayer] spawnedPlayers에 {playerRef}가 없습니다.");
+            }
+
+            break; // 찾았으니까 루프 종료
+            
+            // if (playerRef == Broadcaster.Instance.LocalRef)
+            // {
+            //
+            // }
+        }
+
+        LocalRef = Server.Instance._runner.LocalPlayer;
+        LocalPlayer = allPlayerClass[allPlayerRefs.ToList().IndexOf(LocalRef)];
     }
 }

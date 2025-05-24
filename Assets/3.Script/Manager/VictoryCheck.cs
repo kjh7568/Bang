@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Fusion;
 using TMPro;
 using UnityEngine;
@@ -17,7 +18,7 @@ public class VictoryCheck : MonoBehaviour
         string[] playerInfos = new string[4]; // 플레이어 순서 보안관/무법자/무법자/배신자
         int outlawIndex = 1;
 
-        foreach (var player in GameManager.Instance.players)
+        foreach (var player in Broadcaster.Instance.allPlayerClass)
         {
             string nickname = player.BasicStat.nickName;
             string human = player.GameStat.InGameStat.MyHuman.Name;
@@ -36,7 +37,7 @@ public class VictoryCheck : MonoBehaviour
     }
     private string GetGameResult()
     {
-        List<Player> players = GameManager.Instance.players;
+        List<Player> players = Broadcaster.Instance.allPlayerClass.ToList();
         Player sheriff = null;
         List<Player> outlaws = new();
         Player renegade = null;
