@@ -62,7 +62,7 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log($"Received {playerClass.Length} playerClass");
 
         SetLocalPlayer(allPlayerRefs);
-        UIManager.Instance.SetTargetSelectionUI();
+        // UIManager.Instance.SetTargetSelectionUI();
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
