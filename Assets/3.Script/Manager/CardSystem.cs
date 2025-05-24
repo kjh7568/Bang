@@ -61,16 +61,16 @@ public class CardSystem : MonoBehaviour
         {
             var playerComponent = player.GetComponent<Player>();
             
-            CardData[] hand = new CardData[5];
+            ICard[] hand = new ICard[5];
             
-            for (int i = 0; i <= 4; i++)
+            for (int i = 0; i < 5; i++)
             {
                 hand[i] = initDeck[0];
                 initDeck.RemoveAt(0);
             }
     
             playerComponent.GameStat.InGameStat.HandCards = hand;
-            // playerComponent.RPC_ReceiveToHandCardsData(hand);
+            playerComponent.RPC_ReceiveToHandCardsData(hand);
             
             // int[] hand = new int[] {0, 0, 0, 0, 0};
             // if (player.Object.HasStateAuthority)
