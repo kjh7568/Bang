@@ -13,15 +13,24 @@ public class Player : NetworkBehaviour
     public PlayerBasicStat BasicStat => playerBasicStat;
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_ReceiveToHandCardsData(ICard[] handCard, RpcInfo info = default)
+    public void RPC_ReceiveToHandCardsData(int[] handCardIds, RpcInfo info = default)
     {
         if (Runner.LocalPlayer != Object.InputAuthority) return;
 
-        // Debug.Log($"[Client] 카드 수신: {string.Join(",", handCard)}");
+        Debug.Log($"[Client] 카드 수신: {string.Join(",", handCardIds)}");
+
+        var cards = new ICard[handCardIds.Length];
         
-        GameStat.InGameStat.HandCards = handCard;
+        for (int i = 0; i < handCardIds.Length; i++)
+        {
+            cards[i] = CardUIManager.Instance.GetCardByID(handCardIds[i]);
+            
+            if(cards[i]  == null) continue;
+        }
+
+        GameStat.InGameStat.HandCards = cards;
         
-        CardUIManager.Instance.UpdateHandCardUI(handCard);
+        CardUIManager.Instance.UpdateHandCardUI(cards);
     }
     
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]

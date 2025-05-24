@@ -99,7 +99,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         );
     }
     
-
     public async void StartGame(GameMode mode, string sessionName)
     {
         //멀티플레이 세션을 만들어야 함 -> 포톤의 주요 컴포넌트들을 셋팅해야함 -> runner
