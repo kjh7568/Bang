@@ -87,8 +87,6 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_SearchMissed(PlayerRef playerRef)
     {
-        Debug.Log($"{BasicSpawner.Instance._runner}가 RPC 수신");
-
         var hand = BasicSpawner.Instance.spawnedPlayers[playerRef].GetComponent<Player>().GameStat.InGameStat.HandCards;
 
         foreach (var han in hand)
