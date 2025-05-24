@@ -27,9 +27,9 @@ public class CardSystem : MonoBehaviour
     // 카드 id 초기 리스트
     List<int> cardToIdList = new List<int>();
     // 셔플된 초기 카드
-    private List<int> initDeck = new List<int>();
+    private List<CardData> initDeck = new List<CardData>();
     // 사용된 카드
-    private List<int> usedDeck = new List<int>();
+    private List<CardData> usedDeck = new List<CardData>();
     
     private void Awake()
     {
@@ -50,7 +50,9 @@ public class CardSystem : MonoBehaviour
     //덱 정보를 만들고 섞는 건 서버만 알고 있어도 되나 카드를 넘겨주는 함수 같은 경우는 RPC를 이용해서 정보를 넘겨줘야 함 --> 이건 차후 잘 해봐야 할 듯
     public void ShuffleDeck()
     {
-        initDeck = cardToIdList.OrderBy(x => Random.value).ToList();
+        List<CardData> UnShuffledDeck = new List<CardData>(deckData.cardList);
+        
+        initDeck = UnShuffledDeck.OrderBy(x => Random.value).ToList();
     }
 
     public void InitDistributeHandCards()
@@ -59,7 +61,7 @@ public class CardSystem : MonoBehaviour
         {
             var playerComponent = player.GetComponent<Player>();
             
-            int[] hand = new int[5];
+            CardData[] hand = new CardData[5];
             
             for (int i = 0; i <= 4; i++)
             {
@@ -67,8 +69,8 @@ public class CardSystem : MonoBehaviour
                 initDeck.RemoveAt(0);
             }
     
-            playerComponent.GameStat.InGameStat.HandCardsId = hand;
-            playerComponent.RPC_ReceiveToHandCardsData(hand);
+            playerComponent.GameStat.InGameStat.HandCards = hand;
+            // playerComponent.RPC_ReceiveToHandCardsData(hand);
             
             // int[] hand = new int[] {0, 0, 0, 0, 0};
             // if (player.Object.HasStateAuthority)

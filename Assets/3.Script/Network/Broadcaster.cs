@@ -89,14 +89,14 @@ public class Broadcaster : NetworkBehaviour
     {
         Debug.Log($"{BasicSpawner.Instance._runner}가 RPC 수신");
 
-        var hand = BasicSpawner.Instance.spawnedPlayers[playerRef].GetComponent<Player>().GameStat.InGameStat.HandCards;
+        var hand = BasicSpawner.Instance.spawnedPlayers[playerRef].GetComponent<Player>().GameStat.InGameStat.HandCardsId;
 
         foreach (var han in hand)
         {
             Debug.Log(han);
         }
         
-        bool found = hand.Any(c => c.Name == "Missed");
+        bool found = hand.Any(c => c == 0);
 
         // 2) 호스트→클라이언트 응답 RPC 호출
         RPC_ReturnSearchMissed(found, playerRef);
