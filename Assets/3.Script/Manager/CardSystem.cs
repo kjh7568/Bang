@@ -51,16 +51,14 @@ public class CardSystem : MonoBehaviour
     public void ShuffleDeck()
     {
         initDeck = cardToIdList.OrderBy(x => Random.value).ToList();
-
-        Debug.Log("덱 셔플 완료");
     }
 
     public void InitDistributeHandCards()
     {
-        Debug.Log("초기 핸드 카드 분배");
-    
-        foreach (var player in GameManager.Instance.players)
+        foreach (var player in BasicSpawner.Instance.spawnedPlayers.Values)
         {
+            var playerComponent = player.GetComponent<Player>();
+            
             int[] hand = new int[5];
             
             for (int i = 0; i <= 4; i++)
@@ -68,6 +66,9 @@ public class CardSystem : MonoBehaviour
                 hand[i] = initDeck[0];
                 initDeck.RemoveAt(0);
             }
+    
+            playerComponent.GameStat.InGameStat.HandCardsId = hand;
+            playerComponent.RPC_ReceiveToHandCardsData(hand);
             
             // int[] hand = new int[] {0, 0, 0, 0, 0};
             // if (player.Object.HasStateAuthority)
@@ -86,9 +87,6 @@ public class CardSystem : MonoBehaviour
             //         initDeck.RemoveAt(0);
             //     }
             // }
-    
-            player.GameStat.InGameStat.HandCardsId = hand;
-            player.RPC_ReceiveToHandCardsData(hand);
         }
     }
     

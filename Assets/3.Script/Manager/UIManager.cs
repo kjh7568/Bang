@@ -6,6 +6,7 @@ using Fusion;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -14,7 +15,7 @@ public class UIManager : MonoBehaviour
     
     public GameObject cardListPanel;
     public GameObject waitingPanel;
-    public GameObject playerPanel;
+    public GameObject playerChoicePanel;
     
     public TMP_Text waitingUserTurnText;
     //public List<GameObject> enemyList = new List<GameObject>();
@@ -26,16 +27,18 @@ public class UIManager : MonoBehaviour
     public bool isPanelOn = false;
 
     [SerializeField] private Button targetButtonPrefab; 
-    [SerializeField] private Transform buttonParent; 
-    
-    public PlayerRef localPlayer;
-    
+    [SerializeField] private Transform buttonParent;
+
+    private PlayerRef localPlayer;
+
     private void Awake()
     {
         Instance = this;
-        playerPanel.SetActive(false); 
+        playerChoicePanel.SetActive(false);
+
+        localPlayer = BasicSpawner.Instance._runner.LocalPlayer;
     }
-    
+
     private void Update()
     {
         if (cardListPanel.activeInHierarchy)
@@ -98,16 +101,14 @@ public class UIManager : MonoBehaviour
 
     void SelectTarget(PlayerRef target)
     {
-        playerPanel.SetActive(false);
+        playerChoicePanel.SetActive(false);
 
-        Debug.Log($"SelectTarget:: {localPlayer}");
-        
         Broadcaster.Instance.RPC_AttackPlayerNotify(localPlayer, target);
     }
 
     public void ShowPlayerSelectPanel(Action<string> onTargetSelectedCallback)
     {
-        playerPanel.SetActive(true);
+        playerChoicePanel.SetActive(true);
     }
     
     private Action<int> _onCardSelectedCallback;

@@ -1791,7 +1791,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &286373797
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3496,6 +3496,8 @@ MonoBehaviour:
   humanList: {fileID: 11400000, guid: 2fcfa21c6f3ca4849a4319dedb2d2e2b, type: 2}
   jobList: {fileID: 11400000, guid: 1f96b6aa8e58bcb40a94d9ac756f8f2a, type: 2}
   victoryCheck: {fileID: 726887972}
+  players: []
+  playerRef: []
 --- !u!4 &726887971
 Transform:
   m_ObjectHideFlags: 0
@@ -4427,7 +4429,8 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
-  NetworkedBehaviours: []
+  NetworkedBehaviours:
+  - {fileID: 1208964157}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &1208964157
 MonoBehaviour:
@@ -5971,7 +5974,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardListPanel: {fileID: 1191015416}
   waitingPanel: {fileID: 895710187}
-  playerPanel: {fileID: 1721326966}
+  playerChoicePanel: {fileID: 1721326966}
   waitingUserTurnText: {fileID: 1736640150}
   isPanelOn: 0
   targetButtonPrefab: {fileID: 4451373466979607884, guid: b2412b2720163d1458f0c9332d138c7a,

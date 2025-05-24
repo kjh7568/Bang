@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Fusion;
 using UnityEngine;
 
@@ -69,31 +70,73 @@ public class Broadcaster : NetworkBehaviour
         UIManager.Instance.cardListPanel.SetActive(false);
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_AttackPlayerNotify(PlayerRef localRef, PlayerRef targetRef)
     {
-        Debug.Log($"local::{localRef}");
-        Debug.Log($"target::{targetRef}");
+        // if (BasicSpawner.Instance._runner.LocalPlayer != targetRef) return;
         
-        var local = GetPlayer(localRef);
-        var target = GetPlayer(targetRef);
-        
-        Debug.Log($"{local.BasicStat.nickName}님이 {target.BasicStat.nickName}을(를) 공격 대상으로 선택함");
-
-        if (targetRef == Runner.LocalPlayer)
-        {
-            Debug.Log($"{target.BasicStat.nickName}님의 카드선택");
-
-            UIManager.Instance.ShowCardSelectionPanel((selectedCardID) =>
-            {
-                RPC_TargetSelectedCard(localRef, targetRef, selectedCardID);
-            });
-        }
-        else if (localRef == Runner.LocalPlayer)
-        {
-            UIManager.Instance.ShowWaitingForTargetPanel();
-        }
+        // 여기부턴 지정당한 사람이 해야할 행동 로직
+        // 1. 일단 빗나감이 있는지 확인
+        RPC_SearchMissed(targetRef);
+        // 2. 빗나감에 사용 유무를 묻는 패널 On
+        // 2-1. 빗나감이 없으면 Yes 버튼이 비활성화
+        // 3. 빗나감을 사용하지 않으면 컴벳 시스템을 통해 데미지 처리
+        // 3-1. 빗나감을 썼다면 모두에게 알림을 띄우고 다시 LocalRef의 카드 패널을 킴
     }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_SearchMissed(PlayerRef playerRef)
+    {
+        Debug.Log($"{BasicSpawner.Instance._runner}가 RPC 수신");
+
+        var hand = BasicSpawner.Instance.spawnedPlayers[playerRef].GetComponent<Player>().GameStat.InGameStat.HandCards;
+
+        foreach (var han in hand)
+        {
+            Debug.Log(han);
+        }
+        
+        bool found = hand.Any(c => c.Name == "Missed");
+
+        // 2) 호스트→클라이언트 응답 RPC 호출
+        RPC_ReturnSearchMissed(found, playerRef);
+    }
+
+    // 3) 응답용 RPC: 원본 호출자(입력 권한자)에서만 실행
+    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+    public void RPC_ReturnSearchMissed(bool hasMissed, PlayerRef playerRef)
+    {
+        if (BasicSpawner.Instance._runner.LocalPlayer != playerRef) return;
+
+        // 클라이언트 로직
+        Debug.Log($"Missed 카드 검색 결과: {hasMissed}");
+    }
+    
+    // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    // public void RPC_AttackPlayerNotify(PlayerRef localRef, PlayerRef targetRef)
+    // {
+    //     Debug.Log($"local::{localRef}");
+    //     Debug.Log($"target::{targetRef}");
+    //     
+    //     var local = GetPlayer(localRef);
+    //     var target = GetPlayer(targetRef);
+    //     
+    //     Debug.Log($"{local.BasicStat.nickName}님이 {target.BasicStat.nickName}을(를) 공격 대상으로 선택함");
+    //
+    //     if (targetRef == Runner.LocalPlayer)
+    //     {
+    //         Debug.Log($"{target.BasicStat.nickName}님의 카드선택");
+    //
+    //         UIManager.Instance.ShowCardSelectionPanel((selectedCardID) =>
+    //         {
+    //             RPC_TargetSelectedCard(localRef, targetRef, selectedCardID);
+    //         });
+    //     }
+    //     else if (localRef == Runner.LocalPlayer)
+    //     {
+    //         UIManager.Instance.ShowWaitingForTargetPanel();
+    //     }
+    // }
     
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_TargetSelectedCard(PlayerRef attacker, PlayerRef target, int cardIndex)
@@ -170,18 +213,18 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
     public void RPC_MakeCombatEvent(PlayerRef senderRef, PlayerRef targetRef, int damage, RpcInfo info = default)
     {
-        // Debug.Log($"호출 주체 {senderRef}");
-        //
-        // // var target = InGameSystem.Instance.GetPlayerOrNull(targetRef);
-        // var target = InGameSystem.Instance.GetPlayerOrNull(BasicSpawner.Instance._runner.LocalPlayer);
-        //
-        // CombatEvent combatEvent = new CombatEvent
-        // {
-        //     Sender = BasicSpawner.Instance.spawnedPlayers[senderRef].GetComponent<Player>().GameStat.InGameStat,
-        //     Receiver = target,
-        //     Damage = damage
-        // };
-        //
-        // InGameSystem.Instance.AddInGameEvent(combatEvent);
+        Debug.Log($"호출 주체 {senderRef}");
+        
+        // var target = InGameSystem.Instance.GetPlayerOrNull(targetRef);
+        var target = InGameSystem.Instance.GetPlayerOrNull(BasicSpawner.Instance._runner.LocalPlayer);
+        
+        CombatEvent combatEvent = new CombatEvent
+        {
+            Sender = BasicSpawner.Instance.spawnedPlayers[senderRef].GetComponent<Player>().GameStat.InGameStat,
+            Receiver = target,
+            Damage = damage
+        };
+        
+        InGameSystem.Instance.AddInGameEvent(combatEvent);
     }
 }

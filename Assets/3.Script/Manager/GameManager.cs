@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
     public List<Player> players;
     public List<PlayerRef> playerRef;
     
-    
     private void Awake()
     {
         Instance = this;
@@ -136,7 +135,7 @@ public class GameManager : MonoBehaviour
 
                 Broadcaster.Instance.LocalPlayer = player;
                 Broadcaster.Instance.LocalRef = playerRef;
-                UIManager.Instance.localPlayer = playerRef;
+                // UIManager.Instance.localPlayer = playerRef;
 
                 Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
             }
