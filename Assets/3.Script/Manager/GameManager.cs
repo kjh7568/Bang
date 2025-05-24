@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        
+        
+        Debug.Log($"나는 {Broadcaster.Instance.LocalPlayer}이다.");
     }
 
     private void Start()
