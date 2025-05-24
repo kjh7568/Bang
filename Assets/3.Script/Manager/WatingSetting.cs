@@ -18,7 +18,7 @@ public class WatingSetting : MonoBehaviour
     
     private void Start()
     {
-        sessionNumberText.text = $"Session number: {Server.Instance.GetSessionNumber()}";
+        sessionNumberText.text = $"Session number: {BasicSpawner.Instance.GetSessionNumber()}";
     }
 
     public void UpdateNicknameTexts(string[] nickNames)
@@ -44,11 +44,11 @@ public class WatingSetting : MonoBehaviour
         var scene = SceneRef.FromIndex(3);
         if (!scene.IsValid) return;
 
-        Server.Instance._runner.LoadScene(scene);
+        BasicSpawner.Instance._runner.LoadScene(scene);
     }
 
     public void OnBackButtonClicked()
     {
-        Server.Instance.LeaveSession();
+        BasicSpawner.Instance.LeaveSession();
     }
 }

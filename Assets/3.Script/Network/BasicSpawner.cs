@@ -9,9 +9,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
-public class Server : MonoBehaviour, INetworkRunnerCallbacks
+public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
-    public static Server Instance { get; private set; }
+    public static BasicSpawner Instance { get; private set; }
 
     [SerializeField] private GameObject[] playerPrefabs;
     [SerializeField] private NetworkObject broadcasterPrefabs;
@@ -179,32 +179,9 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
         {
             var ui = FindObjectOfType<WatingSetting>();
             ui?.ShowStartButton();
-            SyncPlayersToClients();
         }
     }
 
-    public void SyncPlayersToClients()
-    {
-        List<PlayerRef> playerRef = new();
-        List<Player> players = new();
-        
-        foreach (var temp in _runner.ActivePlayers)
-        {
-            playerRef.Add(temp); 
-        }
-
-        foreach (var temp in playerRef)
-        {
-            players.Add(spawnedPlayers[temp].GetComponent<Player>());
-        }
-        
-        var playerRefsArray = playerRef.ToArray();
-        var playerClassArray = players.ToArray();
-
-        // 초기 플레이어 정보 동기화
-        Broadcaster.Instance.RPC_SyncSpawnedPlayers(playerRefsArray, playerClassArray);
-    }
-    
     private async Task<Broadcaster> WaitForBroadcasterAsync()
     {
         Broadcaster broadcaster = null;

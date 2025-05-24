@@ -12,7 +12,7 @@ public class EnterRoomPanel : MonoBehaviour
     
     public void OnJoinButton()
     {
-        Server.Instance.StartGame(GameMode.Client, roomNumberInput.text);
+        BasicSpawner.Instance.StartGame(GameMode.Client, roomNumberInput.text);
     }
     
     public void OnBackButton()

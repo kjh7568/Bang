@@ -75,9 +75,9 @@ public class UIManager : MonoBehaviour
     {
         List<PlayerRef> targets = new List<PlayerRef>();
         
-        for (int i = 0; i < Broadcaster.Instance.allPlayerRefs.Length ; i++)
+        for (int i = 0; i < Broadcaster.Instance.syncedPlayerRefs.Length ; i++)
         {
-            var player = Broadcaster.Instance.allPlayerRefs[i];
+            var player = Broadcaster.Instance.syncedPlayerRefs[i];
             if (player == localPlayer)
                 continue;
     

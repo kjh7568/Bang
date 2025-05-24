@@ -59,7 +59,7 @@ public class CardSystem : MonoBehaviour
     {
         Debug.Log("초기 핸드 카드 분배");
     
-        foreach (var player in Broadcaster.Instance.allPlayerClass)
+        foreach (var player in GameManager.Instance.players)
         {
             int[] hand = new int[5];
             
