@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     public GameObject cardListPanel;
     public GameObject waitingPanel;
     public GameObject playerChoicePanel;
+    public GameObject missedPanel;
     
     public TMP_Text waitingUserTurnText;
     //public List<GameObject> enemyList = new List<GameObject>();
@@ -107,6 +108,11 @@ public class UIManager : MonoBehaviour
     }
 
     public void ShowPlayerSelectPanel(Action<string> onTargetSelectedCallback)
+    {
+        playerChoicePanel.SetActive(true);
+    }
+
+    public void ShowMissedPanel()
     {
         playerChoicePanel.SetActive(true);
     }

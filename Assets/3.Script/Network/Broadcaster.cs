@@ -52,13 +52,13 @@ public class Broadcaster : NetworkBehaviour
     {
         syncedPlayerRefs = new PlayerRef[playerRefs.Length];
         syncedPlayerClass = new Player[playerClass.Length];
-
+    
         syncedPlayerClass = playerClass;
         syncedPlayerRefs = playerRefs;
-
+    
         Debug.Log($"Received {playerRefs.Length} playerRefs");
         Debug.Log($"Received {playerClass.Length} playerClass");
-
+    
         GameManager.Instance.SetLocalPlayer(syncedPlayerRefs);
         UIManager.Instance.SetTargetSelectionUI();
     }
@@ -87,29 +87,23 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_SearchMissed(PlayerRef playerRef)
     {
-        Debug.Log($"{BasicSpawner.Instance._runner}가 RPC 수신");
-
         var hand = BasicSpawner.Instance.spawnedPlayers[playerRef].GetComponent<Player>().GameStat.InGameStat.HandCards;
-
-        foreach (var han in hand)
-        {
-            Debug.Log(han);
-        }
         
         bool found = hand.Any(c => c.Name == "Missed");
-
+        
+        Debug.Log(found);
         // 2) 호스트→클라이언트 응답 RPC 호출
-        RPC_ReturnSearchMissed(found, playerRef);
+        RPC_OpenUseMissedPanel(found, playerRef);
     }
 
     // 3) 응답용 RPC: 원본 호출자(입력 권한자)에서만 실행
-    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
-    public void RPC_ReturnSearchMissed(bool hasMissed, PlayerRef playerRef)
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_OpenUseMissedPanel(bool hasMissed, PlayerRef playerRef)
     {
         if (BasicSpawner.Instance._runner.LocalPlayer != playerRef) return;
+        Debug.Log("RPC_OpenUseMissedPanel");
 
-        // 클라이언트 로직
-        Debug.Log($"Missed 카드 검색 결과: {hasMissed}");
+        UIManager.Instance.ShowMissedPanel();
     }
     
     // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
