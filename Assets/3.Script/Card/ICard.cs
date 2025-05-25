@@ -27,6 +27,7 @@ public interface ICard
     CardType CardType { get; }
     CardSymbol CardSymbol { get; }
     Sprite CardSprite { get; }
+    bool IsTargetRequired { get; }
 
     void UseCard();
     void UseCard(Action onComplete);

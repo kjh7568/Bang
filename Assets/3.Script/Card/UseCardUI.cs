@@ -26,6 +26,9 @@ public class UseCardUI : MonoBehaviour
     public void OnCardClicked(int index)
     {
         UIManager.Instance.cardListPanel.SetActive(false);
+
+        //대상 지정이 필요한 카드인지를 알고
+        //필요하다면 패널을 킴
         
         Broadcaster.Instance.RPC_RequestUseCardList(BasicSpawner.Instance._runner.LocalPlayer, index);
     }

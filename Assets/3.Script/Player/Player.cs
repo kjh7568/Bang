@@ -43,7 +43,7 @@ public class Player : NetworkBehaviour
         var localObj = Runner.GetPlayerObject(Runner.LocalPlayer);
         Debug.Log($"Local player object ID: {localObj?.Id}");
 
-        if (Object.HasInputAuthority && Runner.LocalPlayer == playerRef)
+        if (Runner.LocalPlayer == playerRef)
         {
             // 내 턴이라면
             Debug.Log($"Runner.LocalPlayer :: {Runner.LocalPlayer}");

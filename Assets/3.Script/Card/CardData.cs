@@ -12,6 +12,7 @@ public class CardData : ScriptableObject, ICard
     [SerializeField] private CardType cardType;
     [SerializeField] private CardSymbol cardSymbol;
     [SerializeField] private Sprite cardSprite;
+    [SerializeField] private bool isTargetRequired;
     private ICard _cardImplementation;
 
     public int CardID => cardID;
@@ -20,6 +21,7 @@ public class CardData : ScriptableObject, ICard
     public CardType CardType => cardType;
     public CardSymbol CardSymbol => cardSymbol;
     public Sprite CardSprite => cardSprite;
+    public bool IsTargetRequired => isTargetRequired;
 
     public virtual void UseCard() { }
     
