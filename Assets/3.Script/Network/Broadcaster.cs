@@ -108,11 +108,18 @@ public class Broadcaster : NetworkBehaviour
     
     // 3-1)
     [Rpc(RpcSources.All, RpcTargets.All)]
-    public void RPC_BroadcastMissedUsage(PlayerRef localRef, PlayerRef targetRef)
+    public void RPC_BroadcastMissedUsage(bool useMissed, PlayerRef localRef, PlayerRef targetRef)
     {
         var player = GetPlayer(targetRef);
 
-        Debug.Log($"[게임 로그] {player.BasicStat.nickName}님이 '빗나감(Missed)' 카드를 사용했습니다!");
+        if (useMissed)
+        {
+            Debug.Log($"[게임 로그] {player.BasicStat.nickName}님이 '빗나감(Missed)' 카드를 사용했습니다!");
+        }
+        else
+        {
+            Debug.Log($"[게임 로그] {player.BasicStat.nickName}님이 '빗나감(Missed)' 카드를 사용하지 못하여 데미지를 받았습니다!");
+        }
         
         if (BasicSpawner.Instance._runner.LocalPlayer != localRef) return;
 

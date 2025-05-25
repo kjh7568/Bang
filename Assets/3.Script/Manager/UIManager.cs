@@ -21,6 +21,9 @@ public class UIManager : MonoBehaviour
     public TMP_Text waitingUserTurnText;
     
     [SerializeField] private Button useMissedButton;
+    [SerializeField] private Button dontUseMissedButton;
+    
+    private bool useMissed;
     
     //public List<GameObject> enemyList = new List<GameObject>();
     
@@ -118,6 +121,9 @@ public class UIManager : MonoBehaviour
 
     public void ShowMissedPanel(bool hasMissed, PlayerRef attackPlayerRef, PlayerRef targetPlayerRef)
     {
+        useMissedButton.onClick.RemoveAllListeners();
+        dontUseMissedButton.onClick.RemoveAllListeners();
+        
         waitingPanel.SetActive(false);
         missedPanel.SetActive(true);
 
@@ -125,26 +131,28 @@ public class UIManager : MonoBehaviour
         
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible    = true;
-
-        returnPlayer = attackPlayerRef;
         
         useMissedButton.onClick.AddListener(() =>
         {
-            waitingPanel.SetActive(true);
             missedPanel.SetActive(false);
+            waitingPanel.SetActive(true);
+
+            useMissed = true;
             
-            Broadcaster.Instance.RPC_BroadcastMissedUsage(attackPlayerRef, targetPlayerRef);
+            Broadcaster.Instance.RPC_BroadcastMissedUsage(useMissed, attackPlayerRef, targetPlayerRef);
+        });
+        
+        dontUseMissedButton.onClick.AddListener(() =>
+        {
+            missedPanel.SetActive(false);
+            waitingPanel.SetActive(true);
+            
+            useMissed = false;
+            
+            Broadcaster.Instance.RPC_MakeCombatEvent(attackPlayerRef, BasicSpawner.Instance._runner.LocalPlayer, 1);
+            Broadcaster.Instance.RPC_BroadcastMissedUsage(useMissed, attackPlayerRef, targetPlayerRef);
         });
     }
-
-    public void DontUseMissed()
-    {
-        waitingPanel.SetActive(true);
-        missedPanel.SetActive(false);
-        
-        Broadcaster.Instance.RPC_MakeCombatEvent(returnPlayer, BasicSpawner.Instance._runner.LocalPlayer, 1);
-    }
-    
     
     private Action<int> _onCardSelectedCallback;
     

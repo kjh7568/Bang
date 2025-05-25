@@ -204,19 +204,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 15825077}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1853056235}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: DontUseMissed
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &15825077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5991,6 +5979,7 @@ MonoBehaviour:
   missedPanel: {fileID: 286373796}
   waitingUserTurnText: {fileID: 1736640150}
   useMissedButton: {fileID: 1836420865}
+  dontUseMissedButton: {fileID: 15825076}
   isPanelOn: 0
   targetButtonPrefab: {fileID: 4451373466979607884, guid: b2412b2720163d1458f0c9332d138c7a,
     type: 3}
