@@ -90,14 +90,12 @@ public class Broadcaster : NetworkBehaviour
     {
         var hand = BasicSpawner.Instance.spawnedPlayers[targetRef].GetComponent<Player>().GameStat.InGameStat.HandCards;
         
-        bool found = hand.Any(c => c.Name == "Missed");
+        bool found = hand.Any(c => c != null && c.Name == "Missed");
 
         Debug.Log(found);
-        // 2) 호스트→클라이언트 응답 RPC 호출
         RPC_OpenUseMissedPanel(found, localRef, targetRef);
     }
 
-    // 3) 응답용 RPC: 원본 호출자(입력 권한자)에서만 실행
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_OpenUseMissedPanel(bool hasMissed, PlayerRef attackPlayerRef, PlayerRef targetPlayerRef)
     {
@@ -106,7 +104,6 @@ public class Broadcaster : NetworkBehaviour
         UIManager.Instance.ShowMissedPanel(hasMissed, attackPlayerRef, targetPlayerRef);
     }
     
-    // 3-1)
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_BroadcastMissedUsage(bool useMissed, PlayerRef localRef, PlayerRef targetRef)
     {
@@ -217,14 +214,14 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log($"전달된 카드 Number: {cardIdx}");
 
         var playerComponent = BasicSpawner.Instance.spawnedPlayers[playerRef].GetComponent<Player>();
-        var card = playerComponent.GameStat.InGameStat.HandCards[cardIdx];
+        var cards = playerComponent.GameStat.InGameStat.HandCards;
 
-        if (card.IsTargetRequired)
+        if (cards[cardIdx].IsTargetRequired)
         {
             RPC_ShowPlayerSelectPanel(playerRef);
+            cards[cardIdx].UseCard(cardIdx);
+            cards[cardIdx] = null;
         }
-        
-        card.UseCard(() => { Debug.Log("카드 효과 완료 → 다음 카드 선택 패널 표시"); });
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]

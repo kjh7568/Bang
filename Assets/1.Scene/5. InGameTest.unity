@@ -2988,6 +2988,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b9997f36392e49258ee42607a3e267d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardButtons:
+  - {fileID: 20989743}
+  - {fileID: 229979370}
+  - {fileID: 560705372}
+  - {fileID: 891913277}
+  - {fileID: 513956712}
 --- !u!4 &561337592
 Transform:
   m_ObjectHideFlags: 0

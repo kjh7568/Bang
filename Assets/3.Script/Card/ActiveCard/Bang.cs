@@ -7,6 +7,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Bang", menuName = "Card/Active/Bang")]
 public class Bang : CardData
 {
+    
+    
     public override void UseCard(Action onComplete)
     {
         Debug.Log("뱅 실행!");

@@ -23,7 +23,7 @@ public class CardData : ScriptableObject, ICard
     public Sprite CardSprite => cardSprite;
     public bool IsTargetRequired => isTargetRequired;
 
-    public virtual void UseCard() { }
+    public virtual void UseCard(int idx) { }
     
     public virtual void UseCard(Action onComplete) { }
 }

@@ -29,6 +29,6 @@ public interface ICard
     Sprite CardSprite { get; }
     bool IsTargetRequired { get; }
 
-    void UseCard();
+    void UseCard(int idx);
     void UseCard(Action onComplete);
 }
