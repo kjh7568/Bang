@@ -73,7 +73,6 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_AttackPlayerNotify(PlayerRef localRef, PlayerRef targetRef)
     {
-        // if (BasicSpawner.Instance._runner.LocalPlayer != targetRef) return;
 
         // 여기부턴 지정당한 사람이 해야할 행동 로직
         // 1. 일단 빗나감이 있는지 확인
@@ -123,32 +122,51 @@ public class Broadcaster : NetworkBehaviour
         UIManager.Instance.cardListPanel.SetActive(true);
     }
 
-    // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    // public void RPC_AttackPlayerNotify(PlayerRef localRef, PlayerRef targetRef)
-    // {
-    //     Debug.Log($"local::{localRef}");
-    //     Debug.Log($"target::{targetRef}");
-    //     
-    //     var local = GetPlayer(localRef);
-    //     var target = GetPlayer(targetRef);
-    //     
-    //     Debug.Log($"{local.BasicStat.nickName}님이 {target.BasicStat.nickName}을(를) 공격 대상으로 선택함");
-    //
-    //     if (targetRef == Runner.LocalPlayer)
-    //     {
-    //         Debug.Log($"{target.BasicStat.nickName}님의 카드선택");
-    //
-    //         UIManager.Instance.ShowCardSelectionPanel((selectedCardID) =>
-    //         {
-    //             RPC_TargetSelectedCard(localRef, targetRef, selectedCardID);
-    //         });
-    //     }
-    //     else if (localRef == Runner.LocalPlayer)
-    //     {
-    //         UIManager.Instance.ShowWaitingForTargetPanel();
-    //     }
-    // }
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_DrawCard(PlayerRef playerRef, int addCount)
+    {
+        Debug.Log($"{playerRef.ToString()} 덱에 카드 {addCount}장 추가");
+        
+        int nullCount = 0;
+        List<int> nullIndexes = new List<int>();
+        
+        var playerComponent = BasicSpawner.Instance.spawnedPlayers[playerRef].GetComponent<Player>();
+        var handCards = playerComponent.GameStat.InGameStat.HandCards;
+        var handCardsId = playerComponent.GameStat.InGameStat.HandCardsId;
+        
+        for (int i = 0; i < handCards.Length; i++)
+        {
+            if (handCards[i] == null)
+            {
+                nullIndexes.Add(i);
+                nullCount++;
+            }
+        }
 
+        while (nullCount > 0)
+        {
+            for (int i = 0; i < addCount; i++)
+            {
+                handCards[nullIndexes[i]] = CardSystem.Instance.initDeck[0];
+                handCardsId[nullIndexes[i]] = CardSystem.Instance.initDeck[0].CardID;
+                RPC_OnCardButton(playerRef, nullIndexes[i]);
+                CardSystem.Instance.initDeck.RemoveAt(0);
+
+                nullCount--;
+            }
+        }
+        
+        playerComponent.RPC_ReceiveToHandCardsData(handCardsId);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RPC_OnCardButton(PlayerRef playerRef, int index)
+    {
+        if (BasicSpawner.Instance._runner.LocalPlayer != playerRef) return;
+        
+        UseCardUI.Instance.cardButtons[index].SetActive(true);
+    }
+    
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_TargetSelectedCard(PlayerRef attacker, PlayerRef target, int cardIndex)
     {

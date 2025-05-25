@@ -45,7 +45,7 @@ public class Player : NetworkBehaviour
 
         if (Runner.LocalPlayer == playerRef)
         {
-            CardSystem.Instance.AddHandCards(playerRef, 1);
+            Broadcaster.Instance.RPC_DrawCard(playerRef, 1);
             
             Debug.Log($"Runner.LocalPlayer :: {Runner.LocalPlayer}");
             UIManager.Instance.cardListPanel.SetActive(true);

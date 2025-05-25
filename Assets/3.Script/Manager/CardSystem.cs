@@ -30,7 +30,7 @@ public class CardSystem : MonoBehaviour
     // 카드 id 초기 리스트
     List<int> cardToIdList = new List<int>();
     // 셔플된 초기 카드
-    private List<CardData> initDeck = new List<CardData>();
+    public List<CardData> initDeck = new List<CardData>();
     // 사용된 카드
     private List<CardData> usedDeck = new List<CardData>();
     
@@ -69,7 +69,7 @@ public class CardSystem : MonoBehaviour
             ICard[] hand = new ICard[5];
             int[] handID = new int[5];
             
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 5; i++)
             {
                 hand[i] = initDeck[0];
                 handID[i] = initDeck[0].CardID;
@@ -98,42 +98,6 @@ public class CardSystem : MonoBehaviour
             // }
         }
     }
-    
-    public void AddHandCards(PlayerRef playerRef, int addCount)
-    {
-        Debug.Log($"{playerRef.ToString()} 덱에 카드 {addCount}장 추가");
-        
-        int nullCount = 0;
-        List<int> nullIndexes = new List<int>();
-        
-        var playerComponent = BasicSpawner.Instance.spawnedPlayers[playerRef].GetComponent<Player>();
-        var handCards = playerComponent.GameStat.InGameStat.HandCards;
-        var handCardsId = playerComponent.GameStat.InGameStat.HandCardsId;
-        
-        for (int i = 0; i < handCards.Length; i++)
-        {
-            if (handCards[i] == null)
-            {
-                nullIndexes.Add(i);
-                nullCount++;
-            }
-        }
-
-        while (nullCount > 0)
-        {
-            for (int i = 0; i < addCount; i++)
-            {
-                handCards[nullIndexes[i]] = initDeck[0];
-                handCardsId[nullIndexes[i]] = initDeck[0].CardID;
-                initDeck.RemoveAt(0);
-
-                nullCount--;
-            }
-        }
-        
-        playerComponent.RPC_ReceiveToHandCardsData(handCardsId);
-    }
-
     
     private void MakeDeck()
     {
