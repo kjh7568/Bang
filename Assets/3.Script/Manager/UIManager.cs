@@ -19,6 +19,9 @@ public class UIManager : MonoBehaviour
     public GameObject missedPanel;
     
     public TMP_Text waitingUserTurnText;
+    
+    [SerializeField] private Button useMissedButton;
+    
     //public List<GameObject> enemyList = new List<GameObject>();
     
     // 선택 완료 시 실행할 콜백
@@ -112,9 +115,15 @@ public class UIManager : MonoBehaviour
         playerChoicePanel.SetActive(true);
     }
 
-    public void ShowMissedPanel()
+    public void ShowMissedPanel(bool hasMissed)
     {
-        playerChoicePanel.SetActive(true);
+        waitingPanel.SetActive(false);
+        missedPanel.SetActive(true);
+
+        useMissedButton.enabled = hasMissed;
+        
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible    = true;
     }
     
     private Action<int> _onCardSelectedCallback;

@@ -101,9 +101,8 @@ public class Broadcaster : NetworkBehaviour
     public void RPC_OpenUseMissedPanel(bool hasMissed, PlayerRef playerRef)
     {
         if (BasicSpawner.Instance._runner.LocalPlayer != playerRef) return;
-        Debug.Log("RPC_OpenUseMissedPanel");
 
-        UIManager.Instance.ShowMissedPanel();
+        UIManager.Instance.ShowMissedPanel(hasMissed);
     }
     
     // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
