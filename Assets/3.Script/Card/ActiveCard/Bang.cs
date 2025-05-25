@@ -19,10 +19,8 @@ public class Bang : CardData
         });
     }
 
-
     public void EffectBang()
     {
         Debug.Log($"{BasicSpawner.Instance._runner.LocalPlayer}가 뱅을 사용!");
-        Broadcaster.Instance.RPC_MakeCombatEvent(BasicSpawner.Instance._runner.LocalPlayer, BasicSpawner.Instance._runner.LocalPlayer, 1);
     }
 }

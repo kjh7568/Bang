@@ -34,6 +34,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform buttonParent;
 
     private PlayerRef localPlayer;
+    private PlayerRef returnPlayer;
 
     private void Awake()
     {
@@ -115,7 +116,7 @@ public class UIManager : MonoBehaviour
         playerChoicePanel.SetActive(true);
     }
 
-    public void ShowMissedPanel(bool hasMissed)
+    public void ShowMissedPanel(bool hasMissed, PlayerRef playerRef)
     {
         waitingPanel.SetActive(false);
         missedPanel.SetActive(true);
@@ -124,7 +125,15 @@ public class UIManager : MonoBehaviour
         
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible    = true;
+
+        returnPlayer = playerRef;
     }
+
+    public void DontUseMissed()
+    {
+        Broadcaster.Instance.RPC_MakeCombatEvent(BasicSpawner.Instance._runner.LocalPlayer, returnPlayer, 1);
+    }
+    
     
     private Action<int> _onCardSelectedCallback;
     
