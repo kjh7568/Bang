@@ -77,32 +77,46 @@ public class Broadcaster : NetworkBehaviour
         
         // 여기부턴 지정당한 사람이 해야할 행동 로직
         // 1. 일단 빗나감이 있는지 확인
-        RPC_SearchMissed(targetRef);
+        RPC_SearchMissed(localRef, targetRef);
         // 2. 빗나감에 사용 유무를 묻는 패널 On
         // 2-1. 빗나감이 없으면 Yes 버튼이 비활성화
         // 3. 빗나감을 사용하지 않으면 컴벳 시스템을 통해 데미지 처리
+        
         // 3-1. 빗나감을 썼다면 모두에게 알림을 띄우고 다시 LocalRef의 카드 패널을 킴
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RPC_SearchMissed(PlayerRef playerRef)
+    public void RPC_SearchMissed(PlayerRef localRef, PlayerRef targetRef)
     {
-        var hand = BasicSpawner.Instance.spawnedPlayers[playerRef].GetComponent<Player>().GameStat.InGameStat.HandCards;
+        var hand = BasicSpawner.Instance.spawnedPlayers[targetRef].GetComponent<Player>().GameStat.InGameStat.HandCards;
         
         bool found = hand.Any(c => c.Name == "Missed");
         
         Debug.Log(found);
         // 2) 호스트→클라이언트 응답 RPC 호출
-        RPC_OpenUseMissedPanel(found, playerRef);
+        RPC_OpenUseMissedPanel(found, localRef, targetRef);
     }
 
     // 3) 응답용 RPC: 원본 호출자(입력 권한자)에서만 실행
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_OpenUseMissedPanel(bool hasMissed, PlayerRef playerRef)
+    public void RPC_OpenUseMissedPanel(bool hasMissed, PlayerRef localRef, PlayerRef targetRef)
     {
-        if (BasicSpawner.Instance._runner.LocalPlayer != playerRef) return;
+        if (BasicSpawner.Instance._runner.LocalPlayer != targetRef) return;
 
-        UIManager.Instance.ShowMissedPanel(hasMissed);
+        UIManager.Instance.ShowMissedPanel(hasMissed, localRef, targetRef);
+    }
+    
+    // 3-1)
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_BroadcastMissedUsage(PlayerRef localRef, PlayerRef targetRef)
+    {
+        var player = GetPlayer(targetRef);
+
+        Debug.Log($"[게임 로그] {player.BasicStat.nickName}님이 '빗나감(Missed)' 카드를 사용했습니다!");
+        
+        if (BasicSpawner.Instance._runner.LocalPlayer != localRef) return;
+
+        UIManager.Instance.cardListPanel.SetActive(true);
     }
     
     // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]

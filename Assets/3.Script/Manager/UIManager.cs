@@ -94,7 +94,7 @@ public class UIManager : MonoBehaviour
         foreach (PlayerRef target in targets)
         {
             Button btn = Instantiate(targetButtonPrefab, buttonParent);
-            //btn.GetComponentInChildren<TextMeshProUGUI>().text = target.name;
+            btn.GetComponentInChildren<TextMeshProUGUI>().text = target.ToString();
         
             btn.onClick.AddListener(() =>
             {
@@ -103,7 +103,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void SelectTarget(PlayerRef target)
+    public void SelectTarget(PlayerRef target)
     {
         playerChoicePanel.SetActive(false);
 
@@ -115,7 +115,7 @@ public class UIManager : MonoBehaviour
         playerChoicePanel.SetActive(true);
     }
 
-    public void ShowMissedPanel(bool hasMissed)
+    public void ShowMissedPanel(bool hasMissed, PlayerRef localRef, PlayerRef playerRef)
     {
         waitingPanel.SetActive(false);
         missedPanel.SetActive(true);
@@ -124,6 +124,11 @@ public class UIManager : MonoBehaviour
         
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible    = true;
+        
+        useMissedButton.onClick.AddListener(() =>
+        {
+            Broadcaster.Instance.RPC_BroadcastMissedUsage(localRef, playerRef);
+        });
     }
     
     private Action<int> _onCardSelectedCallback;
