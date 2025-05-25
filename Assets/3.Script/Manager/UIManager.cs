@@ -34,6 +34,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform buttonParent;
 
     private PlayerRef localPlayer;
+    private PlayerRef returnPlayer;
 
     private void Awake()
     {
@@ -130,6 +131,12 @@ public class UIManager : MonoBehaviour
             Broadcaster.Instance.RPC_BroadcastMissedUsage(localRef, playerRef);
         });
     }
+
+    public void DontUseMissed()
+    {
+        Broadcaster.Instance.RPC_MakeCombatEvent(BasicSpawner.Instance._runner.LocalPlayer, returnPlayer, 1);
+    }
+    
     
     private Action<int> _onCardSelectedCallback;
     

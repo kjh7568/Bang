@@ -15,11 +15,11 @@ public class Broadcaster : NetworkBehaviour
 
     public Player LocalPlayer;
     public PlayerRef LocalRef;
-    
+
     private void Awake()
     {
         Instance = this;
-        
+
         DontDestroyOnLoad(gameObject);
     }
 
@@ -30,7 +30,7 @@ public class Broadcaster : NetworkBehaviour
         if (ui != null)
             ui.UpdateNicknameTexts(nicknames);
     }
-    
+
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_SendNicknameToHost(string nickname, RpcInfo info = default)
     {
@@ -52,13 +52,13 @@ public class Broadcaster : NetworkBehaviour
     {
         syncedPlayerRefs = new PlayerRef[playerRefs.Length];
         syncedPlayerClass = new Player[playerClass.Length];
-    
+
         syncedPlayerClass = playerClass;
         syncedPlayerRefs = playerRefs;
-    
+
         Debug.Log($"Received {playerRefs.Length} playerRefs");
         Debug.Log($"Received {playerClass.Length} playerClass");
-    
+
         GameManager.Instance.SetLocalPlayer(syncedPlayerRefs);
         UIManager.Instance.SetTargetSelectionUI();
     }
@@ -74,7 +74,7 @@ public class Broadcaster : NetworkBehaviour
     public void RPC_AttackPlayerNotify(PlayerRef localRef, PlayerRef targetRef)
     {
         // if (BasicSpawner.Instance._runner.LocalPlayer != targetRef) return;
-        
+
         // 여기부턴 지정당한 사람이 해야할 행동 로직
         // 1. 일단 빗나감이 있는지 확인
         RPC_SearchMissed(localRef, targetRef);
@@ -91,7 +91,7 @@ public class Broadcaster : NetworkBehaviour
         var hand = BasicSpawner.Instance.spawnedPlayers[targetRef].GetComponent<Player>().GameStat.InGameStat.HandCards;
         
         bool found = hand.Any(c => c.Name == "Missed");
-        
+
         Debug.Log(found);
         // 2) 호스트→클라이언트 응답 RPC 호출
         RPC_OpenUseMissedPanel(found, localRef, targetRef);
@@ -118,7 +118,7 @@ public class Broadcaster : NetworkBehaviour
 
         UIManager.Instance.cardListPanel.SetActive(true);
     }
-    
+
     // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     // public void RPC_AttackPlayerNotify(PlayerRef localRef, PlayerRef targetRef)
     // {
@@ -144,7 +144,7 @@ public class Broadcaster : NetworkBehaviour
     //         UIManager.Instance.ShowWaitingForTargetPanel();
     //     }
     // }
-    
+
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_TargetSelectedCard(PlayerRef attacker, PlayerRef target, int cardIndex)
     {
@@ -152,20 +152,20 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log($"target:: {target}");
         Debug.Log($"cardId:: {cardIndex}");
 
-        if (Runner.LocalPlayer != attacker) return; 
+        if (Runner.LocalPlayer != attacker) return;
         var attackPlayer = GetPlayer(attacker);
         var targetPlayer = GetPlayer(target);
-        
+
         Debug.Log($"targetPlayer:: {targetPlayer.GameStat.InGameStat.HandCards[cardIndex]}");
-        
+
         var selectedCard = targetPlayer.GameStat.InGameStat.HandCards[cardIndex];
-        
+
         Debug.Log($"selectedCard:: {selectedCard}");
-        
+
         if (targetPlayer != null)
         {
             Debug.Log($"{attackPlayer.BasicStat.nickName}님의 공격이 끝났습니다.");
-            
+
             Debug.Log($"{targetPlayer.BasicStat.nickName}님이 {selectedCard.Name}, {selectedCard.CardID} 카드를 선택함");
         }
         else
@@ -175,7 +175,7 @@ public class Broadcaster : NetworkBehaviour
 
         TurnManager.Instance.ContinueTurn(attacker);
     }
-    
+
     public Player GetPlayer(PlayerRef playerRef)
     {
         for (int i = 0; i < syncedPlayerClass.Length; i++)
@@ -186,7 +186,7 @@ public class Broadcaster : NetworkBehaviour
 
         return null;
     }
-    
+
     // [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     // public void RPC_SetLocalPlayerRef(PlayerRef refToSet)
     // {
@@ -211,27 +211,33 @@ public class Broadcaster : NetworkBehaviour
 
         var playerComponent = BasicSpawner.Instance.spawnedPlayers[playerRef].GetComponent<Player>();
         var card = playerComponent.GameStat.InGameStat.HandCards[cardIdx];
-        
-        card.UseCard(() => {
-            Debug.Log("카드 효과 완료 → 다음 카드 선택 패널 표시");
-        });
+
+        card.UseCard(() => { Debug.Log("카드 효과 완료 → 다음 카드 선택 패널 표시"); });
     }
 
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_MakeCombatEvent(PlayerRef senderRef, PlayerRef targetRef, int damage, RpcInfo info = default)
     {
         Debug.Log($"호출 주체 {senderRef}");
-        
-        // var target = InGameSystem.Instance.GetPlayerOrNull(targetRef);
-        var target = InGameSystem.Instance.GetPlayerOrNull(BasicSpawner.Instance._runner.LocalPlayer);
-        
-        CombatEvent combatEvent = new CombatEvent
+
+        var target = InGameSystem.Instance.GetPlayerOrNull(targetRef);
+
+        if (target != null)
         {
-            Sender = BasicSpawner.Instance.spawnedPlayers[senderRef].GetComponent<Player>().GameStat.InGameStat,
-            Receiver = target,
-            Damage = damage
-        };
-        
-        InGameSystem.Instance.AddInGameEvent(combatEvent);
+            CombatEvent combatEvent = new CombatEvent
+            {
+                Sender = BasicSpawner.Instance.spawnedPlayers[senderRef].GetComponent<Player>().GameStat.InGameStat,
+                Receiver = target,
+                Damage = damage
+            };
+            
+            InGameSystem.Instance.AddInGameEvent(combatEvent);
+            
+            //RPC로 체력 변경 사항 보내주기
+        }
+        else
+        {
+            Debug.LogWarning("타겟이 없습니다.");
+        }
     }
 }
