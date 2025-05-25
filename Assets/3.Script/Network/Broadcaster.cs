@@ -99,11 +99,11 @@ public class Broadcaster : NetworkBehaviour
 
     // 3) 응답용 RPC: 원본 호출자(입력 권한자)에서만 실행
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_OpenUseMissedPanel(bool hasMissed, PlayerRef localRef, PlayerRef targetRef)
+    public void RPC_OpenUseMissedPanel(bool hasMissed, PlayerRef attackPlayerRef, PlayerRef targetPlayerRef)
     {
-        if (BasicSpawner.Instance._runner.LocalPlayer != targetRef) return;
+        if (BasicSpawner.Instance._runner.LocalPlayer != targetPlayerRef) return;
 
-        UIManager.Instance.ShowMissedPanel(hasMissed, localRef, targetRef);
+        UIManager.Instance.ShowMissedPanel(hasMissed, attackPlayerRef, targetPlayerRef);
     }
     
     // 3-1)

@@ -116,7 +116,7 @@ public class UIManager : MonoBehaviour
         playerChoicePanel.SetActive(true);
     }
 
-    public void ShowMissedPanel(bool hasMissed, PlayerRef localRef, PlayerRef playerRef)
+    public void ShowMissedPanel(bool hasMissed, PlayerRef attackPlayerRef, PlayerRef targetPlayerRef)
     {
         waitingPanel.SetActive(false);
         missedPanel.SetActive(true);
@@ -125,13 +125,15 @@ public class UIManager : MonoBehaviour
         
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible    = true;
+
+        returnPlayer = attackPlayerRef;
         
         useMissedButton.onClick.AddListener(() =>
         {
             waitingPanel.SetActive(true);
             missedPanel.SetActive(false);
             
-            Broadcaster.Instance.RPC_BroadcastMissedUsage(localRef, playerRef);
+            Broadcaster.Instance.RPC_BroadcastMissedUsage(attackPlayerRef, targetPlayerRef);
         });
     }
 
@@ -140,7 +142,7 @@ public class UIManager : MonoBehaviour
         waitingPanel.SetActive(true);
         missedPanel.SetActive(false);
         
-        Broadcaster.Instance.RPC_MakeCombatEvent(BasicSpawner.Instance._runner.LocalPlayer, returnPlayer, 1);
+        Broadcaster.Instance.RPC_MakeCombatEvent(returnPlayer, BasicSpawner.Instance._runner.LocalPlayer, 1);
     }
     
     

@@ -45,25 +45,8 @@ public class Player : NetworkBehaviour
 
         if (Runner.LocalPlayer == playerRef)
         {
-            // 내 턴이라면
             Debug.Log($"Runner.LocalPlayer :: {Runner.LocalPlayer}");
             UIManager.Instance.cardListPanel.SetActive(true);
-
-            // 선택된 카드 인덱스를 서버에 보낼 버튼 이벤트 등록
-
-
-            // TurnManager.Instance.useCardButton.onClick.RemoveAllListeners();
-            // TurnManager.Instance.useCardButton.onClick.AddListener(() =>
-            // {
-            //     int[] selectedIndices = UseCardUI.Instance.cardIndex.ToArray();
-            //     Debug.Log($"[클라이언트] 선택된 카드 인덱스: {string.Join(",", selectedIndices)}");
-            //
-            //     // RPC 호출
-            //     this.RPC_RequestUseCardList(Runner.LocalPlayer, selectedIndices);
-            //
-            //     // UI 정리
-            //     UIManager.Instance.cardListPanel.SetActive(false);
-            // });
         }
         else
         {
