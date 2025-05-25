@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Fusion;
 using Unity.VisualScripting;
 using UnityEngine;
 using Enumerable = System.Linq.Enumerable;
@@ -16,6 +17,8 @@ public enum DrawType
 
 public class CardSystem : MonoBehaviour
 {
+    public static CardSystem Instance;
+    
     //함수명, 멤버 변수 명 등 전부 원하시는대로 바꿔도 됨
     [SerializeField] private DeckData deckData;
     [SerializeField] private GameObject[] cardPrefab;
@@ -33,6 +36,8 @@ public class CardSystem : MonoBehaviour
     
     private void Awake()
     {
+        Instance = this;
+        
         // 카드 아이디 컨버팅
         ConvertCardListToIdList();
     }
@@ -64,7 +69,7 @@ public class CardSystem : MonoBehaviour
             ICard[] hand = new ICard[5];
             int[] handID = new int[5];
             
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 3; i++)
             {
                 hand[i] = initDeck[0];
                 handID[i] = initDeck[0].CardID;
@@ -94,9 +99,39 @@ public class CardSystem : MonoBehaviour
         }
     }
     
-    public void addHandCards()
+    public void AddHandCards(PlayerRef playerRef, int addCount)
     {
-        Debug.Log("추가 카드 분배");
+        Debug.Log($"{playerRef.ToString()} 덱에 카드 {addCount}장 추가");
+        
+        int nullCount = 0;
+        List<int> nullIndexes = new List<int>();
+        
+        var playerComponent = BasicSpawner.Instance.spawnedPlayers[playerRef].GetComponent<Player>();
+        var handCards = playerComponent.GameStat.InGameStat.HandCards;
+        var handCardsId = playerComponent.GameStat.InGameStat.HandCardsId;
+        
+        for (int i = 0; i < handCards.Length; i++)
+        {
+            if (handCards[i] == null)
+            {
+                nullIndexes.Add(i);
+                nullCount++;
+            }
+        }
+
+        while (nullCount > 0)
+        {
+            for (int i = 0; i < addCount; i++)
+            {
+                handCards[nullIndexes[i]] = initDeck[0];
+                handCardsId[nullIndexes[i]] = initDeck[0].CardID;
+                initDeck.RemoveAt(0);
+
+                nullCount--;
+            }
+        }
+        
+        playerComponent.RPC_ReceiveToHandCardsData(handCardsId);
     }
 
     
