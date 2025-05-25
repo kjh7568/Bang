@@ -128,12 +128,18 @@ public class UIManager : MonoBehaviour
         
         useMissedButton.onClick.AddListener(() =>
         {
+            waitingPanel.SetActive(true);
+            missedPanel.SetActive(false);
+            
             Broadcaster.Instance.RPC_BroadcastMissedUsage(localRef, playerRef);
         });
     }
 
     public void DontUseMissed()
     {
+        waitingPanel.SetActive(true);
+        missedPanel.SetActive(false);
+        
         Broadcaster.Instance.RPC_MakeCombatEvent(BasicSpawner.Instance._runner.LocalPlayer, returnPlayer, 1);
     }
     
