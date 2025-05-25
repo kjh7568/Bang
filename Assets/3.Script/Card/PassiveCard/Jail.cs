@@ -10,12 +10,12 @@ public class Jail : CardData
     {
         Debug.Log("Jail : 플레이어 선택 중"); 
 
-        UIManager.Instance.ShowPlayerSelectPanel((selectedPlayerName) => {
-            Debug.Log($"선택된 플레이어: {selectedPlayerName}");
-            Debug.Log("감옥 카드 효과 발동");
-
-            // 다음 카드로 넘어가기
-            onComplete?.Invoke(); 
-        });
+        // UIManager.Instance.ShowPlayerSelectPanel((selectedPlayerName) => {
+        //     Debug.Log($"선택된 플레이어: {selectedPlayerName}");
+        //     Debug.Log("감옥 카드 효과 발동");
+        //
+        //     // 다음 카드로 넘어가기
+        //     onComplete?.Invoke(); 
+        // });
     }
 }

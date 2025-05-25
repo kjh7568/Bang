@@ -111,7 +111,7 @@ public class UIManager : MonoBehaviour
         Broadcaster.Instance.RPC_AttackPlayerNotify(localPlayer, target);
     }
 
-    public void ShowPlayerSelectPanel(Action<string> onTargetSelectedCallback)
+    public void ShowPlayerSelectPanel()
     {
         playerChoicePanel.SetActive(true);
     }

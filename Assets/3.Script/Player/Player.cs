@@ -37,8 +37,13 @@ public class Player : NetworkBehaviour
     public void RPC_StartPlayerTurn(PlayerRef playerRef)
     {
         Debug.Log($"[Client] 플레이어 턴 시작: {playerRef}");
+        Debug.Log($"HasInputAuthority: {Object.HasInputAuthority}, LocalPlayer: {Runner.LocalPlayer}, playerRef: {playerRef}");
 
-        if (Runner.LocalPlayer == playerRef)
+        Debug.Log($"Object.NetworkObjectId: {Object.Id}, HasInputAuthority: {Object.HasInputAuthority}");
+        var localObj = Runner.GetPlayerObject(Runner.LocalPlayer);
+        Debug.Log($"Local player object ID: {localObj?.Id}");
+
+        if (Object.HasInputAuthority && Runner.LocalPlayer == playerRef)
         {
             // 내 턴이라면
             Debug.Log($"Runner.LocalPlayer :: {Runner.LocalPlayer}");
@@ -59,7 +64,6 @@ public class Player : NetworkBehaviour
             //     // UI 정리
             //     UIManager.Instance.cardListPanel.SetActive(false);
             // });
-
         }
         else
         {

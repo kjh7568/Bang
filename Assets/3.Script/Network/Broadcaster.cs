@@ -212,9 +212,22 @@ public class Broadcaster : NetworkBehaviour
         var playerComponent = BasicSpawner.Instance.spawnedPlayers[playerRef].GetComponent<Player>();
         var card = playerComponent.GameStat.InGameStat.HandCards[cardIdx];
 
+        // if (card.usable)
+        // {
+        //     RPC_ShowPlayerSelectPanel(playerRef);
+        // }
+        
         card.UseCard(() => { Debug.Log("카드 효과 완료 → 다음 카드 선택 패널 표시"); });
     }
 
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_ShowPlayerSelectPanel(PlayerRef playerRef)
+    {
+        if (BasicSpawner.Instance._runner.LocalPlayer != playerRef) return;
+
+        UIManager.Instance.ShowPlayerSelectPanel();
+    }
+    
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_MakeCombatEvent(PlayerRef senderRef, PlayerRef targetRef, int damage, RpcInfo info = default)
     {

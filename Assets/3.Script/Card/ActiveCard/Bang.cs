@@ -10,13 +10,7 @@ public class Bang : CardData
     public override void UseCard(Action onComplete)
     {
         Debug.Log("뱅 실행!");
-        Debug.Log("Bang : 플레이어 선택 중"); 
-        
-        UIManager.Instance.ShowPlayerSelectPanel((selectedPlayerName) => {
-            Debug.Log($"선택된 플레이어: {selectedPlayerName}");
-            
-            onComplete?.Invoke(); 
-        });
+        Debug.Log("Bang : 플레이어 선택 중");
     }
 
     public void EffectBang()
