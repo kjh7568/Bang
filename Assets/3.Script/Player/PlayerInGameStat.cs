@@ -21,7 +21,6 @@ public class PlayerInGameStat : IDamageAble
     public bool isMustang;
     public bool isJail;
     public bool isDynamite;
-    //
 
     public void TakeDamage(CombatEvent combatEvent)
     {

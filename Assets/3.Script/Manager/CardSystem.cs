@@ -41,7 +41,7 @@ public class CardSystem : MonoBehaviour
         // 카드 아이디 컨버팅
         ConvertCardListToIdList();
     }
-
+    
     public void Init()
     {
         MakeDeck();
@@ -51,60 +51,34 @@ public class CardSystem : MonoBehaviour
         //CardUIManager.Instance.SetHandCardImageList();
     }
     
-    //게임 시스템과 마찬가지로 본격적으로 구현시작하면 서버와 연동해서 작업해야 함.
-    //덱 정보를 만들고 섞는 건 서버만 알고 있어도 되나 카드를 넘겨주는 함수 같은 경우는 RPC를 이용해서 정보를 넘겨줘야 함 --> 이건 차후 잘 해봐야 할 듯
-    public void ShuffleDeck()
+    private void MakeDeck()
     {
-        List<CardData> UnShuffledDeck = new List<CardData>(deckData.cardList);
+        List<CardData> unShuffledDeck = new List<CardData>(deckData.cardList);
         
-        initDeck = UnShuffledDeck.OrderBy(x => Random.value).ToList();
+        initDeck = unShuffledDeck.OrderBy(x => Random.value).ToList();
     }
 
-    public void InitDistributeHandCards()
+    private void InitDistributeHandCards()
     {
         foreach (var player in BasicSpawner.Instance.spawnedPlayers.Values)
         {
             var playerComponent = player.GetComponent<Player>();
             
-            ICard[] hand = new ICard[5];
-            int[] handID = new int[5];
+            ICard[] newHand = new ICard[5];
+            int[] newHandID = new int[5];
             
             for (int i = 0; i < 5; i++)
             {
-                hand[i] = initDeck[0];
-                handID[i] = initDeck[0].CardID;
+                newHand[i] = initDeck[0];
+                newHandID[i] = initDeck[0].CardID;
                 initDeck.RemoveAt(0);
             }
     
-            playerComponent.GameStat.InGameStat.HandCards = hand;
-            playerComponent.RPC_ReceiveToHandCardsData(handID);
+            playerComponent.GameStat.InGameStat.HandCards = newHand;
+            playerComponent.GameStat.InGameStat.HandCardsId = newHandID;
             
-            // int[] hand = new int[] {0, 0, 0, 0, 0};
-            // if (player.Object.HasStateAuthority)
-            // {
-            //     hand[0] = 11;
-            //     hand[1] = 64;
-            //     hand[2] = 14;
-            //     hand[3] = 0;
-            //     hand[4] = 0;
-            // }
-            // else
-            // {
-            //     for (int i = 0; i <= 2; i++)
-            //     {
-            //         hand[i] = initDeck[0];
-            //         initDeck.RemoveAt(0);
-            //     }
-            // }
+            playerComponent.RPC_ReceiveToHandCardsData(newHandID);
         }
-    }
-    
-    private void MakeDeck()
-    {
-        Debug.Log("덱 생성");
-
-        //덱 생성 후 조기 셔플 --> 혹은 생성과 동시에 셔플한 채로 만들어도 되긴 함
-        ShuffleDeck();
     }
     
     /*

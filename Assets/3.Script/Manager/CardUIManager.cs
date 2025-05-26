@@ -58,7 +58,7 @@ public class CardUIManager : MonoBehaviour
         //Debug.Log($"[Initialize] 카드 총 개수: {idToCard.Count}");
     }
 
-    public CardData GetCardByID(int id)
+    public CardData GetCardByIDOrNull(int id)
     {
         if (idToCard.TryGetValue(id, out CardData card))
             return card;

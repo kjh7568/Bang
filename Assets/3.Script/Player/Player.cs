@@ -23,9 +23,10 @@ public class Player : NetworkBehaviour
         
         for (int i = 0; i < handCardIds.Length; i++)
         {
-            cards[i] = CardUIManager.Instance.GetCardByID(handCardIds[i]);
-            
+            //?
             if(cards[i]  == null) continue;
+
+            cards[i] = CardUIManager.Instance.GetCardByIDOrNull(handCardIds[i]);
         }
 
         GameStat.InGameStat.HandCards = cards;

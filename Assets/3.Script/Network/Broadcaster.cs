@@ -73,14 +73,13 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_AttackPlayerNotify(PlayerRef localRef, PlayerRef targetRef)
     {
-
         // 여기부턴 지정당한 사람이 해야할 행동 로직
         // 1. 일단 빗나감이 있는지 확인
         RPC_SearchMissed(localRef, targetRef);
         // 2. 빗나감에 사용 유무를 묻는 패널 On
         // 2-1. 빗나감이 없으면 Yes 버튼이 비활성화
         // 3. 빗나감을 사용하지 않으면 컴벳 시스템을 통해 데미지 처리
-        
+
         // 3-1. 빗나감을 썼다면 모두에게 알림을 띄우고 다시 LocalRef의 카드 패널을 킴
     }
 
@@ -88,7 +87,7 @@ public class Broadcaster : NetworkBehaviour
     public void RPC_SearchMissed(PlayerRef localRef, PlayerRef targetRef)
     {
         var hand = BasicSpawner.Instance.spawnedPlayers[targetRef].GetComponent<Player>().GameStat.InGameStat.HandCards;
-        
+
         bool found = hand.Any(c => c != null && c.Name == "Missed");
 
         Debug.Log(found);
@@ -102,7 +101,7 @@ public class Broadcaster : NetworkBehaviour
 
         UIManager.Instance.ShowMissedPanel(hasMissed, attackPlayerRef, targetPlayerRef);
     }
-    
+
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_BroadcastMissedUsage(bool useMissed, PlayerRef localRef, PlayerRef targetRef)
     {
@@ -116,7 +115,7 @@ public class Broadcaster : NetworkBehaviour
         {
             Debug.Log($"[게임 로그] {player.BasicStat.nickName}님이 '빗나감(Missed)' 카드를 사용하지 못하여 데미지를 받았습니다!");
         }
-        
+
         if (BasicSpawner.Instance._runner.LocalPlayer != localRef) return;
 
         UIManager.Instance.cardListPanel.SetActive(true);
@@ -125,25 +124,21 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_DrawCard(PlayerRef playerRef, int addCount)
     {
-        Debug.Log($"{playerRef.ToString()} 덱에 카드 {addCount}장 추가");
-        
-        int nullCount = 0;
         List<int> nullIndexes = new List<int>();
-        
+
         var playerComponent = BasicSpawner.Instance.spawnedPlayers[playerRef].GetComponent<Player>();
         var handCards = playerComponent.GameStat.InGameStat.HandCards;
         var handCardsId = playerComponent.GameStat.InGameStat.HandCardsId;
-        
+
         for (int i = 0; i < handCards.Length; i++)
         {
             if (handCards[i] == null)
             {
                 nullIndexes.Add(i);
-                nullCount++;
             }
         }
 
-        while (nullCount > 0)
+        if (nullIndexes.Count > 0)
         {
             for (int i = 0; i < addCount; i++)
             {
@@ -151,22 +146,22 @@ public class Broadcaster : NetworkBehaviour
                 handCardsId[nullIndexes[i]] = CardSystem.Instance.initDeck[0].CardID;
                 RPC_OnCardButton(playerRef, nullIndexes[i]);
                 CardSystem.Instance.initDeck.RemoveAt(0);
-
-                nullCount--;
             }
+
+            Debug.Log($"{playerRef.ToString()} 덱에 카드 {addCount}장 추가");
+            
+            playerComponent.RPC_ReceiveToHandCardsData(handCardsId);
         }
-        
-        playerComponent.RPC_ReceiveToHandCardsData(handCardsId);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RPC_OnCardButton(PlayerRef playerRef, int index)
     {
         if (BasicSpawner.Instance._runner.LocalPlayer != playerRef) return;
-        
+
         UseCardUI.Instance.cardButtons[index].SetActive(true);
     }
-    
+
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_TargetSelectedCard(PlayerRef attacker, PlayerRef target, int cardIndex)
     {
@@ -249,7 +244,7 @@ public class Broadcaster : NetworkBehaviour
 
         UIManager.Instance.ShowPlayerSelectPanel();
     }
-    
+
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_MakeCombatEvent(PlayerRef senderRef, PlayerRef targetRef, int damage, RpcInfo info = default)
     {
@@ -265,9 +260,9 @@ public class Broadcaster : NetworkBehaviour
                 Receiver = target,
                 Damage = damage
             };
-            
+
             InGameSystem.Instance.AddInGameEvent(combatEvent);
-            
+
             //RPC로 체력 변경 사항 보내주기
         }
         else
