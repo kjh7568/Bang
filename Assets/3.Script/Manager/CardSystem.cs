@@ -24,7 +24,7 @@ public class CardSystem : MonoBehaviour
 //     [SerializeField] private GameObject[] cardPrefab;
 //     [SerializeField] private Transform deckParent;
 
-     private List<CardData> initDeck = new List<CardData>();
+     public List<CardData> initDeck = new List<CardData>();
      private static Dictionary<int, CardData> cardByID_Dic;
 //     // private List<CardData> usedDeck = new List<CardData>();
 //     

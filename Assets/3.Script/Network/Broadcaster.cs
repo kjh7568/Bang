@@ -32,6 +32,7 @@ public class Broadcaster : NetworkBehaviour
         
         if (Runner.LocalPlayer == playerRef)
         {
+            DrawCard(playerRef, 1);
             UIManager.Instance.cardListPanel.SetActive(true);
         }
         else
@@ -80,6 +81,22 @@ public class Broadcaster : NetworkBehaviour
          Debug.Log($"전달된 카드 Number: {cardIdx}");
      }
 
+    public void DrawCard(PlayerRef playerRef, int addCount)
+    {
+        var playerHand = Player.GetPlayer(playerRef).InGameStat.HandCards;
+
+        for (int i = 0; i < addCount; i++)
+        {
+            for (int j = 0; j < playerHand.Length; j++)
+            {
+                if (playerHand[j].CardID == 0)
+                {
+                    playerHand[j] = CardSystem.Instance.initDeck[0];
+                    CardSystem.Instance.initDeck.RemoveAt(0);
+                }
+            }
+        }
+    }
 //     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
 //     public void RPC_UpdateNicknames(string[] nicknames)
 //     {
