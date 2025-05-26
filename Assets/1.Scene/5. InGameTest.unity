@@ -1234,6 +1234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01bb3c784a96d3439c2ca97093a1ddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deckData: {fileID: 11400000, guid: eb7fded0ed4dd1b4ab2dd75dc0d87f6a, type: 2}
 --- !u!1 &270260537
 GameObject:
   m_ObjectHideFlags: 0
@@ -3488,7 +3489,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5815dde1393055848a49d1059ddd7066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnIdx: 1
 --- !u!4 &726887971
 Transform:
   m_ObjectHideFlags: 0
@@ -5938,6 +5938,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardListPanel: {fileID: 1191015416}
+  cardButtons:
+  - {fileID: 20989743}
+  - {fileID: 229979370}
+  - {fileID: 560705372}
+  - {fileID: 891913277}
+  - {fileID: 513956712}
   waitingPanel: {fileID: 895710187}
   endTurnButton: {fileID: 596570427}
 --- !u!4 &1853056236

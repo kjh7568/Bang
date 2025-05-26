@@ -7,8 +7,4 @@ public class PlayerGameStat
 {
     public int sessionNumber;
     public int characterModelNum;
-    
-    [SerializeField] private PlayerInGameStat playerInGameStat;
-    
-    public PlayerInGameStat InGameStat => playerInGameStat;
 }

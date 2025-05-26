@@ -8,23 +8,24 @@ using UnityEngine;
 using Enumerable = System.Linq.Enumerable;
 using Random = UnityEngine.Random;
 
-public enum DrawType
-{
-    Initial,  // 초기 5장
-    DrawOne,  // 1장 추가
-    Custom    // n장
-}
+// public enum DrawType
+// {
+//     Initial,  // 초기 5장
+//     DrawOne,  // 1장 추가
+//     Custom    // n장
+// }
 
 public class CardSystem : MonoBehaviour
 {
-//     public static CardSystem Instance;
+     public static CardSystem Instance;
 //     
 //     //함수명, 멤버 변수 명 등 전부 원하시는대로 바꿔도 됨
-//     [SerializeField] private DeckData deckData;
+     [SerializeField] private DeckData deckData;
 //     [SerializeField] private GameObject[] cardPrefab;
 //     [SerializeField] private Transform deckParent;
-//
-//     // private List<CardData> initDeck = new List<CardData>();
+
+     private List<CardData> initDeck = new List<CardData>();
+     private static Dictionary<int, CardData> cardByID_Dic;
 //     // private List<CardData> usedDeck = new List<CardData>();
 //     
 //     // 카드 id 초기 리스트
@@ -34,52 +35,72 @@ public class CardSystem : MonoBehaviour
 //     // 사용된 카드
 //     private List<CardData> usedDeck = new List<CardData>();
 //     
-//     private void Awake()
-//     {
-//         Instance = this;
-//         
-//         // 카드 아이디 컨버팅
-//         ConvertCardListToIdList();
-//     }
-//     
-//     public void Init()
-//     {
-//         MakeDeck();
-//         
-//         InitDistributeHandCards();
-//         
-//         //CardUIManager.Instance.SetHandCardImageList();
-//     }
-//     
-//     private void MakeDeck()
-//     {
-//         List<CardData> unShuffledDeck = new List<CardData>(deckData.cardList);
-//         
-//         initDeck = unShuffledDeck.OrderBy(x => Random.value).ToList();
-//     }
-//
-//     private void InitDistributeHandCards()
-//     {
-//         foreach (var player in Server.Instance.spawnedPlayers.Values)
-//         {
-//             var playerComponent = player.GetComponent<Player>();
-//             
-//             ICard[] newHand = new ICard[5];
-//             int[] newHandID = new int[5];
-//             
-//             for (int i = 0; i < 5; i++)
-//             {
-//                 newHand[i] = initDeck[0];
-//                 newHandID[i] = initDeck[0].CardID;
-//                 initDeck.RemoveAt(0);
-//             }
-//     
-//             playerComponent.GameStat.InGameStat.HandCards = newHand;
-//             playerComponent.GameStat.InGameStat.HandCardsId = newHandID;
-//             
-//             Broadcaster.Instance.RPC_ReceiveToHandCardsData(newHandID);
-//         }
-//     }
+     private void Awake()
+     {
+         Instance = this;
+
+         InitializeDic();
+         // 카드 아이디 컨버팅
+         // ConvertCardListToIdList();
+     }
+     
+     public void Init()
+     {
+         MakeDeck();
+         InitDistributeHandCards();
+         
+         //CardUIManager.Instance.SetHandCardImageList();
+     }
+     
+     private void MakeDeck()
+     {
+         List<CardData> unShuffledDeck = new List<CardData>(deckData.cardList);
+         
+         initDeck = unShuffledDeck.OrderBy(x => Random.value).ToList();
+     }
+
+     private void InitDistributeHandCards()
+     {
+         foreach (var player in Player.ConnectedPlayers)
+         {
+             ICard[] newHand = new ICard[5];
+             int[] newHandID = new int[5];
+             
+             for (int i = 0; i < 5; i++)
+             {
+                 newHand[i] = initDeck[0];
+                 newHandID[i] = initDeck[0].CardID;
+                 initDeck.RemoveAt(0);
+             }
+     
+             player.InGameStat.HandCards = newHand;
+             player.InGameStat.HandCardsId = newHandID;
+             
+             Broadcaster.Instance.RPC_ReceiveHandCardIDData(player.playerRef, newHandID);
+         }
+     }
+     
+     public void InitializeDic()
+     {
+         if (deckData == null)
+         {
+             Debug.LogError("deckData가 할당되지 않았습니다!");
+             return;
+         }
+
+         List<CardData> cards = deckData.cardList;
+         cardByID_Dic = cards.ToDictionary(card => card.CardID, card => card);
+     }
+
+     public CardData GetCardByIDOrNull(int id)
+     {
+         if (cardByID_Dic.TryGetValue(id, out CardData card))
+             return card;
+        
+         Debug.Log($"Card ID {id} not found.");
+         return null;
+     }
+     
 //     
 //     /*
 //      void Start()

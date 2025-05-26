@@ -7,11 +7,13 @@ using UnityEngine.Serialization;
 
 public class Player : NetworkBehaviour
 {
-    public PlayerGameStat playerGameStat;
-    // [SerializeField] private PlayerBasicStat playerBasicStat;
-    //
-    // public PlayerGameStat GameStat => playerGameStat;
-    // public PlayerBasicStat BasicStat => playerBasicStat;
+    [SerializeField] private PlayerGameStat playerGameStat;
+    [SerializeField] private PlayerBasicStat playerBasicStat;
+    [SerializeField] private PlayerInGameStat playerInGameStat;
+    
+    public PlayerGameStat GameStat => playerGameStat;
+    public PlayerBasicStat BasicStat => playerBasicStat;
+    public PlayerInGameStat InGameStat => playerInGameStat;
 
     public static Player LocalPlayer;
     public static List<Player> ConnectedPlayers = new();

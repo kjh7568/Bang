@@ -14,6 +14,8 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     public GameObject cardListPanel;
+    public GameObject[] cardButtons;
+    
     public GameObject waitingPanel;
     
     [SerializeField] private Button endTurnButton;
@@ -46,8 +48,9 @@ public class UIManager : MonoBehaviour
     {
         Instance = this;
         
-        endTurnButton.onClick.AddListener(Broadcaster.Instance.RPC_EndPlayerTurn);
-        
+        endTurnButton.onClick.AddListener(() => {
+            Broadcaster.Instance.RPC_RequestEndTurn();
+        });        
         // playerChoicePanel.SetActive(false);
         //
         // localPlayer = Server.Instance._runner.LocalPlayer;
@@ -57,6 +60,27 @@ public class UIManager : MonoBehaviour
     {
         cardListPanel.SetActive(false);
         waitingPanel.SetActive(false);
+    }
+    
+    public void OnCardClicked(int index)
+    {
+        cardListPanel.SetActive(false);
+        cardButtons[index].SetActive(false);
+        
+        Broadcaster.Instance.RPC_RequestUseCard(Server.Instance._runner.LocalPlayer, index);
+    }
+    
+    public void UpdateHandCardUI(int[] cards)
+    {
+        for (int i = 0; i < cards.Length; i++)
+        {
+            if (cards[i] == 0)
+            {
+                continue;    
+            }
+
+            cardButtons[i].GetComponent<Image>().sprite = CardSystem.Instance.GetCardByIDOrNull(cards[i]).CardSprite;
+        }
     }
     
     //

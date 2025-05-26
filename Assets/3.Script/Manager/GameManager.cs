@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
         // SyncPlayersToClients();
 
         StartCoroutine(SetFirstTurnPlayer());
+        
+        CardSystem.Instance.Init();
     }
 
     private IEnumerator SetFirstTurnPlayer()
