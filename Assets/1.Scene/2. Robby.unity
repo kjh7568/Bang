@@ -1427,7 +1427,7 @@ GameObject:
   - component: {fileID: 865430642}
   - component: {fileID: 865430641}
   m_Layer: 0
-  m_Name: BasicSpawner
+  m_Name: Server
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -128,8 +128,8 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
         {
             var savePlayerBasicStat = FindObjectOfType<SavePlayerBasicStat>();
 
-            broadcaster.RPC_SendNicknameToHost(savePlayerBasicStat.Nickname);
-            Broadcaster.Instance.LocalRef = _runner.LocalPlayer;
+            // broadcaster.RPC_SendNicknameToHost(savePlayerBasicStat.Nickname);
+            // Broadcaster.Instance.LocalRef = _runner.LocalPlayer;
         }
     }
 
@@ -156,8 +156,8 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
 
     private void RegisterNickname(PlayerRef player, NetworkObject networkPlayer)
     {
-        var nickName = networkPlayer.GetComponent<Player>().BasicStat.nickName;
-        playerNickNames[player] = nickName;
+        // var nickName = networkPlayer.GetComponent<Player>().BasicStat.nickName;
+        // playerNickNames[player] = nickName;
     }
 
     private void UpdateNicknameUIAndBroadcast()
@@ -168,7 +168,7 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
         ui?.UpdateNicknameTexts(nicknames);
 
         var broadcaster = FindObjectOfType<Broadcaster>();
-        broadcaster?.RPC_UpdateNicknames(nicknames);
+        // broadcaster?.RPC_UpdateNicknames(nicknames);
     }
 
     private void CheckStartCondition()
@@ -204,7 +204,7 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
             var player = obj.GetComponent<Player>();
             if (player != null)
             {
-                player.BasicStat.nickName = nickname;
+                // player.BasicStat.nickName = nickname;
                 Debug.Log($"[서버] {playerRef} 닉네임 적용됨: {nickname}");
             }
         }

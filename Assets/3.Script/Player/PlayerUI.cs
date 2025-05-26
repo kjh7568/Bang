@@ -20,7 +20,7 @@ public class PlayerUI : NetworkBehaviour
 
     private void Update()
     {
-        MarkHpcoin();
+        MarkHpCoin();
     }
 
     private void SetPlayerHumanCardSprite()
@@ -31,28 +31,28 @@ public class PlayerUI : NetworkBehaviour
             return;
         }
 
-        string humanName = player.GameStat.InGameStat.MyHuman.Name;
-
-        foreach (var humanData in humanList.humanList)
-        {
-            if (humanData.Name == humanName)
-            {
-                spriteRenderer.sprite = humanData.CardSprite;
-                RPC_SetPlayerHumanCardSprite(humanName);
-                break;
-            }
-        }
+        // string humanName = player.GameStat.InGameStat.MyHuman.Name;
+        //
+        // foreach (var humanData in humanList.humanList)
+        // {
+        //     if (humanData.Name == humanName)
+        //     {
+        //         spriteRenderer.sprite = humanData.CardSprite;
+        //         RPC_SetPlayerHumanCardSprite(humanName);
+        //         break;
+        //     }
+        // }
     }
     
-    private void MarkHpcoin()
+    private void MarkHpCoin()
     {
-        int hp = player.GameStat.InGameStat.hp;
+        // int hp = player.GameStat.InGameStat.hp;
         
-        for (int i = 0; i < Hpcoins.Count; i++)
-        {
-            // hp보다 작으면 true, 그 이상이면 false
-            Hpcoins[i].SetActive(i < hp);
-        }
+        // for (int i = 0; i < Hpcoins.Count; i++)
+        // {
+        //     // hp보다 작으면 true, 그 이상이면 false
+        //     Hpcoins[i].SetActive(i < hp);
+        // }
     }
     [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
     public void RPC_SetPlayerHumanCardSprite(string humanName)
