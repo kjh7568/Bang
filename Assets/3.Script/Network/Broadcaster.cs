@@ -89,7 +89,7 @@ public class Broadcaster : NetworkBehaviour
         {
             for (int j = 0; j < playerHand.Length; j++)
             {
-                if (playerHand[j].CardID == 0)
+                if (playerHand[j] == null)
                 {
                     playerHand[j] = CardSystem.Instance.initDeck[0];
                     CardSystem.Instance.initDeck.RemoveAt(0);

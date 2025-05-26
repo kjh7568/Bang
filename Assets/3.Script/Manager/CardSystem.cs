@@ -66,11 +66,17 @@ public class CardSystem : MonoBehaviour
              ICard[] newHand = new ICard[5];
              int[] newHandID = new int[5];
              
-             for (int i = 0; i < 5; i++)
+             for (int i = 0; i < 3; i++)
              {
                  newHand[i] = initDeck[0];
                  newHandID[i] = initDeck[0].CardID;
                  initDeck.RemoveAt(0);
+             }
+
+             for (int i = 3; i < 5; i++)
+             {
+                 newHand[i] = null;
+                 newHandID[i] = 0;
              }
      
              player.InGameStat.HandCards = newHand;
