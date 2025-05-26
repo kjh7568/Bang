@@ -12,7 +12,7 @@ public class SelectRoomTypePanel : MonoBehaviour
     
     public void OnMakeRoomButton()
     {
-        BasicSpawner.Instance.StartGame(GameMode.Host);
+        Server.Instance.StartGame(GameMode.Host);
     }
 
     public void OnEnterRoomButton()

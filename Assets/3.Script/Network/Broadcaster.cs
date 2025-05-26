@@ -37,9 +37,9 @@ public class Broadcaster : NetworkBehaviour
         PlayerRef playerRef = info.Source;
 
         // 닉네임을 BasicSpawner에서 갱신
-        if (BasicSpawner.Instance != null)
+        if (Server.Instance != null)
         {
-            BasicSpawner.Instance.ReceiveNicknameFromClient(playerRef, nickname);
+            Server.Instance.ReceiveNicknameFromClient(playerRef, nickname);
         }
         else
         {
@@ -86,7 +86,7 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_SearchMissed(PlayerRef localRef, PlayerRef targetRef)
     {
-        var hand = BasicSpawner.Instance.spawnedPlayers[targetRef].GetComponent<Player>().GameStat.InGameStat.HandCards;
+        var hand = Server.Instance.spawnedPlayers[targetRef].GetComponent<Player>().GameStat.InGameStat.HandCards;
 
         bool found = hand.Any(c => c != null && c.Name == "Missed");
 
@@ -97,7 +97,7 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_OpenUseMissedPanel(bool hasMissed, PlayerRef attackPlayerRef, PlayerRef targetPlayerRef)
     {
-        if (BasicSpawner.Instance._runner.LocalPlayer != targetPlayerRef) return;
+        if (Server.Instance._runner.LocalPlayer != targetPlayerRef) return;
 
         UIManager.Instance.ShowMissedPanel(hasMissed, attackPlayerRef, targetPlayerRef);
     }
@@ -116,7 +116,7 @@ public class Broadcaster : NetworkBehaviour
             Debug.Log($"[게임 로그] {player.BasicStat.nickName}님이 '빗나감(Missed)' 카드를 사용하지 못하여 데미지를 받았습니다!");
         }
 
-        if (BasicSpawner.Instance._runner.LocalPlayer != localRef) return;
+        if (Server.Instance._runner.LocalPlayer != localRef) return;
 
         UIManager.Instance.cardListPanel.SetActive(true);
     }
@@ -126,7 +126,7 @@ public class Broadcaster : NetworkBehaviour
     {
         List<int> nullIndexes = new List<int>();
 
-        var playerComponent = BasicSpawner.Instance.spawnedPlayers[playerRef].GetComponent<Player>();
+        var playerComponent = Server.Instance.spawnedPlayers[playerRef].GetComponent<Player>();
         var handCards = playerComponent.GameStat.InGameStat.HandCards;
         var handCardsId = playerComponent.GameStat.InGameStat.HandCardsId;
 
@@ -150,14 +150,14 @@ public class Broadcaster : NetworkBehaviour
 
             Debug.Log($"{playerRef.ToString()} 덱에 카드 {addCount}장 추가");
             
-            playerComponent.RPC_ReceiveToHandCardsData(handCardsId);
+            RPC_ReceiveToHandCardsData(handCardsId);
         }
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RPC_OnCardButton(PlayerRef playerRef, int index)
     {
-        if (BasicSpawner.Instance._runner.LocalPlayer != playerRef) return;
+        if (Server.Instance._runner.LocalPlayer != playerRef) return;
 
         UseCardUI.Instance.cardButtons[index].SetActive(true);
     }
@@ -226,7 +226,7 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
         Debug.Log($"전달된 카드 Number: {cardIdx}");
 
-        var playerComponent = BasicSpawner.Instance.spawnedPlayers[playerRef].GetComponent<Player>();
+        var playerComponent = Server.Instance.spawnedPlayers[playerRef].GetComponent<Player>();
         var cards = playerComponent.GameStat.InGameStat.HandCards;
 
         if (cards[cardIdx].IsTargetRequired)
@@ -240,7 +240,7 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_ShowPlayerSelectPanel(PlayerRef playerRef)
     {
-        if (BasicSpawner.Instance._runner.LocalPlayer != playerRef) return;
+        if (Server.Instance._runner.LocalPlayer != playerRef) return;
 
         UIManager.Instance.ShowPlayerSelectPanel();
     }
@@ -256,7 +256,7 @@ public class Broadcaster : NetworkBehaviour
         {
             CombatEvent combatEvent = new CombatEvent
             {
-                Sender = BasicSpawner.Instance.spawnedPlayers[senderRef].GetComponent<Player>().GameStat.InGameStat,
+                Sender = Server.Instance.spawnedPlayers[senderRef].GetComponent<Player>().GameStat.InGameStat,
                 Receiver = target,
                 Damage = damage
             };
@@ -269,5 +269,75 @@ public class Broadcaster : NetworkBehaviour
         {
             Debug.LogWarning("타겟이 없습니다.");
         }
+    }
+    
+    
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_ReceiveToHandCardsData(int[] handCardIds, RpcInfo info = default)
+    {
+        if (Runner.LocalPlayer != Object.InputAuthority) return;
+
+        Debug.Log($"[Client] 카드 수신: {string.Join(",", handCardIds)}");
+
+        CardUIManager.Instance.UpdateHandCardUI(handCardIds);
+    }
+    
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_StartPlayerTurn(PlayerRef playerRef)
+    {
+        if (Server.Instance._runner.IsServer)
+        {
+            UIManager.Instance.waitingPanel.SetActive(true);
+        }
+        else if (Server.Instance._runner.LocalPlayer == playerRef)
+        {
+            UIManager.Instance.cardListPanel.SetActive(true);
+        }
+        else
+        {
+            UIManager.Instance.waitingPanel.SetActive(true);
+        }
+        
+        
+    }
+    
+    // [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    // public void RPC_RequestUseCardList(PlayerRef playerRef, int cardIndices)
+    // {
+    //     Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
+    //     Debug.Log($"전달된 카드 Number: {cardIndices}");
+    //     
+    //     // 내 플레이어가 아니면 무시
+    //     if (Runner.LocalPlayer != playerRef) return; 
+    //
+    //     var player = Broadcaster.Instance.GetPlayer(playerRef);
+    //     var card = player.GameStat.InGameStat.HandCards[cardIndices];
+    //     
+    //     Debug.Log($"card instance: {card},  name: {card.Name} ,type: {card.GetType()}");
+    //     
+    //     card.UseCard(() => {
+    //         Debug.Log("카드 효과 완료 → 다음 카드 선택 패널 표시");
+    //         
+    //         
+    //         // 지연실행 ( 다시 카드 선택 )
+    //         // Runner.Invoke(() => { 
+    //         //     UIManager.Instance.cardListPanel.SetActive(true);
+    //         // }, delay: 0.5f); // 약간의 딜레이를 주는 것이 부드러움
+    //     });
+    // }
+    
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    public void RPC_RequestFinishTurn(PlayerRef playerRef)
+    {
+        Debug.Log($"{playerRef} 턴 종료");
+        Broadcaster.Instance.RPC_ResetPanel();
+        
+        PlayerRef nextPlayer = TurnManager.Instance.EndTurn();
+
+        Debug.Log($"{nextPlayer}");
+        Debug.Log($"턴 변경");
+
+        RPC_StartPlayerTurn(nextPlayer);
     }
 }

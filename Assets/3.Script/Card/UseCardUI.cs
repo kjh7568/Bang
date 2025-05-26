@@ -18,7 +18,7 @@ public class UseCardUI : MonoBehaviour
     {
         UIManager.Instance.cardListPanel.SetActive(false);
         
-        Broadcaster.Instance.RPC_RequestUseCardList(BasicSpawner.Instance._runner.LocalPlayer, index);
+        Broadcaster.Instance.RPC_RequestUseCardList(Server.Instance._runner.LocalPlayer, index);
         cardButtons[index].SetActive(false);
     }
     

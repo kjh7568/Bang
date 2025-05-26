@@ -9,9 +9,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
-public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
+public class Server : MonoBehaviour, INetworkRunnerCallbacks
 {
-    public static BasicSpawner Instance { get; private set; }
+    public static Server Instance { get; private set; }
 
     [SerializeField] private GameObject[] playerPrefabs;
     [SerializeField] private NetworkObject broadcasterPrefabs;
@@ -20,6 +20,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     public Dictionary<PlayerRef, NetworkObject> spawnedPlayers = new();
     public Dictionary<PlayerRef, string> playerNickNames = new();
+    
     public List<string> nicknameBuffer = new();
 
     private string sessionNumber;

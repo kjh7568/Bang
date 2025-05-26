@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
         Instance = this;
         playerChoicePanel.SetActive(false);
 
-        localPlayer = BasicSpawner.Instance._runner.LocalPlayer;
+        localPlayer = Server.Instance._runner.LocalPlayer;
     }
 
     private void Update()
@@ -149,7 +149,7 @@ public class UIManager : MonoBehaviour
             
             useMissed = false;
             
-            Broadcaster.Instance.RPC_MakeCombatEvent(attackPlayerRef, BasicSpawner.Instance._runner.LocalPlayer, 1);
+            Broadcaster.Instance.RPC_MakeCombatEvent(attackPlayerRef, Server.Instance._runner.LocalPlayer, 1);
             Broadcaster.Instance.RPC_BroadcastMissedUsage(useMissed, attackPlayerRef, targetPlayerRef);
         });
     }

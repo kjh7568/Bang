@@ -63,7 +63,7 @@ public class InGameSystem : MonoBehaviour
 
     public IDamageAble GetPlayerOrNull(PlayerRef player)
     {
-        var playerDic = BasicSpawner.Instance.spawnedPlayers;
+        var playerDic = Server.Instance.spawnedPlayers;
 
         if (playerDic.ContainsKey(player))
         {

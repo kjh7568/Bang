@@ -28,17 +28,18 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if(!BasicSpawner.Instance._runner.IsServer) return;
+        if(!Server.Instance._runner.IsServer) return;
         
-        CachePlayerInfo();
+        // CachePlayerInfo();
+        //
+        // SetPlayerHuman();
+        // SetPlayerJob();
+        //
+        // SetPlayerInfo();
+        //
+        // SyncPlayersToClients();
         
-        SetPlayerHuman();
-        SetPlayerJob();
-        
-        SetPlayerInfo();
-        
-        SyncPlayersToClients();
-        TurnManager.Instance.StartTurn();
+        StartGame();
     }
 
     // private void Update()
@@ -48,9 +49,28 @@ public class GameManager : MonoBehaviour
     //     victoryCheck.CheckVictoryConditions();
     // }
 
+    public void StartGame()
+    {
+        for (int i = 0; i < Broadcaster.Instance.syncedPlayerClass.Length; i++)
+        {
+            if (Broadcaster.Instance.syncedPlayerClass[i].GameStat.InGameStat.MyJob.Name == "보안관")
+            {
+                Broadcaster.Instance.TurnIndex = i;
+                
+                break;
+            }
+        
+            // Broadcaster.Instance.TurnIndex = 0;
+        }
+        
+        var currentPlayer = Broadcaster.Instance.syncedPlayerClass[Broadcaster.Instance.TurnIndex];
+        
+        Broadcaster.Instance.RPC_StartPlayerTurn(Broadcaster.Instance.syncedPlayerRefs[Broadcaster.Instance.TurnIndex]);
+    }
+    
     private void CachePlayerInfo()
     {
-        foreach (var player in BasicSpawner.Instance.spawnedPlayers.Values)
+        foreach (var player in Server.Instance.spawnedPlayers.Values)
         {
             var playerClass = player.GetComponent<Player>();
 
@@ -122,7 +142,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"SetLocalPlayer ::{Broadcaster.Instance.LocalRef}");
            
-            if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
+            if (Server.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
             {
                 var player = obj.GetComponent<Player>();
 
@@ -130,7 +150,7 @@ public class GameManager : MonoBehaviour
                 Broadcaster.Instance.LocalRef = playerRef;
                 // UIManager.Instance.localPlayer = playerRef;
 
-                Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
+                // Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
             }
             else
             {

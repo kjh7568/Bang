@@ -60,7 +60,7 @@ public class CardSystem : MonoBehaviour
 
     private void InitDistributeHandCards()
     {
-        foreach (var player in BasicSpawner.Instance.spawnedPlayers.Values)
+        foreach (var player in Server.Instance.spawnedPlayers.Values)
         {
             var playerComponent = player.GetComponent<Player>();
             
@@ -77,7 +77,7 @@ public class CardSystem : MonoBehaviour
             playerComponent.GameStat.InGameStat.HandCards = newHand;
             playerComponent.GameStat.InGameStat.HandCardsId = newHandID;
             
-            playerComponent.RPC_ReceiveToHandCardsData(newHandID);
+            Broadcaster.Instance.RPC_ReceiveToHandCardsData(newHandID);
         }
     }
     
