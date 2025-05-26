@@ -107,6 +107,19 @@ public class CardSystem : MonoBehaviour
          return null;
      }
      
+     public int DrawCard()
+     {
+         if (initDeck.Count == 0)
+         {
+             Debug.LogWarning("덱이 비었습니다!");
+             return -1;
+         }
+
+         int cardId = initDeck[0].CardID;
+         initDeck.RemoveAt(0);
+         return cardId;
+     }
+     
 //     
 //     /*
 //      void Start()
