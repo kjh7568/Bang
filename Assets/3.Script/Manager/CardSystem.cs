@@ -25,7 +25,7 @@ public class CardSystem : MonoBehaviour
 //     [SerializeField] private Transform deckParent;
 
      public List<CardData> initDeck = new List<CardData>();
-     private static Dictionary<int, CardData> cardByID_Dic;
+     public Dictionary<int, CardData> cardByID_Dic;
 //     // private List<CardData> usedDeck = new List<CardData>();
 //     
 //     // 카드 id 초기 리스트
