@@ -32,12 +32,8 @@ public class Broadcaster : NetworkBehaviour
 
         if (Runner.IsServer)
         {
-            int drawCardId = CardSystem.Instance.initDeck[0].CardID;
-            CardSystem.Instance.initDeck.RemoveAt(0);
-
-            AddCardToPlayer(playerRef, drawCardId);
-            RPC_ReceiveHandCardIDData(playerRef, Player.GetPlayer(playerRef).InGameStat.HandCardsId);
-            //RPC_DrawCard(playerRef, CardSystem.Instance.initDeck[0].CardID);
+            DrawCard(playerRef);
+            RPC_ReceiveHandCardAndUpdateUi(playerRef, Player.GetPlayer(playerRef).InGameStat.HandCardsId);
         }
         
         if (Runner.LocalPlayer == playerRef)
@@ -50,8 +46,11 @@ public class Broadcaster : NetworkBehaviour
         }
     }
     
-    private void AddCardToPlayer(PlayerRef playerRef, int cardId)
+    private void DrawCard(PlayerRef playerRef)
     {
+        int drawCardId = CardSystem.Instance.initDeck[0].CardID;
+        CardSystem.Instance.initDeck.RemoveAt(0);
+        
         var player = Player.GetPlayer(playerRef);
         var cards = player.InGameStat.HandCards;
         var cardIds = player.InGameStat.HandCardsId;
@@ -60,8 +59,8 @@ public class Broadcaster : NetworkBehaviour
         {
             if (cardIds[i] == 0)
             {
-                cards[i] = CardSystem.Instance.cardByID_Dic[cardId];
-                cardIds[i] = cardId;
+                cards[i] = CardSystem.Instance.cardByID_Dic[drawCardId];
+                cardIds[i] = drawCardId;
                 break;
             }
         }
@@ -78,7 +77,7 @@ public class Broadcaster : NetworkBehaviour
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_ReceiveHandCardIDData(PlayerRef playerRef, int[] handCardIds)
+    public void RPC_ReceiveHandCardAndUpdateUi(PlayerRef playerRef, int[] handCardIds)
     {
         // for (int i = 0; i < handCardIds.Length; i++)
         // {
@@ -101,33 +100,13 @@ public class Broadcaster : NetworkBehaviour
         }
     }
     
-
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_RequestUseCard(PlayerRef playerRef, int cardIdx)
     {
         Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
         Debug.Log($"전달된 카드 Number: {cardIdx}");
     }
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_DrawCard(PlayerRef playerRef, int cardId) //
-    {
-        if (Runner.LocalPlayer == playerRef)
-        {
-            var playerHandCards = Player.GetPlayer(playerRef).InGameStat.HandCards;
-            var playerHandCardsId = Player.GetPlayer(playerRef).InGameStat.HandCardsId;
-        
-            for (int i = 0; i < playerHandCardsId.Length; i++)
-            {
-                if (playerHandCardsId[i] == 0)
-                {
-                    playerHandCards[i] = CardSystem.Instance.cardByID_Dic[cardId];
-                    playerHandCardsId[i] = cardId;
-                    CardSystem.Instance.initDeck.RemoveAt(0);
-                }
-            }
-        }
-    }
+    
 //     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
 //     public void RPC_UpdateNicknames(string[] nicknames)
 //     {

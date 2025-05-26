@@ -82,7 +82,7 @@ public class CardSystem : MonoBehaviour
              player.InGameStat.HandCards = newHand;
              player.InGameStat.HandCardsId = newHandID;
              
-             Broadcaster.Instance.RPC_ReceiveHandCardIDData(player.playerRef, newHandID);
+             Broadcaster.Instance.RPC_ReceiveHandCardAndUpdateUi(player.playerRef, newHandID);
          }
      }
      
