@@ -23,7 +23,7 @@ public class CardUIManager : MonoBehaviour
         Initialize();
     }
     
-    public void UpdateHandCardUI(ICard[] cards)
+    public void UpdateHandCardUI(int[] cards)
     {
         //Debug.Log("핸드 카드 UI 업데이트 시작");
         //Debug.Log($"cards.Length:: {cards.Length}");
@@ -31,14 +31,14 @@ public class CardUIManager : MonoBehaviour
         {
             // so id 값으로 조회해서 스프라이트 변경
 
-            if (cards[i] == null)
+            if (cards[i] == 0)
             {
                 continue;    
             }
             
             Debug.Log($" {cards[i]}");
             
-            handCardImageList[i].sprite = cards[i].CardSprite;
+            handCardImageList[i].sprite = GetCardByIDOrNull(cards[i]).CardSprite;
         }
     }
     

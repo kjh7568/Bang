@@ -19,19 +19,7 @@ public class Player : NetworkBehaviour
 
         Debug.Log($"[Client] 카드 수신: {string.Join(",", handCardIds)}");
 
-        var cards = new ICard[handCardIds.Length];
-        
-        for (int i = 0; i < handCardIds.Length; i++)
-        {
-            //?
-            if(cards[i]  == null) continue;
-
-            cards[i] = CardUIManager.Instance.GetCardByIDOrNull(handCardIds[i]);
-        }
-
-        GameStat.InGameStat.HandCards = cards;
-        
-        CardUIManager.Instance.UpdateHandCardUI(cards);
+        CardUIManager.Instance.UpdateHandCardUI(handCardIds);
     }
     
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
