@@ -172,8 +172,6 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     private void CheckStartCondition()
     {
-        Debug.Log($"입장인원: {spawnedPlayers.Count}");
-        
         if (spawnedPlayers.Count == 1)
         {
             var ui = FindObjectOfType<WatingSetting>();

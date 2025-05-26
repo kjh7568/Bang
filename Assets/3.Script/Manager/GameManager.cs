@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
         SetPlayerHuman();
         SetPlayerJob();
         
-        GetPlayerInfo();
+        SetPlayerInfo();
         
         SyncPlayersToClients();
         TurnManager.Instance.StartTurn();
@@ -59,9 +59,6 @@ public class GameManager : MonoBehaviour
         }
     }
     
-    //인물과 직업은 카드가 아닌 시스템으로 인식하는 것으로 정했던 것 같아서 게임 매니저에서 만듬
-    //구현의 포인트는 정해진 값이 서버에만 적용되는 것이 아닌 RPC를 통해 클라이언트에게도 정보를 넘겨줘야함
-    //그 말은 즉, 해당 함수는 서버만 실행할 뿐 클라이언트는 이를 실행하면 안됨. --> IsServer를 활용 --> basicSpawner와 연동해야함
     private void SetPlayerHuman()
     {
         //일단 인물 구현이 완료 된 것이 아니기 때문에 그냥 더미로 만듬
@@ -75,17 +72,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void GetPlayerInfo() 
+    private void SetPlayerInfo() 
     {
         foreach (var player in players)
         {
-            var nickName = player.BasicStat.nickName;
-            var human = player.GameStat.InGameStat.MyHuman.Name;
-            var job = player.GameStat.InGameStat.MyJob.Name;
-            
-            Debug.Log($"{nickName} 플레이어의 인물은 {human}이며, 직업은 {job}입니다.");
-            
             cardSystem.Init();
+            
+            //todo 이거 수정
             uiSystem.Init(player);
         }
     }
@@ -144,30 +137,7 @@ public class GameManager : MonoBehaviour
                 Debug.LogWarning($"[SetLocalPlayer] spawnedPlayers에 {playerRef}가 없습니다.");
             }
 
-            break; // 찾았으니까 루프 종료
-            
-            // if (playerRef == Broadcaster.Instance.LocalRef)
-            // {
-            //
-            // }
+            break;
         }
     }
-    
-    // public void SetLocalPlayer(PlayerRef[] playerRefs)
-    // {
-    //     foreach (var playerRef in playerRefs)
-    //     {
-    //         if (BasicSpawner.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
-    //         {
-    //             var player = obj.GetComponent<Player>();
-    //             Broadcaster.Instance.LocalPlayer = player;
-    //             UIManager.Instance.localPlayer = playerRef;
-    //             Broadcaster.Instance.LocalRef = playerRef;
-    //             
-    //             Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
-    //             
-    //             break;
-    //         }
-    //     }
-    // }
 }
