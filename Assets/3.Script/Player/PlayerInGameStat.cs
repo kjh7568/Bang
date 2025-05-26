@@ -21,12 +21,18 @@ public class PlayerInGameStat : IDamageAble
     public bool isMustang;
     public bool isJail;
     public bool isDynamite;
-    //
 
+    [SerializeField] private List<GameObject> playerHpObj;
+    
     public void TakeDamage(CombatEvent combatEvent)
     {
         hp -= combatEvent.Damage;
-
+        
+        if (playerHpObj.Count > 0)
+        {
+            playerHpObj[playerHpObj.Count - 1].SetActive(false);
+        }
+        
         if (hp <= 0)
         {
             Debug.Log("죽었슈");

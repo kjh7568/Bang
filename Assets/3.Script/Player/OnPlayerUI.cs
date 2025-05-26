@@ -8,8 +8,6 @@ public class OnPlayerUI : MonoBehaviour
 {
     [SerializeField] private GameObject playerUIObject;
 
-    
-
     private void Update()
     {
         if (SceneManager.GetActiveScene().buildIndex == 3)

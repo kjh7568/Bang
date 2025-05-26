@@ -1687,6 +1687,12 @@ MonoBehaviour:
       isMustang: 0
       isJail: 0
       isDynamite: 0
+      playerHpObj:
+      - {fileID: 7730796868691194283}
+      - {fileID: 6839038914487966132}
+      - {fileID: 8743189458764550448}
+      - {fileID: 1195061716754879441}
+      - {fileID: 8823616657091873359}
   playerBasicStat:
     iD: 
     password: 
