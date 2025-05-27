@@ -35,7 +35,7 @@ public class Broadcaster : NetworkBehaviour
             DrawCard(playerRef);
             RPC_ReceiveHandCardAndUpdateUi(playerRef, Player.GetPlayer(playerRef).InGameStat.HandCardsId);
         }
-
+        
         if (Runner.LocalPlayer == playerRef)
         {
             UIManager.Instance.cardListPanel.SetActive(true);
@@ -45,22 +45,20 @@ public class Broadcaster : NetworkBehaviour
             UIManager.Instance.waitingPanel.SetActive(true);
         }
     }
-
+    
     private void DrawCard(PlayerRef playerRef)
     {
         int drawCardId = CardSystem.Instance.initDeck[0].CardID;
         CardSystem.Instance.initDeck.RemoveAt(0);
 
-        var player = Player.GetPlayer(playerRef);
-        var cards = player.InGameStat.HandCards;
-        var cardIds = player.InGameStat.HandCardsId;
-
-        for (int i = 0; i < cardIds.Length; i++)
+        var handCardID = Player.GetPlayer(playerRef).InGameStat.HandCardsId;
+        
+        for (int i = 0; i < handCardID.Length; i++)
         {
-            if (cardIds[i] == 0)
+            if (handCardID[i] == 0)
             {
-                cards[i] = CardSystem.Instance.cardByID_Dic[drawCardId];
-                cardIds[i] = drawCardId;
+                Player.GetPlayer(playerRef).InGameStat.HandCardsId[i] = drawCardId;
+                
                 break;
             }
         }
@@ -79,67 +77,112 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_ReceiveHandCardAndUpdateUi(PlayerRef playerRef, int[] handCardIds)
     {
-        // for (int i = 0; i < handCardIds.Length; i++)
-        // {
-        //     var card = CardSystem.Instance.GetCardByIDOrNull(handCardIds[i]);
-        //
-        //     if (card == null)
-        //     {
-        //         Debug.LogWarning($"ID {handCardIds[i]}에 해당하는 카드를 찾을 수 없습니다.");
-        //     }
-        //     else
-        //     {
-        //         Debug.Log($"{playerRef}가 받은 카드: {card.Name}");
-        //     }
-        // }
-
         if (Runner.LocalPlayer == playerRef)
         {
             Player.GetPlayer(playerRef).InGameStat.HandCardsId = handCardIds;
-
             UIManager.Instance.UpdateHandCardUI(handCardIds);
         }
     }
-
+    
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_RequestUseCard(PlayerRef playerRef, int cardIdx)
     {
         Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
         Debug.Log($"전달된 카드 Number: {cardIdx}");
+        
+        Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx] = 0;
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_SendPlayerHuman(PlayerRef playerRef, int humanIdx)
     {
-        if (Runner.IsServer && Runner.LocalPlayer != playerRef)
-        {
-            Player.GetPlayer(playerRef).InGameStat.MyHuman = GameManager.Instance.humanList.humanList[humanIdx];
-        }
-        else if (Runner.LocalPlayer != playerRef) return;
+        if (Runner.LocalPlayer != playerRef) return;
 
+        //Debug.Log($"선택된 인물: {GameManager.Instance.humanList.humanList[humanIdx].Name}");
+        
         Player.LocalPlayer.InGameStat.MyHuman = GameManager.Instance.humanList.humanList[humanIdx];
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_SendPlayerJob(PlayerRef playerRef, int humanIdx)
     {
-        if (Runner.IsServer && Runner.LocalPlayer != playerRef)
-        {
-            Player.GetPlayer(playerRef).InGameStat.MyJob = GameManager.Instance.jobList.jobList[humanIdx];
-        }
-        else if (Runner.LocalPlayer != playerRef) return;
+        if (Runner.LocalPlayer != playerRef) return;
 
+        //Debug.Log($"선택된 직업: {GameManager.Instance.jobList.jobList[humanIdx].Name}");
+        
         Player.LocalPlayer.InGameStat.MyJob = GameManager.Instance.jobList.jobList[humanIdx];
     }
-
-
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RPC_SendMyCardId2Server(PlayerRef playerRef, int[] cardId)
+    
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_EndLoading(RpcInfo info = default)
     {
-        Debug.Log($"{playerRef}가 턴을 넘겼고 현재 패 상태는 {string.Join(", ", cardId)}");
-        Player.GetPlayer(playerRef).InGameStat.HandCardsId = cardId;
+        GameManager.Instance.EndLoading();
     }
+    
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_RequestBang(PlayerRef attackRef, PlayerRef targetRef)
+    {
+        Debug.Log($"{attackRef}가 {targetRef}에게 뱅을 사용함");
+        Debug.Log($"Runner.LocalPlayer ::: {Runner.LocalPlayer}");
+        Debug.Log($"attackRef ::: {attackRef}");
+        Debug.Log($"targetRef ::: {targetRef}");
 
+        if (Runner.LocalPlayer == targetRef)
+        {
+            var hasMissed = CardSystem.Instance.CheckHasMissed(targetRef);
+            
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.ShowMissedPanel(hasMissed, attackRef, targetRef);
+        }
+        else
+        {
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.waitingPanel.SetActive(true);
+        }
+    }
+    
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_NotifyMissed(PlayerRef attackRef, PlayerRef targetRef)
+    {
+        Debug.Log($"{targetRef}가 {attackRef}의 뱅을 빗나감으로 회피하였슴둥");
+        Debug.Log($"Runner.LocalPlayer ::: {Runner.LocalPlayer}");
+        Debug.Log($"attackRef ::: {attackRef}");
+        Debug.Log($"targetRef ::: {targetRef}");
+        
+        if (Runner.LocalPlayer == attackRef)
+        {
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.cardListPanel.SetActive(true);
+        }
+        else
+        {
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.waitingPanel.SetActive(true);
+        }
+    }
+    
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_NotifyBang(PlayerRef attackRef, PlayerRef targetRef)
+    {
+        Debug.Log($"{attackRef}가 {targetRef}에게 뱅을 사용하여 1 데미지를 입혔음둥");
+
+        if (Runner.IsServer)
+        {
+            Player.GetPlayer(targetRef).InGameStat.hp -= 1;
+        }
+        
+        if (Runner.LocalPlayer == attackRef)
+        {
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.cardListPanel.SetActive(true);
+        }
+        else
+        {
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.waitingPanel.SetActive(true);
+        }
+    }
+    
 //     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
 //     public void RPC_UpdateNicknames(string[] nicknames)
 //     {

@@ -977,8 +977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deckData: {fileID: 11400000, guid: eb7fded0ed4dd1b4ab2dd75dc0d87f6a, type: 2}
-  cardPrefab: []
-  deckParent: {fileID: 0}
+  initDeck: []
 --- !u!1 &270260537
 GameObject:
   m_ObjectHideFlags: 0
@@ -2799,13 +2798,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5815dde1393055848a49d1059ddd7066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardSystem: {fileID: 270049311}
-  uiSystem: {fileID: 1286567634}
   humanList: {fileID: 11400000, guid: 2fcfa21c6f3ca4849a4319dedb2d2e2b, type: 2}
   jobList: {fileID: 11400000, guid: 1f96b6aa8e58bcb40a94d9ac756f8f2a, type: 2}
-  victoryCheck: {fileID: 0}
-  players: []
-  playerRef: []
+  MyInfoPanelScript: {fileID: 1908558151}
 --- !u!4 &726887971
 Transform:
   m_ObjectHideFlags: 0
@@ -2929,14 +2924,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e7cae88361a83d47a3abc3cbc4007af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameResultUI: {fileID: 107413108}
-  gameResultText: {fileID: 524362641}
-  playerTexts:
-  - {fileID: 235639802}
-  - {fileID: 1871722130}
-  - {fileID: 1929209957}
-  - {fileID: 1569299022}
-  gameResult: 
 --- !u!114 &857259240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3683,8 +3670,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e5b3d3f07cd7444f80569b224d25d59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  victoryCheck: {fileID: 857259239}
-  NotifyText: {fileID: 0}
 --- !u!4 &1208964158
 Transform:
   m_ObjectHideFlags: 0
@@ -3814,13 +3799,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d370066c3bd7ef45b9ad06b5eb16787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nickNameText: {fileID: 396051573}
-  jobNameText: {fileID: 1171996228}
-  jobInfoText: {fileID: 1389034238}
-  jobImage: {fileID: 904086670}
-  humanNameText: {fileID: 1138227104}
-  humanInfoText: {fileID: 693942689}
-  humanImage: {fileID: 42577857}
 --- !u!4 &1286567635
 Transform:
   m_ObjectHideFlags: 0
@@ -4966,13 +4944,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardListPanel: {fileID: 1191015416}
+  cardButtons: []
   waitingPanel: {fileID: 895710187}
-  playerPanel: {fileID: 1721326966}
-  waitingUserTurnText: {fileID: 1736640150}
-  isPanelOn: 0
+  endTurnButton: {fileID: 0}
+  targetPanel: {fileID: 0}
+  targetTextPanel: {fileID: 0}
   targetButtonPrefab: {fileID: 4451373466979607884, guid: b2412b2720163d1458f0c9332d138c7a,
     type: 3}
-  buttonParent: {fileID: 1721326967}
+  missedPanel: {fileID: 0}
+  useMissedButton: {fileID: 0}
+  dontUseMissedButton: {fileID: 0}
 --- !u!4 &1853056236
 Transform:
   m_ObjectHideFlags: 0
