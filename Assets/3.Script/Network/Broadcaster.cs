@@ -111,7 +111,7 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_SendPlayerHuman(PlayerRef playerRef, int humanIdx)
     {
-        if (!Runner.IsServer && Runner.LocalPlayer != playerRef) return;
+        if (Runner.LocalPlayer != playerRef) return;
 
         Player.LocalPlayer.InGameStat.MyHuman = GameManager.Instance.humanList.humanList[humanIdx];
     }

@@ -6,4 +6,15 @@ using UnityEngine;
 public class JobList : ScriptableObject
 {
     public List<Job> jobList;
+    
+    public Sprite GetJobSpriteByName(string jobName)
+    {
+        foreach (var data in jobList)
+        {
+            if (data.Name == jobName)
+                return data.CardSprite;
+        }
+
+        return null;
+    }
 }
