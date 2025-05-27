@@ -168,7 +168,7 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
         ui?.UpdateNicknameTexts(nicknames);
 
         var broadcaster = FindObjectOfType<Broadcaster>();
-        // broadcaster?.RPC_UpdateNicknames(nicknames);
+        broadcaster?.RPC_UpdateNicknames(nicknames);
     }
 
     private void CheckStartCondition()

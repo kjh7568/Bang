@@ -218,6 +218,7 @@ public class Broadcaster : NetworkBehaviour
     public void RPC_VictoryCheck(PlayerRef playerRef)
     {
         List<Player> players = new List<Player>(Player.ConnectedPlayers);
+        
         string result = "not victory yet";
         
         bool sheriffAlive = players.Any(p => 
@@ -237,6 +238,8 @@ public class Broadcaster : NetworkBehaviour
             p.InGameStat.MyJob != null &&
             p.InGameStat.MyJob.Name == "무법자" &&
             !p.InGameStat.IsDead);
+        
+        
 
         foreach (var p in players)
         {
@@ -285,13 +288,13 @@ public class Broadcaster : NetworkBehaviour
         UIManager.Instance.ShowResultPanel(result);
     }
     
-//     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-//     public void RPC_UpdateNicknames(string[] nicknames)
-//     {
-//         WatingSetting ui = FindObjectOfType<WatingSetting>();
-//         if (ui != null)
-//             ui.UpdateNicknameTexts(nicknames);
-//     }
+     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+     public void RPC_UpdateNicknames(string[] nicknames)
+     {
+         WatingSetting ui = FindObjectOfType<WatingSetting>();
+         if (ui != null)
+             ui.UpdateNicknameTexts(nicknames);
+     }
 //
 //     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
 //     public void RPC_SendNicknameToHost(string nickname, RpcInfo info = default)
