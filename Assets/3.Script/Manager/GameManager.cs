@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
         if (Player.LocalPlayer.InGameStat.hp <= 0)
         {
             Broadcaster.Instance.RPC_VictoryCheck(Player.LocalPlayer.playerRef);
-        }
+        }   
     }
 
     private IEnumerator InitializeGame()
