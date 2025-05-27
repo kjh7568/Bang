@@ -35,10 +35,8 @@ public class MyInfoPanel : MonoBehaviour
     [Header("player HP setting")]
     public List<GameObject> playerHP;
     
-    IEnumerator Start()
+    private void Start()
     {
-        yield return new WaitForSeconds(3f);
-        
         openPanelButton.onClick.AddListener(OpenMyPanel);
 
         startPosition = MyInfoPanelTransform.anchoredPosition;
@@ -46,7 +44,7 @@ public class MyInfoPanel : MonoBehaviour
 
         targetPosition = hiddenPosition;
 
-        UpdateMyInfo();
+        StartCoroutine(UpdateMyInfo());
     }
 
     void Update()
@@ -84,8 +82,10 @@ public class MyInfoPanel : MonoBehaviour
         shouldMove = true;
     }
 
-    void UpdateMyInfo()
+    private IEnumerator UpdateMyInfo()
     {
+        yield return new WaitForSeconds(2.5f);
+        
         var job = Player.LocalPlayer.InGameStat.MyJob;
         var human = Player.LocalPlayer.InGameStat.MyHuman;
 
