@@ -363,8 +363,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 561337591}
-        m_TargetAssemblyTypeName: UseCard, Assembly-CSharp
+      - m_Target: {fileID: 1853056235}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: OnCardClicked
         m_Mode: 3
         m_Arguments:
@@ -836,8 +836,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 561337591}
-        m_TargetAssemblyTypeName: UseCard, Assembly-CSharp
+      - m_Target: {fileID: 1853056235}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: OnCardClicked
         m_Mode: 3
         m_Arguments:
@@ -2508,8 +2508,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 561337591}
-        m_TargetAssemblyTypeName: UseCard, Assembly-CSharp
+      - m_Target: {fileID: 1853056235}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: OnCardClicked
         m_Mode: 3
         m_Arguments:
@@ -2946,8 +2946,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 561337591}
-        m_TargetAssemblyTypeName: UseCard, Assembly-CSharp
+      - m_Target: {fileID: 1853056235}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: OnCardClicked
         m_Mode: 3
         m_Arguments:
@@ -3780,8 +3780,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 561337591}
-        m_TargetAssemblyTypeName: UseCard, Assembly-CSharp
+      - m_Target: {fileID: 1853056235}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: OnCardClicked
         m_Mode: 3
         m_Arguments:

@@ -51,8 +51,6 @@ public class GameManager : MonoBehaviour
         SetPlayerHuman();
         SetPlayerJob();
         
-        Debug.Log($"직업: {Player.LocalPlayer.InGameStat.MyJob.Name} / 인물: {Player.LocalPlayer.InGameStat.MyHuman.Name}");
-        
         turnOwner = GetFirstTurnPlayer();
         Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
     }
