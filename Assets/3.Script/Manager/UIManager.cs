@@ -49,9 +49,9 @@ public class UIManager : MonoBehaviour
         Instance = this;
         
         endTurnButton.onClick.AddListener(() => {
-            Debug.Log(Player.GetPlayer(Player.LocalPlayer.playerRef).Equals(Player.LocalPlayer.InGameStat.HandCardsId));
-            Debug.Log(String.Join(", ", Player.GetPlayer(Player.LocalPlayer.playerRef).InGameStat.HandCardsId));
-            Debug.Log(String.Join(", ", Player.LocalPlayer.InGameStat.HandCardsId));
+            Debug.Log(Player.GetPlayer(Player.LocalPlayer.playerRef).Equals(Player.LocalPlayer));
+            Debug.Log($"{Player.GetPlayer(Player.LocalPlayer.playerRef).playerRef} 플레이어의 핸드: {String.Join(", ", Player.GetPlayer(Player.LocalPlayer.playerRef).InGameStat.HandCardsId)}");
+            Debug.Log($"{Player.LocalPlayer.playerRef} 플레이어의 핸드: {String.Join(", ", Player.LocalPlayer.InGameStat.HandCardsId)}");
             
             Broadcaster.Instance.RPC_SendMyCardId2Server(Player.LocalPlayer.playerRef, Player.LocalPlayer.InGameStat.HandCardsId);
             Broadcaster.Instance.RPC_RequestEndTurn();
