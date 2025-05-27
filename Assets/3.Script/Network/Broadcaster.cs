@@ -9,14 +9,13 @@ public class Broadcaster : NetworkBehaviour
 {
     public static Broadcaster Instance;
 
-//
 //     [Networked] public int TurnIndex { get; set; }
 //     public PlayerRef[] syncedPlayerRefs;
 //     public Player[] syncedPlayerClass;
 //
 //     public Player LocalPlayer;
 //     public PlayerRef LocalRef;
-//
+
     public int turnIdx = 1;
 
     public override void Spawned()
@@ -290,12 +289,24 @@ public class Broadcaster : NetworkBehaviour
         UIManager.Instance.ShowResultPanel(result);
     }
     
-     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-     public void RPC_UpdateNicknames(string[] nicknames)
+     // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+     // public void RPC_UpdateNicknames(string[] nicknames)
+     // {
+     //     WatingSetting ui = FindObjectOfType<WatingSetting>();
+     //     if (ui != null)
+     //         ui.UpdateNicknameTexts(nicknames);
+     // }
+
+     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+     public void RPC_SendMyNickName2Server(string nickname)
      {
-         WatingSetting ui = FindObjectOfType<WatingSetting>();
-         if (ui != null)
-             ui.UpdateNicknameTexts(nicknames);
+         Server.Instance.nicknameBuffer.Add(nickname);
+     }
+     
+     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+     public void RPC_SetNickNameUi(string[] nicknames)
+     {
+         FindObjectOfType<WatingSetting>().UpdateNicknameTexts(nicknames);
      }
 //
 //     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

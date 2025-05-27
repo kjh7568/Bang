@@ -14,8 +14,6 @@ public class WatingSetting : MonoBehaviour
     [SerializeField] private TMP_Text[] nickNameTexts;
     [SerializeField] private Button startButton;
 
-    public NetworkObject networkManager;
-    
     private void Start()
     {
         sessionNumberText.text = $"Session number: {Server.Instance.GetSessionNumber()}";
@@ -25,7 +23,7 @@ public class WatingSetting : MonoBehaviour
     {
         for (int i = 0; i < nickNameTexts.Length; i++)
         {
-            nickNameTexts[i].text = i < nickNames.Length ? nickNames[i] : "Empty";
+            nickNameTexts[i].text = i < nickNames.Length ? nickNames[i] : "Name";
         }
     }
     
