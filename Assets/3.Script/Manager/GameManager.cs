@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     
     public HumanList humanList;
     public JobList jobList;
-
+    
     //
     // [SerializeField] private CardSystem cardSystem;
     // [SerializeField] private UINameSynchronizer uiSystem;
@@ -50,8 +50,6 @@ public class GameManager : MonoBehaviour
         
         SetPlayerHuman();
         SetPlayerJob();
-        
-        Debug.Log($"직업: {Player.LocalPlayer.InGameStat.MyJob.Name} / 인물: {Player.LocalPlayer.InGameStat.MyHuman.Name}");
         
         turnOwner = GetFirstTurnPlayer();
         Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
@@ -103,6 +101,7 @@ public class GameManager : MonoBehaviour
     //     }
     // }
     //
+    
     private void SetPlayerHuman()
     {
         var randomHumanList = Enumerable.Range(0, humanList.humanList.Count).OrderBy(_ => Random.value).ToList();
