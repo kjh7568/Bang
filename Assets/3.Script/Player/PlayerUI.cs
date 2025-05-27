@@ -13,14 +13,19 @@ public class PlayerUI : NetworkBehaviour
 
     //[SerializeField] private List<GameObject> Hpcoins = new List<GameObject>();
     [SerializeField] private List<GameObject> playerHP;
+
+    private int hp;
+    
     private void Start()
     {
         SetPlayerHumanCardSprite();
         
     }
 
-    private void Update()
+    public override void FixedUpdateNetwork()
     {
+        base.FixedUpdateNetwork();
+
         UpdatePlayerHp();
     }
 
@@ -47,7 +52,7 @@ public class PlayerUI : NetworkBehaviour
     
     private void UpdatePlayerHp()
     {
-        int hp = Player.LocalPlayer.InGameStat.hp;
+        hp = Player.LocalPlayer.InGameStat.hp;
         
         for (int i = 0; i < playerHP.Count; i++)
         {
