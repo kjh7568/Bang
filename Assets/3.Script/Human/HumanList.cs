@@ -6,4 +6,15 @@ using UnityEngine;
 public class HumanList : ScriptableObject
 {
     public List<HumanData> humanList;
+    
+    public Sprite GetHumanSpriteByName(string humanName)
+    {
+        foreach (var data in humanList)
+        {
+            if (data.Name == humanName)
+                return data.CardSprite;
+        }
+
+        return null;
+    }
 }

@@ -6149,9 +6149,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 095715b1fc401454d8988ad77a5895d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HumanDatas: {fileID: 11400000, guid: 2fcfa21c6f3ca4849a4319dedb2d2e2b, type: 2}
+  JobDatas: {fileID: 11400000, guid: 1f96b6aa8e58bcb40a94d9ac756f8f2a, type: 2}
   openPanelButton: {fileID: 543818824}
   MyInfoPanelTransform: {fileID: 1908558152}
   moveSpeed: 5
+  nameTxt: {fileID: 396051573}
+  jobTxt: {fileID: 1171996228}
+  jobInfoTxt: {fileID: 1389034238}
+  jobSprite: {fileID: 904086670}
+  humanTxt: {fileID: 1138227104}
+  humanInfoTxt: {fileID: 693942689}
+  humanSprite: {fileID: 42577857}
 --- !u!1 &1913996556
 GameObject:
   m_ObjectHideFlags: 0

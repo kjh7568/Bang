@@ -112,7 +112,7 @@ public class Broadcaster : NetworkBehaviour
     {
         if (Runner.LocalPlayer != playerRef) return;
 
-        Debug.Log($"선택된 인물: {GameManager.Instance.humanList.humanList[humanIdx].Name}");
+        //Debug.Log($"선택된 인물: {GameManager.Instance.humanList.humanList[humanIdx].Name}");
         
         Player.LocalPlayer.InGameStat.MyHuman = GameManager.Instance.humanList.humanList[humanIdx];
     }
@@ -122,7 +122,7 @@ public class Broadcaster : NetworkBehaviour
     {
         if (Runner.LocalPlayer != playerRef) return;
 
-        Debug.Log($"선택된 직업: {GameManager.Instance.jobList.jobList[humanIdx].Name}");
+        //Debug.Log($"선택된 직업: {GameManager.Instance.jobList.jobList[humanIdx].Name}");
         
         Player.LocalPlayer.InGameStat.MyJob = GameManager.Instance.jobList.jobList[humanIdx];
     }
