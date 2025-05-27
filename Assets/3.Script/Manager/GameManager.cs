@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject loadingUI;
     [SerializeField] private Slider loadingBar;
+
+    private bool isChecked = false;
     
     //
     // [SerializeField] private CardSystem cardSystem;
@@ -48,10 +50,11 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Player.LocalPlayer.InGameStat.hp <= 0)
+        if (Player.LocalPlayer.InGameStat.hp <= 0 && !isChecked)
         {
+            isChecked = true;
             Broadcaster.Instance.RPC_VictoryCheck(Player.LocalPlayer.playerRef);
-        }   
+        }
     }
 
     private IEnumerator InitializeGame()

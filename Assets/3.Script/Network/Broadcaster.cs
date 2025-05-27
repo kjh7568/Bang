@@ -219,6 +219,7 @@ public class Broadcaster : NetworkBehaviour
     {
         List<Player> players = new List<Player>(Player.ConnectedPlayers);
         string result = "not victory yet";
+        
         bool sheriffAlive = players.Any(p => 
             p.InGameStat != null &&
             p.InGameStat.MyJob != null &&
@@ -250,8 +251,6 @@ public class Broadcaster : NetworkBehaviour
                 Debug.LogWarning("MyJob이 null입니다: " + p);
                 continue;
             }
-
-            Debug.Log($"{p}의 직업은 {p.InGameStat.MyJob.Name}");
         }
         
         if (!sheriffAlive)
@@ -278,9 +277,8 @@ public class Broadcaster : NetworkBehaviour
             RPC_ShowResultToClients(result);
             return;
         }
-
-        Debug.Log("not victory yet");
     }
+    
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_ShowResultToClients(string result)
     {
