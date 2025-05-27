@@ -258,14 +258,14 @@ public class Broadcaster : NetworkBehaviour
             if (outlawAlive > 0)
             {
                 Debug.Log("무법자 승리!");
-                result = "무법자 승리!";
+                result = "outlawAlive win!";
                 RPC_ShowResultToClients(result);
                 return;
             }
             else if (renegadeAlive)
             {
                 Debug.Log("배신자 승리!");
-                result = "배신자 승리!";
+                result = "outlawAlive win!";
                 RPC_ShowResultToClients(result);
                 return;
             }
@@ -273,7 +273,7 @@ public class Broadcaster : NetworkBehaviour
         else if (outlawAlive == 0 && !renegadeAlive)
         {
             Debug.Log("보안관 승리!");
-            result = "보안관 승리!";
+            result = "sheriff win!";
             RPC_ShowResultToClients(result);
             return;
         }
