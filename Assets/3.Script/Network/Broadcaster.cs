@@ -27,9 +27,7 @@ public class Broadcaster : NetworkBehaviour
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_StartPlayerTurn(PlayerRef playerRef)
-    {
-        RPC_SendMyCardId2Server(playerRef, Player.GetPlayer(playerRef).InGameStat.HandCardsId);
-        
+    {        
         UIManager.Instance.ResetPanel();
 
         if (Runner.IsServer)
@@ -59,7 +57,7 @@ public class Broadcaster : NetworkBehaviour
             if (handCardID[i] == 0)
             {
                 Player.GetPlayer(playerRef).InGameStat.HandCardsId[i] = drawCardId;
-                RPC_OnAndOffCardButton(playerRef, true, i);
+                // RPC_OnAndOffCardButton(playerRef, true, i);
                 CardSystem.Instance.initDeck.RemoveAt(0);
                 break;
             }
@@ -92,6 +90,8 @@ public class Broadcaster : NetworkBehaviour
     {
         Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
         Debug.Log($"전달된 카드 Number: {cardIdx}");
+        
+        Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx] = 0;
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -120,20 +120,20 @@ public class Broadcaster : NetworkBehaviour
         }
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RPC_SendMyCardId2Server(PlayerRef playerRef, int[] cardId)
-    {
-        Debug.Log($"{playerRef}가 턴을 넘겼고 현재 패 상태는 {string.Join(", ", cardId)}");
-        Player.GetPlayer(playerRef).InGameStat.HandCardsId = cardId;
-    }
+    // [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    // public void RPC_SendMyCardId2Server(PlayerRef playerRef, int[] cardId)
+    // {
+    //     Debug.Log($"{playerRef}가 턴을 넘겼고 현재 패 상태는 {string.Join(", ", cardId)}");
+    //     Player.GetPlayer(playerRef).InGameStat.HandCardsId = cardId;
+    // }
 
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    public void RPC_OnAndOffCardButton(PlayerRef playerRef, bool isOn, int buttonIdx)
-    {
-        if (Runner.LocalPlayer != playerRef) return;
-
-        UIManager.Instance.cardButtons[buttonIdx].SetActive(isOn);
-    }
+    // [Rpc(RpcSources.All, RpcTargets.All)]
+    // public void RPC_OnAndOffCardButton(PlayerRef playerRef, bool isOn, int buttonIdx)
+    // {
+    //     if (Runner.LocalPlayer != playerRef) return;
+    //
+    //     UIManager.Instance.cardButtons[buttonIdx].SetActive(isOn);
+    // }
     
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_EndLoading(RpcInfo info = default)
