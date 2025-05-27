@@ -46,29 +46,6 @@ public class GameManager : MonoBehaviour
         SetPlayerHuman();
         SetPlayerJob();
 
-        if (Server.Instance._runner.IsServer)
-        {
-            string jobs = "";
-            string humans = "";
-            string str = "";
-
-            foreach (var job in jobList.jobList)
-            {
-                str += $"{job.Name}, ";
-            }
-
-            Debug.Log(str);
-
-            foreach (var player in Player.ConnectedPlayers)
-            {
-                jobs += $"{player.InGameStat.MyJob.Name}, ";
-                humans += $"{player.InGameStat.MyHuman.Name}, ";
-            }
-
-            Debug.Log($"직업들: {jobs}");
-            Debug.Log($"인물들: {humans}");
-        }
-
         turnOwner = GetFirstTurnPlayer();
         Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
     }
@@ -120,8 +97,6 @@ public class GameManager : MonoBehaviour
     private void SetPlayerJob()
     {
         var randomJobList = Enumerable.Range(0, jobList.jobList.Count).OrderBy(_ => Random.value).ToList();
-
-        Debug.Log(string.Join(", ", randomJobList));
 
         for (int i = 1; i <= Player.ConnectedPlayers.Count; i++)
         {
