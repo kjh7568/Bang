@@ -213,6 +213,17 @@ public class Broadcaster : NetworkBehaviour
             Player.GetPlayer(playerRef).InGameStat.hp += 1;
         }
     }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_VictoryCheck(PlayerRef playerRef)
+    {
+        Player.ConnectedPlayers;
+        var job = Player.GetPlayer(playerRef).InGameStat.MyJob.Name;
+        
+        if (job == "보안관") // 무법자가 있는지 확인 ? 무법자 승리 : 배신자 승리
+        else if (job == "무법자") //보안관 혼자 살아있는가 ? 보안관 승리 : (무법자가 한 명 더 있는가 ? 게임 진행 : (배신자가 살아 있는가 ? ))  
+        else if (job == "배신자") renegade = player;
+    }
     
 //     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
 //     public void RPC_UpdateNicknames(string[] nicknames)

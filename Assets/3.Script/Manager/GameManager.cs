@@ -46,6 +46,14 @@ public class GameManager : MonoBehaviour
         CardSystem.Instance.Init();
     }
 
+    private void Update()
+    {
+        if (Player.LocalPlayer.InGameStat.hp <= 0)
+        {
+            Broadcaster.Instance.RPC_VictoryCheck(Player.LocalPlayer.playerRef);
+        }
+    }
+
     private IEnumerator InitializeGame()
     {
         yield return new WaitForSeconds(2f);

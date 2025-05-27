@@ -17,13 +17,12 @@ public class VictoryCheck : MonoBehaviour
          string[] playerInfos = new string[4]; // 플레이어 순서 보안관/무법자/무법자/배신자
          int outlawIndex = 1;
     
-         foreach (var player in Player.Localplayer.ConnectedPlayers)
+         foreach (var player in Player.ConnectedPlayers)
          {
-              
-                 
              string nickname = player.BasicStat.nickName;
              string human = player.InGameStat.MyHuman.Name;
              string job = player.InGameStat.MyJob.Name;
+             
              string info = $"{nickname}\n{human}\n{job}";
     
              if (job == "보안관") playerInfos[0] = info;
