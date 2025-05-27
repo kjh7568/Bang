@@ -77,6 +77,7 @@ public class CardSystem : MonoBehaviour
              for (int i = 3; i < 5; i++)
              {
                  newHandID[i] = 0;
+                 Broadcaster.Instance.RPC_OnAndOffCardButton(player.playerRef, false, i);
              }
      
              player.InGameStat.HandCardsId = newHandID;
@@ -162,7 +163,8 @@ public class CardSystem : MonoBehaviour
 
      private void UseBeer(PlayerRef user, PlayerRef? target)
      {
-         Debug.Log($"{user}가 맥주를 사용해서 체력을 회복함");
+         Player.GetPlayer(user).InGameStat.hp++;
+         Broadcaster.Instance.RPC_NotifyBeer(user);
          // 예: PlayerManager.Instance.Heal(user, 1);
      }
      

@@ -50,6 +50,7 @@ public class UIManager : MonoBehaviour
         Instance = this;
         
         endTurnButton.onClick.AddListener(() => {
+            Broadcaster.Instance.RPC_SendMyCardId2Server(Player.LocalPlayer.playerRef, Player.LocalPlayer.InGameStat.HandCardsId);
             Broadcaster.Instance.RPC_RequestEndTurn();
         });        
         // playerChoicePanel.SetActive(false);
@@ -72,6 +73,8 @@ public class UIManager : MonoBehaviour
         int cardID = Player.GetPlayer(playerRef).InGameStat.HandCardsId[index];
         var card = CardSystem.Instance.GetCardByIDOrNull(cardID);
         
+        Player.LocalPlayer.InGameStat.HandCardsId[index] = 0;
+            
         if (card.IsTargetRequired) // 대상 필요 여부
         {
             // 대상 지정 UI 패널 열기
@@ -89,7 +92,7 @@ public class UIManager : MonoBehaviour
         }
 
         Player.GetPlayer(playerRef).InGameStat.HandCardsId[index] = 0;
-        Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, index);
+        // Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, index);
     }
     
     public void UpdateHandCardUI(int[] cards)
@@ -98,11 +101,9 @@ public class UIManager : MonoBehaviour
         {
             if (cards[i] == 0)
             {
-                cardButtons[i].SetActive(false);
                 continue;    
             }
-            
-            cardButtons[i].SetActive(true);
+
             cardButtons[i].GetComponent<Image>().sprite = CardSystem.Instance.GetCardByIDOrNull(cards[i]).CardSprite;
         }
     }
@@ -157,12 +158,14 @@ public class UIManager : MonoBehaviour
          
             for (int i = 0; i < cardID.Length; i++)
             {
+                if (cardID[i] == 0) continue;
+                
                 var card = CardSystem.Instance.GetCardByIDOrNull(cardID[i]);
 
                 if (card.Name == "Missed")
                 {
                     Player.GetPlayer(targetRef).InGameStat.HandCardsId[i] = 0;
-                    Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, i);
+                    // Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, i);
                     Broadcaster.Instance.RPC_NotifyMissed(attackRef, targetRef);
                     return;
                 }
@@ -173,7 +176,8 @@ public class UIManager : MonoBehaviour
         {
             missedPanel.SetActive(false);
             waitingPanel.SetActive(true);
-            
+
+            Player.GetPlayer(targetRef).InGameStat.hp--;
             Broadcaster.Instance.RPC_NotifyBang(attackRef, targetRef);
         });
     }

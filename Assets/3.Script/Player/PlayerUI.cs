@@ -11,7 +11,8 @@ public class PlayerUI : NetworkBehaviour
     [SerializeField] private HumanList humanList;
     [SerializeField] private Player player; // 직접 Player 참조
 
-    [SerializeField] private List<GameObject> Hpcoins = new List<GameObject>();
+    //[SerializeField] private List<GameObject> Hpcoins = new List<GameObject>();
+    [SerializeField] private List<GameObject> playerHP;
     private void Start()
     {
         SetPlayerHumanCardSprite();
@@ -20,7 +21,7 @@ public class PlayerUI : NetworkBehaviour
 
     private void Update()
     {
-        MarkHpCoin();
+        UpdatePlayerHp();
     }
 
     private void SetPlayerHumanCardSprite()
@@ -44,15 +45,14 @@ public class PlayerUI : NetworkBehaviour
         // }
     }
     
-    private void MarkHpCoin()
+    private void UpdatePlayerHp()
     {
-        // int hp = player.GameStat.InGameStat.hp;
+        int hp = Player.LocalPlayer.InGameStat.hp;
         
-        // for (int i = 0; i < Hpcoins.Count; i++)
-        // {
-        //     // hp보다 작으면 true, 그 이상이면 false
-        //     Hpcoins[i].SetActive(i < hp);
-        // }
+        for (int i = 0; i < playerHP.Count; i++)
+        {
+            playerHP[i].SetActive(i < hp);
+        }
     }
     
     [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
