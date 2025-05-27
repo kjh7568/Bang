@@ -67,23 +67,19 @@ public class CardSystem : MonoBehaviour
      {
          foreach (var player in Player.ConnectedPlayers)
          {
-             ICard[] newHand = new ICard[5];
              int[] newHandID = new int[5];
              
              for (int i = 0; i < 3; i++)
              {
-                 newHand[i] = initDeck[0];
                  newHandID[i] = initDeck[0].CardID;
                  initDeck.RemoveAt(0);
              }
 
              for (int i = 3; i < 5; i++)
              {
-                 newHand[i] = null;
                  newHandID[i] = 0;
              }
      
-             player.InGameStat.HandCards = newHand;
              player.InGameStat.HandCardsId = newHandID;
              
              Broadcaster.Instance.RPC_ReceiveHandCardAndUpdateUi(player.playerRef, newHandID);
@@ -120,14 +116,14 @@ public class CardSystem : MonoBehaviour
      
      public void DoActionByName(string cardName, PlayerRef user, PlayerRef? target = null)
      {
-         if (actionByName_Dic.TryGetValue(cardName, out var action))
-         {
-             action.Invoke(user, target);
-         }
-         else
+         if (actionByName_Dic.TryGetValue(cardName, out var action) == false)
          {
              Debug.LogWarning($"등록되지 않은 카드 이름: {cardName}");
+             UseAnyCard(user, target);
+             return;
          }
+
+         action.Invoke(user, target);
      }
      
      private void UseBang(PlayerRef user, PlayerRef? target)
@@ -139,7 +135,17 @@ public class CardSystem : MonoBehaviour
          }
 
          Debug.Log($"{user}가 {target}에게 뱅을 사용함");
-         // Broadcaster.Instance.RPC_AttackPlayerNotify(user, target.Value); 등 호출
+         
+         // if (Player.LocalPlayer.playerRef == target)
+         // {
+         //     UIManager.Instance.ShowMissedPanel(
+         //         hasMissed: CheckIfHasMissedCard(target.Value),
+         //         attacker: user,
+         //         defender: target.Value
+         //     );
+         // }
+         
+         // Broadcaster.Instance.RPC_AttackPlayerNotify(user, target.Value);
      }
 
      private void UseMissed(PlayerRef user, PlayerRef? target)
@@ -150,6 +156,12 @@ public class CardSystem : MonoBehaviour
      private void UseBeer(PlayerRef user, PlayerRef? target)
      {
          Debug.Log($"{user}가 맥주를 사용해서 체력을 회복함");
+         // 예: PlayerManager.Instance.Heal(user, 1);
+     }
+     
+     private void UseAnyCard(PlayerRef user, PlayerRef? target)
+     {
+         Debug.Log($"{user}가 아무 카드를 사용");
          // 예: PlayerManager.Instance.Heal(user, 1);
      }
      

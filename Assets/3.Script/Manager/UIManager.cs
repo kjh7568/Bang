@@ -23,14 +23,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject targetPanel;
     [SerializeField] private GameObject targetTextPanel;
     [SerializeField] private Button targetButtonPrefab; 
-    // public GameObject missedPanel;
-    //
+    
+    public GameObject missedPanel;
+    [SerializeField] private Button useMissedButton;
+    [SerializeField] private Button dontUseMissedButton;
+    private bool useMissed;
+    
     // public TMP_Text waitingUserTurnText;
     //
-    // [SerializeField] private Button useMissedButton;
-    // [SerializeField] private Button dontUseMissedButton;
     //
-    // private bool useMissed;
     //
     // //public List<GameObject> enemyList = new List<GameObject>();
     //
@@ -69,8 +70,9 @@ public class UIManager : MonoBehaviour
         cardButtons[index].SetActive(false);
         
         PlayerRef playerRef = Player.LocalPlayer.playerRef;
-        ICard card = Player.GetPlayer(playerRef).InGameStat.HandCards[index];
-
+        int cardID = Player.GetPlayer(playerRef).InGameStat.HandCardsId[index];
+        var card = CardSystem.Instance.GetCardByIDOrNull(cardID);
+        
         if (card.IsTargetRequired) // 대상 필요 여부
         {
             // 대상 지정 UI 패널 열기
@@ -85,8 +87,11 @@ public class UIManager : MonoBehaviour
             // 바로 실행 가능한 카드 (예: 맥주)
             CardSystem.Instance.DoActionByName(card.Name, playerRef);
         }
+
+        Player.GetPlayer(playerRef).InGameStat.HandCardsId[index] = 0;
+        Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, index);
         
-        // Broadcaster.Instance.RPC_RequestUseCard(Server.Instance._runner.LocalPlayer, index);
+        cardListPanel.SetActive(true);
     }
     
     public void UpdateHandCardUI(int[] cards)
@@ -95,9 +100,11 @@ public class UIManager : MonoBehaviour
         {
             if (cards[i] == 0)
             {
+                cardButtons[i].SetActive(false);
                 continue;    
             }
-
+            
+            cardButtons[i].SetActive(true);
             cardButtons[i].GetComponent<Image>().sprite = CardSystem.Instance.GetCardByIDOrNull(cards[i]).CardSprite;
         }
     }
@@ -106,6 +113,11 @@ public class UIManager : MonoBehaviour
     {
         targetPanel.SetActive(true);
 
+        foreach (Transform child in targetTextPanel.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        
         foreach (var targetPlayer in Player.ConnectedPlayers)
         {
             if (targetPlayer == Player.LocalPlayer) continue;
@@ -121,6 +133,41 @@ public class UIManager : MonoBehaviour
                 onTargetSelected.Invoke(playerRef);
             });
         }
+    }
+    
+    public void ShowMissedPanel(bool hasMissed, PlayerRef attackPlayerRef, PlayerRef targetPlayerRef)
+    {
+        useMissedButton.onClick.RemoveAllListeners();
+        dontUseMissedButton.onClick.RemoveAllListeners();
+        
+        waitingPanel.SetActive(false);
+        missedPanel.SetActive(true);
+    
+        useMissedButton.enabled = hasMissed;
+        
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible    = true;
+        
+        useMissedButton.onClick.AddListener(() =>
+        {
+            missedPanel.SetActive(false);
+            waitingPanel.SetActive(true);
+    
+            useMissed = true;
+            
+            // Broadcaster.Instance.RPC_BroadcastMissedUsage(useMissed, attackPlayerRef, targetPlayerRef);
+        });
+        
+        dontUseMissedButton.onClick.AddListener(() =>
+        {
+            missedPanel.SetActive(false);
+            waitingPanel.SetActive(true);
+            
+            useMissed = false;
+            
+            // Broadcaster.Instance.RPC_MakeCombatEvent(attackPlayerRef, Server.Instance._runner.LocalPlayer, 1);
+            // Broadcaster.Instance.RPC_BroadcastMissedUsage(useMissed, attackPlayerRef, targetPlayerRef);
+        });
     }
     
     //

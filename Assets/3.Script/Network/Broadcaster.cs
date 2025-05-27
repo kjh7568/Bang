@@ -50,17 +50,15 @@ public class Broadcaster : NetworkBehaviour
     {
         int drawCardId = CardSystem.Instance.initDeck[0].CardID;
         CardSystem.Instance.initDeck.RemoveAt(0);
-        
-        var player = Player.GetPlayer(playerRef);
-        var cards = player.InGameStat.HandCards;
-        var cardIds = player.InGameStat.HandCardsId;
 
-        for (int i = 0; i < cardIds.Length; i++)
+        var handCardID = Player.GetPlayer(playerRef).InGameStat.HandCardsId;
+        
+        for (int i = 0; i < handCardID.Length; i++)
         {
-            if (cardIds[i] == 0)
+            if (handCardID[i] == 0)
             {
-                cards[i] = CardSystem.Instance.cardByID_Dic[drawCardId];
-                cardIds[i] = drawCardId;
+                Player.GetPlayer(playerRef).InGameStat.HandCardsId[i] = drawCardId;
+                
                 break;
             }
         }
@@ -79,20 +77,6 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_ReceiveHandCardAndUpdateUi(PlayerRef playerRef, int[] handCardIds)
     {
-        // for (int i = 0; i < handCardIds.Length; i++)
-        // {
-        //     var card = CardSystem.Instance.GetCardByIDOrNull(handCardIds[i]);
-        //
-        //     if (card == null)
-        //     {
-        //         Debug.LogWarning($"ID {handCardIds[i]}에 해당하는 카드를 찾을 수 없습니다.");
-        //     }
-        //     else
-        //     {
-        //         Debug.Log($"{playerRef}가 받은 카드: {card.Name}");
-        //     }
-        // }
-
         if (Runner.LocalPlayer == playerRef)
         {
             Player.GetPlayer(playerRef).InGameStat.HandCardsId = handCardIds;
@@ -105,6 +89,8 @@ public class Broadcaster : NetworkBehaviour
     {
         Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
         Debug.Log($"전달된 카드 Number: {cardIdx}");
+        
+        Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx] = 0;
     }
     
 //     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]

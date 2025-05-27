@@ -6055,6 +6055,9 @@ MonoBehaviour:
   targetTextPanel: {fileID: 781878964}
   targetButtonPrefab: {fileID: 6821019907243587138, guid: 95a7791478527ce40a0ed0e35bbc81e8,
     type: 3}
+  missedPanel: {fileID: 286373796}
+  useMissedButton: {fileID: 1836420865}
+  dontUseMissedButton: {fileID: 15825076}
 --- !u!4 &1853056236
 Transform:
   m_ObjectHideFlags: 0
