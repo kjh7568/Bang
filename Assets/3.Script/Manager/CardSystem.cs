@@ -133,18 +133,7 @@ public class CardSystem : MonoBehaviour
              return;
          }
 
-         Debug.Log($"{user}가 {target}에게 뱅을 사용함");
-         
-         // if (Player.LocalPlayer.playerRef == target)
-         // {
-         //     UIManager.Instance.ShowMissedPanel(
-         //         hasMissed: CheckIfHasMissedCard(target.Value),
-         //         attacker: user,
-         //         defender: target.Value
-         //     );
-         // }
-         
-         // Broadcaster.Instance.RPC_AttackPlayerNotify(user, target.Value);
+         Broadcaster.Instance.RPC_RequestBang(user, target.Value);
      }
 
      private void UseMissed(PlayerRef user, PlayerRef? target)

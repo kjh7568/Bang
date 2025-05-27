@@ -86,12 +86,11 @@ public class UIManager : MonoBehaviour
         {
             // 바로 실행 가능한 카드 (예: 맥주)
             CardSystem.Instance.DoActionByName(card.Name, playerRef);
+            cardListPanel.SetActive(true);
         }
 
         Player.GetPlayer(playerRef).InGameStat.HandCardsId[index] = 0;
         Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, index);
-        
-        cardListPanel.SetActive(true);
     }
     
     public void UpdateHandCardUI(int[] cards)
@@ -111,8 +110,6 @@ public class UIManager : MonoBehaviour
     
     public void ShowTargetSelectionPanel(Action<PlayerRef> onTargetSelected)
     {
-        targetPanel.SetActive(true);
-
         foreach (Transform child in targetTextPanel.transform)
         {
             Destroy(child.gameObject);
@@ -133,6 +130,8 @@ public class UIManager : MonoBehaviour
                 onTargetSelected.Invoke(playerRef);
             });
         }
+        
+        targetPanel.SetActive(true);
     }
     
     public void ShowMissedPanel(bool hasMissed, PlayerRef attackPlayerRef, PlayerRef targetPlayerRef)

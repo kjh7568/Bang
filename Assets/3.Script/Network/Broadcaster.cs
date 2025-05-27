@@ -113,6 +113,23 @@ public class Broadcaster : NetworkBehaviour
         Player.LocalPlayer.InGameStat.MyJob = GameManager.Instance.jobList.jobList[humanIdx];
     }
     
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_RequestBang(PlayerRef attackRef, PlayerRef targetRef)
+    {
+        Debug.Log($"{attackRef}가 {targetRef}에게 뱅을 사용함");
+
+        if (Runner.LocalPlayer == targetRef)
+        {
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.missedPanel.SetActive(true);
+        }
+        else
+        {
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.waitingPanel.SetActive(true);
+        }
+    }
+    
 //     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
 //     public void RPC_UpdateNicknames(string[] nicknames)
 //     {
