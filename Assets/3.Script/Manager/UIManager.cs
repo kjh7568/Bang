@@ -68,13 +68,13 @@ public class UIManager : MonoBehaviour
     {
         cardListPanel.SetActive(false);
         cardButtons[index].SetActive(false);
-
-        Player.LocalPlayer.InGameStat.HandCardsId[index] = 0;
         
         PlayerRef playerRef = Player.LocalPlayer.playerRef;
         int cardID = Player.GetPlayer(playerRef).InGameStat.HandCardsId[index];
         var card = CardSystem.Instance.GetCardByIDOrNull(cardID);
         
+        Player.LocalPlayer.InGameStat.HandCardsId[index] = 0;
+            
         if (card.IsTargetRequired) // 대상 필요 여부
         {
             // 대상 지정 UI 패널 열기
