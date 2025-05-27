@@ -2871,12 +2871,12 @@ MonoBehaviour:
   spriteRenderer: {fileID: 7437625853054027774}
   humanList: {fileID: 11400000, guid: 2fcfa21c6f3ca4849a4319dedb2d2e2b, type: 2}
   player: {fileID: 5274620086830130402}
-  Hpcoins:
-  - {fileID: 3149096700938107159}
-  - {fileID: 501297419096797683}
-  - {fileID: 3709440402855742059}
-  - {fileID: 1015326801665657855}
+  playerHP:
   - {fileID: 2831125609565016079}
+  - {fileID: 1015326801665657855}
+  - {fileID: 3709440402855742059}
+  - {fileID: 501297419096797683}
+  - {fileID: 3149096700938107159}
 --- !u!114 &4733140486081779884
 MonoBehaviour:
   m_ObjectHideFlags: 0
