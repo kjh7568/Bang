@@ -26,6 +26,7 @@ public class CardSystem : MonoBehaviour
 
      public List<CardData> initDeck = new List<CardData>();
      public Dictionary<int, CardData> cardByID_Dic;
+     
 //     // private List<CardData> usedDeck = new List<CardData>();
 //     
 //     // 카드 id 초기 리스트
@@ -48,7 +49,6 @@ public class CardSystem : MonoBehaviour
      {
          MakeDeck();
          InitDistributeHandCards();
-         
          //CardUIManager.Instance.SetHandCardImageList();
      }
      
@@ -97,7 +97,7 @@ public class CardSystem : MonoBehaviour
          List<CardData> cards = deckData.cardList;
          cardByID_Dic = cards.ToDictionary(card => card.CardID, card => card);
      }
-
+     
      public CardData GetCardByIDOrNull(int id)
      {
          if (cardByID_Dic.TryGetValue(id, out CardData card))

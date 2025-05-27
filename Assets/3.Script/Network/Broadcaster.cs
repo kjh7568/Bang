@@ -106,6 +106,26 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
         Debug.Log($"전달된 카드 Number: {cardIdx}");
     }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_SendPlayerHuman(PlayerRef playerRef, int humanIdx)
+    {
+        if (Runner.LocalPlayer != playerRef) return;
+
+        Debug.Log($"선택된 인물: {GameManager.Instance.humanList.humanList[humanIdx].Name}");
+        
+        Player.LocalPlayer.InGameStat.MyHuman = GameManager.Instance.humanList.humanList[humanIdx];
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_SendPlayerJob(PlayerRef playerRef, int humanIdx)
+    {
+        if (Runner.LocalPlayer != playerRef) return;
+
+        Debug.Log($"선택된 직업: {GameManager.Instance.jobList.jobList[humanIdx].Name}");
+        
+        Player.LocalPlayer.InGameStat.MyJob = GameManager.Instance.jobList.jobList[humanIdx];
+    }
     
 //     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
 //     public void RPC_UpdateNicknames(string[] nicknames)

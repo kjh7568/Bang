@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Fusion;
 using Unity.VisualScripting;
@@ -10,12 +11,14 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    
+    public HumanList humanList;
+    public JobList jobList;
+
     //
     // [SerializeField] private CardSystem cardSystem;
     // [SerializeField] private UINameSynchronizer uiSystem;
     //
-    // [SerializeField] private HumanList humanList;
-    // [SerializeField] private JobList jobList;
     // [SerializeField] private VictoryCheck victoryCheck; // 승리 조건 체크용
     //
 
@@ -31,22 +34,24 @@ public class GameManager : MonoBehaviour
         if(!Server.Instance._runner.IsServer) return;
         
         // CachePlayerInfo();
-        //
-        // SetPlayerHuman();
-        // SetPlayerJob();
-        //
+        
         // SetPlayerInfo();
-        //
+
         // SyncPlayersToClients();
 
-        StartCoroutine(SetFirstTurnPlayer());
+        StartCoroutine(InitializeGame());
         
         CardSystem.Instance.Init();
     }
 
-    private IEnumerator SetFirstTurnPlayer()
+    private IEnumerator InitializeGame()
     {
         yield return new WaitForSeconds(2f);
+        
+        SetPlayerHuman();
+        SetPlayerJob();
+        
+        Debug.Log($"직업: {Player.LocalPlayer.InGameStat.MyJob.Name} / 인물: {Player.LocalPlayer.InGameStat.MyHuman.Name}");
         
         turnOwner = GetFirstTurnPlayer();
         Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
@@ -98,18 +103,25 @@ public class GameManager : MonoBehaviour
     //     }
     // }
     //
-    // private void SetPlayerHuman()
-    // {
-    //     //일단 인물 구현이 완료 된 것이 아니기 때문에 그냥 더미로 만듬
-    //     var tempList = new List<HumanData>(humanList.humanList);
-    //     
-    //     foreach (var player in players)
-    //     {
-    //         int idx = Random.Range(0, tempList.Count);
-    //         player.GameStat.InGameStat.MyHuman = tempList[idx];
-    //         tempList.RemoveAt(idx);
-    //     }
-    // }
+    private void SetPlayerHuman()
+    {
+        var randomHumanList = Enumerable.Range(0, humanList.humanList.Count).OrderBy(_ => Random.value).ToList();
+        
+        for (int i = 0; i < Player.ConnectedPlayers.Count; i++)
+        {
+            Broadcaster.Instance.RPC_SendPlayerHuman(Player.GetPlayer(i+1).playerRef, randomHumanList[i]);
+        }
+    }
+    private void SetPlayerJob()
+    {
+        var randomHumanList = Enumerable.Range(0, jobList.jobList.Count).OrderBy(_ => Random.value).ToList();
+        
+        for (int i = 0; i < Player.ConnectedPlayers.Count; i++)
+        {
+            Broadcaster.Instance.RPC_SendPlayerJob(Player.GetPlayer(i+1).playerRef, randomHumanList[i]);
+        }
+    }
+    
     //
     // private void SetPlayerInfo() 
     // {
@@ -122,26 +134,7 @@ public class GameManager : MonoBehaviour
     //     }
     // }
     //
-    // private void SetPlayerJob()
-    // {
-    //     var tempList = new List<Job>(jobList.jobList);
-    //     
-    //     players[0].GameStat.InGameStat.MyJob = tempList[0];
-    //     players[1].GameStat.InGameStat.MyJob = tempList[1];
-    //     // players[2].GameStat.InGameStat.MyJob = tempList[2];
-    //     // players[3].GameStat.InGameStat.MyJob = tempList[3];
-    // }
-    // // private void SetPlayerJob()
-    // // {
-    // //     var tempList = new List<Job>(jobList.jobList);
-    // //     
-    // //     foreach (var player in players)
-    // //     {
-    // //         int idx = Random.Range(0, tempList.Count);
-    // //         player.GameStat.InGameStat.MyJob = tempList[idx];
-    // //         tempList.RemoveAt(idx);
-    // //     }
-    // // }
+    
     //
     //
     // public void SyncPlayersToClients()
