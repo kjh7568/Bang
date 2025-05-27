@@ -84,7 +84,7 @@ public class MyInfoPanel : MonoBehaviour
 
     private IEnumerator UpdateMyInfo()
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(3f);
         
         var job = Player.LocalPlayer.InGameStat.MyJob;
         var human = Player.LocalPlayer.InGameStat.MyHuman;
