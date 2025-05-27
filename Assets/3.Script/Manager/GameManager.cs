@@ -80,7 +80,9 @@ public class GameManager : MonoBehaviour
                 return Player.GetPlayer(i);
             }
         }
-
+        //나중에 지울 것
+        return Player.GetPlayer(Broadcaster.Instance.turnIdx);
+        
         return null;
     }
 
