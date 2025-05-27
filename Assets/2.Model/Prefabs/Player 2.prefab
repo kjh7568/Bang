@@ -782,26 +782,21 @@ MonoBehaviour:
   playerGameStat:
     sessionNumber: 0
     characterModelNum: 0
-    playerInGameStat:
-      hp: 5
-      bulletRange: 0
-      HandCardsId: 0000000000000000000000000000000000000000
-      isBang: 0
-      isVolcanic: 0
-      isBarrel: 0
-      isMustang: 0
-      isJail: 0
-      isDynamite: 0
-      playerHpObj:
-      - {fileID: 6159118301027674605}
-      - {fileID: 7943371393901642562}
-      - {fileID: 7256150534809119164}
-      - {fileID: 126486259968223932}
-      - {fileID: 3794272149219909685}
   playerBasicStat:
     iD: 
     password: 
     nickName: Bae
+  playerInGameStat:
+    hp: 5
+    bulletRange: 0
+    HandCardsId: 0000000000000000000000000000000000000000
+    isBang: 0
+    isVolcanic: 0
+    isBarrel: 0
+    isMustang: 0
+    isJail: 0
+    isDynamite: 0
+    playerHpObj: []
 --- !u!114 &4708973670907200777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -814,13 +809,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b350d683bbd19ff4ebddd31b24817ffb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  headTransform: {fileID: 4271085481671916}
-  cameraTransform: {fileID: 8732380796380565618}
-  sensitivity: 1
-  minPitch: -15
-  maxPitch: 15
-  minYawOffset: -45
-  maxYawOffset: 45
 --- !u!114 &7507363449552636916
 MonoBehaviour:
   m_ObjectHideFlags: 0
