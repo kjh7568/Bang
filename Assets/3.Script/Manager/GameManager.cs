@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DG.Tweening;
 using Fusion;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -14,6 +16,9 @@ public class GameManager : MonoBehaviour
     
     public HumanList humanList;
     public JobList jobList;
+
+    public GameObject loadingUI;
+    [SerializeField] private Slider loadingBar;
     
     //
     // [SerializeField] private CardSystem cardSystem;
@@ -27,18 +32,16 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        
+        // 로딩 UI 활성화
+        loadingUI.SetActive(true);
+        StartLoading();
     }
     
     private void Start()
     {
         if(!Server.Instance._runner.IsServer) return;
         
-        // CachePlayerInfo();
-        
-        // SetPlayerInfo();
-
-        // SyncPlayersToClients();
-
         StartCoroutine(InitializeGame());
         
         CardSystem.Instance.Init();
@@ -53,6 +56,19 @@ public class GameManager : MonoBehaviour
         
         turnOwner = GetFirstTurnPlayer();
         Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
+
+        Broadcaster.Instance.RPC_EndLoading();
+    }
+    
+    public void StartLoading()
+    {
+        loadingBar.value = 0;
+        loadingBar.DOValue(1f, 3f).SetEase(Ease.InOutQuad);
+    }
+
+    public void EndLoading()
+    {
+        loadingUI.SetActive(false);
     }
     
     // private void Update()

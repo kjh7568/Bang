@@ -113,6 +113,12 @@ public class Broadcaster : NetworkBehaviour
         Player.LocalPlayer.InGameStat.MyJob = GameManager.Instance.jobList.jobList[humanIdx];
     }
     
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_EndLoading(RpcInfo info = default)
+    {
+        GameManager.Instance.EndLoading();
+    }
+    
 //     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
 //     public void RPC_UpdateNicknames(string[] nicknames)
 //     {
