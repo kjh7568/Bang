@@ -96,6 +96,7 @@ public class Broadcaster : NetworkBehaviour
         if (Runner.LocalPlayer == playerRef)
         {
             Player.GetPlayer(playerRef).InGameStat.HandCardsId = handCardIds;
+            
             UIManager.Instance.UpdateHandCardUI(handCardIds);
         }
     }

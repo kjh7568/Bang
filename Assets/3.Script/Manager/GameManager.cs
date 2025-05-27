@@ -15,12 +15,9 @@ public class GameManager : MonoBehaviour
     public HumanList humanList;
     public JobList jobList;
 
-    //
-    // [SerializeField] private CardSystem cardSystem;
     // [SerializeField] private UINameSynchronizer uiSystem;
     //
     // [SerializeField] private VictoryCheck victoryCheck; // 승리 조건 체크용
-    //
 
     private Player turnOwner;
     
@@ -32,8 +29,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         if(!Server.Instance._runner.IsServer) return;
-        
-        // CachePlayerInfo();
         
         // SetPlayerInfo();
 
@@ -89,18 +84,7 @@ public class GameManager : MonoBehaviour
         
         return null;
     }
-    //
-    // private void CachePlayerInfo()
-    // {
-    //     foreach (var player in Server.Instance.spawnedPlayers.Values)
-    //     {
-    //         var playerClass = player.GetComponent<Player>();
-    //
-    //         players.Add(playerClass);
-    //         playerRef.Add(player.InputAuthority);
-    //     }
-    // }
-    //
+    
     private void SetPlayerHuman()
     {
         var randomHumanList = Enumerable.Range(0, humanList.humanList.Count).OrderBy(_ => Random.value).ToList();
