@@ -74,7 +74,7 @@ public class UIManager : MonoBehaviour
         var card = CardSystem.Instance.GetCardByIDOrNull(cardID);
         
         Player.LocalPlayer.InGameStat.HandCardsId[index] = 0;
-        
+            
         if (card.IsTargetRequired) // 대상 필요 여부
         {
             // 대상 지정 UI 패널 열기
@@ -158,6 +158,8 @@ public class UIManager : MonoBehaviour
          
             for (int i = 0; i < cardID.Length; i++)
             {
+                if (cardID[i] == 0) continue;
+                
                 var card = CardSystem.Instance.GetCardByIDOrNull(cardID[i]);
 
                 if (card.Name == "Missed")
