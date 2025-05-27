@@ -174,7 +174,8 @@ public class UIManager : MonoBehaviour
         {
             missedPanel.SetActive(false);
             waitingPanel.SetActive(true);
-            
+
+            Player.GetPlayer(targetRef).InGameStat.hp--;
             Broadcaster.Instance.RPC_NotifyBang(attackRef, targetRef);
         });
     }
