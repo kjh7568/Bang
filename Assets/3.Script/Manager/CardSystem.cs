@@ -112,6 +112,23 @@ public class CardSystem : MonoBehaviour
          Debug.Log($"Card ID {id} not found.");
          return null;
      }
+
+     public bool CheckHasMissed(PlayerRef playerRef)
+     {
+         var cardID = Player.GetPlayer(playerRef).InGameStat.HandCardsId;
+         
+         for (int i = 0; i < cardID.Length; i++)
+         {
+             var card = GetCardByIDOrNull(cardID[i]);
+
+             if (card.Name == "Missed")
+             {
+                 return true;
+             }
+         }
+         
+         return false;
+     }
      
      public void DoActionByName(string cardName, PlayerRef user, PlayerRef? target = null)
      {
@@ -150,6 +167,7 @@ public class CardSystem : MonoBehaviour
      private void UseAnyCard(PlayerRef user, PlayerRef? target)
      {
          Debug.Log($"{user}가 아무 카드를 사용");
+         UIManager.Instance.cardListPanel.SetActive(true);
          // 예: PlayerManager.Instance.Heal(user, 1);
      }
      

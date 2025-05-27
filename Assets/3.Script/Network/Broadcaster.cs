@@ -117,11 +117,58 @@ public class Broadcaster : NetworkBehaviour
     public void RPC_RequestBang(PlayerRef attackRef, PlayerRef targetRef)
     {
         Debug.Log($"{attackRef}가 {targetRef}에게 뱅을 사용함");
+        Debug.Log($"Runner.LocalPlayer ::: {Runner.LocalPlayer}");
+        Debug.Log($"attackRef ::: {attackRef}");
+        Debug.Log($"targetRef ::: {targetRef}");
 
         if (Runner.LocalPlayer == targetRef)
         {
+            var hasMissed = CardSystem.Instance.CheckHasMissed(targetRef);
+            
             UIManager.Instance.ResetPanel();
-            UIManager.Instance.missedPanel.SetActive(true);
+            UIManager.Instance.ShowMissedPanel(hasMissed, attackRef, targetRef);
+        }
+        else
+        {
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.waitingPanel.SetActive(true);
+        }
+    }
+    
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_NotifyMissed(PlayerRef attackRef, PlayerRef targetRef)
+    {
+        Debug.Log($"{targetRef}가 {attackRef}의 뱅을 빗나감으로 회피하였슴둥");
+        Debug.Log($"Runner.LocalPlayer ::: {Runner.LocalPlayer}");
+        Debug.Log($"attackRef ::: {attackRef}");
+        Debug.Log($"targetRef ::: {targetRef}");
+        
+        if (Runner.LocalPlayer == attackRef)
+        {
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.cardListPanel.SetActive(true);
+        }
+        else
+        {
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.waitingPanel.SetActive(true);
+        }
+    }
+    
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_NotifyBang(PlayerRef attackRef, PlayerRef targetRef)
+    {
+        Debug.Log($"{attackRef}가 {targetRef}에게 뱅을 사용하여 1 데미지를 입혔음둥");
+
+        if (Runner.IsServer)
+        {
+            Player.GetPlayer(targetRef).InGameStat.hp -= 1;
+        }
+        
+        if (Runner.LocalPlayer == attackRef)
+        {
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.cardListPanel.SetActive(true);
         }
         else
         {

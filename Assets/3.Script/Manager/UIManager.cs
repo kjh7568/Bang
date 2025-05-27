@@ -27,7 +27,6 @@ public class UIManager : MonoBehaviour
     public GameObject missedPanel;
     [SerializeField] private Button useMissedButton;
     [SerializeField] private Button dontUseMissedButton;
-    private bool useMissed;
     
     // public TMP_Text waitingUserTurnText;
     //
@@ -117,13 +116,14 @@ public class UIManager : MonoBehaviour
         
         foreach (var targetPlayer in Player.ConnectedPlayers)
         {
-            if (targetPlayer == Player.LocalPlayer) continue;
-
+            if (targetPlayer == Player.LocalPlayer || targetPlayer == null) continue;
+            
             var playerRef = targetPlayer.playerRef;
-
             var button = Instantiate(targetButtonPrefab, targetTextPanel.transform);
             button.GetComponentInChildren<TMP_Text>().text = playerRef.ToString();
 
+            button.onClick.RemoveAllListeners();
+            
             button.onClick.AddListener(() =>
             {
                 targetPanel.SetActive(false);
@@ -134,12 +134,13 @@ public class UIManager : MonoBehaviour
         targetPanel.SetActive(true);
     }
     
-    public void ShowMissedPanel(bool hasMissed, PlayerRef attackPlayerRef, PlayerRef targetPlayerRef)
+    public void ShowMissedPanel(bool hasMissed, PlayerRef attackRef, PlayerRef targetRef)
     {
+        Debug.Log($"빗나감 패널 메서드 시작");
+        
         useMissedButton.onClick.RemoveAllListeners();
         dontUseMissedButton.onClick.RemoveAllListeners();
         
-        waitingPanel.SetActive(false);
         missedPanel.SetActive(true);
     
         useMissedButton.enabled = hasMissed;
@@ -151,10 +152,21 @@ public class UIManager : MonoBehaviour
         {
             missedPanel.SetActive(false);
             waitingPanel.SetActive(true);
-    
-            useMissed = true;
             
-            // Broadcaster.Instance.RPC_BroadcastMissedUsage(useMissed, attackPlayerRef, targetPlayerRef);
+            var cardID = Player.GetPlayer(targetRef).InGameStat.HandCardsId;
+         
+            for (int i = 0; i < cardID.Length; i++)
+            {
+                var card = CardSystem.Instance.GetCardByIDOrNull(cardID[i]);
+
+                if (card.Name == "Missed")
+                {
+                    Player.GetPlayer(targetRef).InGameStat.HandCardsId[i] = 0;
+                    Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, i);
+                    Broadcaster.Instance.RPC_NotifyMissed(attackRef, targetRef);
+                    return;
+                }
+            }
         });
         
         dontUseMissedButton.onClick.AddListener(() =>
@@ -162,10 +174,7 @@ public class UIManager : MonoBehaviour
             missedPanel.SetActive(false);
             waitingPanel.SetActive(true);
             
-            useMissed = false;
-            
-            // Broadcaster.Instance.RPC_MakeCombatEvent(attackPlayerRef, Server.Instance._runner.LocalPlayer, 1);
-            // Broadcaster.Instance.RPC_BroadcastMissedUsage(useMissed, attackPlayerRef, targetPlayerRef);
+            Broadcaster.Instance.RPC_NotifyBang(attackRef, targetRef);
         });
     }
     
