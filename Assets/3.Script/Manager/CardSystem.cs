@@ -26,6 +26,9 @@ public class CardSystem : MonoBehaviour
 
      public List<CardData> initDeck = new List<CardData>();
      public Dictionary<int, CardData> cardByID_Dic;
+
+     public Dictionary<string, Action<PlayerRef, PlayerRef?>> actionByName_Dic;
+     
 //     // private List<CardData> usedDeck = new List<CardData>();
 //     
 //     // 카드 id 초기 리스트
@@ -35,6 +38,7 @@ public class CardSystem : MonoBehaviour
 //     // 사용된 카드
 //     private List<CardData> usedDeck = new List<CardData>();
 //     
+
      private void Awake()
      {
          Instance = this;
@@ -96,6 +100,13 @@ public class CardSystem : MonoBehaviour
 
          List<CardData> cards = deckData.cardList;
          cardByID_Dic = cards.ToDictionary(card => card.CardID, card => card);
+         
+         actionByName_Dic = new Dictionary<string, Action<PlayerRef, PlayerRef?>>()
+         {
+             { "Bang", UseBang },
+             { "Missed", UseMissed },
+             { "Beer", UseBeer }
+         };
      }
 
      public CardData GetCardByIDOrNull(int id)
@@ -107,17 +118,39 @@ public class CardSystem : MonoBehaviour
          return null;
      }
      
-     public int DrawCard()
+     public void DoActionByName(string cardName, PlayerRef user, PlayerRef? target = null)
      {
-         if (initDeck.Count == 0)
+         if (actionByName_Dic.TryGetValue(cardName, out var action))
          {
-             Debug.LogWarning("덱이 비었습니다!");
-             return -1;
+             action.Invoke(user, target);
+         }
+         else
+         {
+             Debug.LogWarning($"등록되지 않은 카드 이름: {cardName}");
+         }
+     }
+     
+     private void UseBang(PlayerRef user, PlayerRef? target)
+     {
+         if (target == null)
+         {
+             Debug.LogWarning("뱅 카드는 대상이 필요합니다!");
+             return;
          }
 
-         int cardId = initDeck[0].CardID;
-         initDeck.RemoveAt(0);
-         return cardId;
+         Debug.Log($"{user}가 {target}에게 뱅을 사용함");
+         // Broadcaster.Instance.RPC_AttackPlayerNotify(user, target.Value); 등 호출
+     }
+
+     private void UseMissed(PlayerRef user, PlayerRef? target)
+     {
+         Debug.Log($"{user}가 빗나감을 사용함");
+     }
+
+     private void UseBeer(PlayerRef user, PlayerRef? target)
+     {
+         Debug.Log($"{user}가 맥주를 사용해서 체력을 회복함");
+         // 예: PlayerManager.Instance.Heal(user, 1);
      }
      
 //     

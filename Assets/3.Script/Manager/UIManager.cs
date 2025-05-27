@@ -20,7 +20,9 @@ public class UIManager : MonoBehaviour
     
     [SerializeField] private Button endTurnButton;
     
-    // public GameObject playerChoicePanel;
+    [SerializeField] private GameObject targetPanel;
+    [SerializeField] private GameObject targetTextPanel;
+    [SerializeField] private Button targetButtonPrefab; 
     // public GameObject missedPanel;
     //
     // public TMP_Text waitingUserTurnText;
@@ -38,7 +40,6 @@ public class UIManager : MonoBehaviour
     // private bool isPlayerSelectActive = false;
     // public bool isPanelOn = false;
     //
-    // [SerializeField] private Button targetButtonPrefab; 
     // [SerializeField] private Transform buttonParent;
     //
     // private PlayerRef localPlayer;
@@ -67,7 +68,25 @@ public class UIManager : MonoBehaviour
         cardListPanel.SetActive(false);
         cardButtons[index].SetActive(false);
         
-        Broadcaster.Instance.RPC_RequestUseCard(Server.Instance._runner.LocalPlayer, index);
+        PlayerRef playerRef = Player.LocalPlayer.playerRef;
+        ICard card = Player.GetPlayer(playerRef).InGameStat.HandCards[index];
+
+        if (card.IsTargetRequired) // 대상 필요 여부
+        {
+            // 대상 지정 UI 패널 열기
+            ShowTargetSelectionPanel((targetRef) =>
+            {
+                // 대상 선택이 끝났을 때 실행
+                CardSystem.Instance.DoActionByName(card.Name, playerRef, targetRef);
+            });
+        }
+        else
+        {
+            // 바로 실행 가능한 카드 (예: 맥주)
+            CardSystem.Instance.DoActionByName(card.Name, playerRef);
+        }
+        
+        // Broadcaster.Instance.RPC_RequestUseCard(Server.Instance._runner.LocalPlayer, index);
     }
     
     public void UpdateHandCardUI(int[] cards)
@@ -80,6 +99,27 @@ public class UIManager : MonoBehaviour
             }
 
             cardButtons[i].GetComponent<Image>().sprite = CardSystem.Instance.GetCardByIDOrNull(cards[i]).CardSprite;
+        }
+    }
+    
+    public void ShowTargetSelectionPanel(Action<PlayerRef> onTargetSelected)
+    {
+        targetPanel.SetActive(true);
+
+        foreach (var targetPlayer in Player.ConnectedPlayers)
+        {
+            if (targetPlayer == Player.LocalPlayer) continue;
+
+            var playerRef = targetPlayer.playerRef;
+
+            var button = Instantiate(targetButtonPrefab, targetTextPanel.transform);
+            button.GetComponentInChildren<TMP_Text>().text = playerRef.ToString();
+
+            button.onClick.AddListener(() =>
+            {
+                targetPanel.SetActive(false);
+                onTargetSelected.Invoke(playerRef);
+            });
         }
     }
     
