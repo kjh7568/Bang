@@ -32,6 +32,9 @@ public class MyInfoPanel : MonoBehaviour
     public TMP_Text humanInfoTxt;
     public Image humanSprite;
     
+    [Header("player HP setting")]
+    public List<GameObject> playerHP;
+    
     IEnumerator Start()
     {
         yield return new WaitForSeconds(3f);
@@ -62,6 +65,8 @@ public class MyInfoPanel : MonoBehaviour
                 shouldMove = false;
             }
         }
+
+        UpdatePlayerHp();
     }
 
     void OpenMyPanel()
@@ -96,5 +101,15 @@ public class MyInfoPanel : MonoBehaviour
         humanTxt.text = Player.LocalPlayer.InGameStat.MyHuman.Name;
         humanSprite.sprite = HumanDatas.GetHumanSpriteByName(human.Name);
         humanInfoTxt.text = Player.LocalPlayer.InGameStat.MyHuman.Description;
+    }
+    
+    private void UpdatePlayerHp()
+    {
+        int hp = Player.LocalPlayer.InGameStat.hp;
+        
+        for (int i = 0; i < playerHP.Count; i++)
+        {
+            playerHP[i].SetActive(i < hp);
+        }
     }
 }
