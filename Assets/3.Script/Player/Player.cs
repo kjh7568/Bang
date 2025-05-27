@@ -22,6 +22,14 @@ public class Player : NetworkBehaviour
 
     public override void Spawned()
     {
+        var nickname = FindObjectOfType<SavePlayerBasicStat>().Nickname;
+        
+        Broadcaster.Instance.RPC_SendMyNickName2Server(nickname);
+        if (!Server.Instance.nicknameBuffer.Contains(nickname))
+        {
+            Broadcaster.Instance.RPC_SetNickNameUi(Server.Instance.nicknameBuffer.ToArray());
+        }
+        
         ConnectedPlayers.Add(this);
 
         playerRef = Object.InputAuthority;
