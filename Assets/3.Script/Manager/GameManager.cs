@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     public GameObject loadingUI;
     [SerializeField] private Slider loadingBar;
     
+    [SerializeField] private Transform[] spawnPoints;
+    
     //
     // [SerializeField] private CardSystem cardSystem;
     // [SerializeField] private UINameSynchronizer uiSystem;
@@ -58,6 +60,8 @@ public class GameManager : MonoBehaviour
         turnOwner = GetFirstTurnPlayer();
         Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
 
+        Server.Instance.MovePlayersToSpawnPoints(spawnPoints);
+        
         Broadcaster.Instance.RPC_EndLoading();
         
     }

@@ -28,6 +28,8 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_StartPlayerTurn(PlayerRef playerRef)
     {
+        RPC_SendMyCardId2Server(playerRef, Player.GetPlayer(playerRef).InGameStat.HandCardsId);
+        
         UIManager.Instance.ResetPanel();
 
         if (Runner.IsServer)

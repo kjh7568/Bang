@@ -230,6 +230,21 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
         SceneManager.LoadScene(1);
     }
     
+    public void MovePlayersToSpawnPoints(Transform[] spawnPoints)
+    {
+        int index = 0;
+        foreach (var kvp in spawnedPlayers)
+        {
+            if (index >= spawnPoints.Length) break;
+
+            var playerObject = kvp.Value;
+            playerObject.transform.position = spawnPoints[index].position;
+            playerObject.transform.rotation = spawnPoints[index].rotation;
+
+            index++;
+        }
+    }
+    
     #region interface methods
 
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
@@ -291,7 +306,7 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
     public void OnSceneLoadDone(NetworkRunner runner)
     {
     }
-
+    
     public void OnSceneLoadStart(NetworkRunner runner)
     {
     }
