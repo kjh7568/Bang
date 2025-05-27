@@ -217,12 +217,32 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_VictoryCheck(PlayerRef playerRef)
     {
-        Player.ConnectedPlayers;
-        var job = Player.GetPlayer(playerRef).InGameStat.MyJob.Name;
+        List<Player> players = new List<Player>(Player.ConnectedPlayers);
         
-        if (job == "보안관") // 무법자가 있는지 확인 ? 무법자 승리 : 배신자 승리
-        else if (job == "무법자") //보안관 혼자 살아있는가 ? 보안관 승리 : (무법자가 한 명 더 있는가 ? 게임 진행 : (배신자가 살아 있는가 ? ))  
-        else if (job == "배신자") renegade = player;
+        bool sheriffAlive  = players.Any(p => p.InGameStat.MyJob.Name == "보안관" && !p.InGameStat.IsDead);
+        bool renegadeAlive = players.Any(p => p.InGameStat.MyJob.Name == "배신자" && !p.InGameStat.IsDead);
+        int  outlawAlive   = players.Count(p => p.InGameStat.MyJob.Name == "무법자" && !p.InGameStat.IsDead);
+
+        if (!sheriffAlive)
+        {
+            if (outlawAlive > 0)
+            {
+                Debug.Log("무법자 승리!");
+                return;
+            }
+            else if (renegadeAlive)
+            {
+                Debug.Log("배신자 승리!");
+                return;
+            }
+        }
+        else if (outlawAlive == 0 && !renegadeAlive)
+        {
+            Debug.Log("보안관 승리!");
+            return;
+        }
+
+        Debug.Log("아직 승부가 결정되지 않았습니다.");
     }
     
 //     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]

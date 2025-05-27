@@ -23,7 +23,7 @@ public class BattleTest : NetworkBehaviour
         }
     }
    
-   
+    
     [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
     private void RPC_ShowNotifyText(string nickname)
     {
