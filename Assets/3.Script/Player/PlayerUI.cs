@@ -54,6 +54,7 @@ public class PlayerUI : NetworkBehaviour
         //     Hpcoins[i].SetActive(i < hp);
         // }
     }
+    
     [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
     public void RPC_SetPlayerHumanCardSprite(string humanName)
     {

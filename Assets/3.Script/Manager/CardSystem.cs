@@ -52,7 +52,6 @@ public class CardSystem : MonoBehaviour
      {
          MakeDeck();
          InitDistributeHandCards();
-         
          //CardUIManager.Instance.SetHandCardImageList();
      }
      
@@ -104,7 +103,7 @@ public class CardSystem : MonoBehaviour
              { "Beer", UseBeer }
          };
      }
-
+     
      public CardData GetCardByIDOrNull(int id)
      {
          if (cardByID_Dic.TryGetValue(id, out CardData card))
