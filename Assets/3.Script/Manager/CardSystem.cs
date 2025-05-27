@@ -119,6 +119,8 @@ public class CardSystem : MonoBehaviour
          
          for (int i = 0; i < cardID.Length; i++)
          {
+             if (cardID[i] == 0) continue;
+             
              var card = GetCardByIDOrNull(cardID[i]);
 
              if (card.Name == "Missed")
