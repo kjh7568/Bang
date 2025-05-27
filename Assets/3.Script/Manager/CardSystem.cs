@@ -77,6 +77,7 @@ public class CardSystem : MonoBehaviour
              {
                  newHand[i] = null;
                  newHandID[i] = 0;
+                 Broadcaster.Instance.RPC_OnAndOffCardButton(player.playerRef, false, i);
              }
      
              player.InGameStat.HandCards = newHand;

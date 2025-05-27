@@ -61,6 +61,7 @@ public class Broadcaster : NetworkBehaviour
             {
                 cards[i] = CardSystem.Instance.cardByID_Dic[drawCardId];
                 cardIds[i] = drawCardId;
+                RPC_OnAndOffCardButton(playerRef, true, i);
                 break;
             }
         }
@@ -121,17 +122,16 @@ public class Broadcaster : NetworkBehaviour
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    public void RPC_SendPlayerJob(PlayerRef playerRef, int humanIdx)
+    public void RPC_SendPlayerJob(PlayerRef playerRef, int jobIdx)
     {
         if (Runner.IsServer && Runner.LocalPlayer != playerRef)
         {
-            Player.GetPlayer(playerRef).InGameStat.MyJob = GameManager.Instance.jobList.jobList[humanIdx];
+            Player.GetPlayer(playerRef).InGameStat.MyJob = GameManager.Instance.jobList.jobList[jobIdx];
         }
         else if (Runner.LocalPlayer != playerRef) return;
 
-        Player.LocalPlayer.InGameStat.MyJob = GameManager.Instance.jobList.jobList[humanIdx];
+        Player.LocalPlayer.InGameStat.MyJob = GameManager.Instance.jobList.jobList[jobIdx];
     }
-
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_SendMyCardId2Server(PlayerRef playerRef, int[] cardId)
@@ -140,6 +140,13 @@ public class Broadcaster : NetworkBehaviour
         Player.GetPlayer(playerRef).InGameStat.HandCardsId = cardId;
     }
 
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_OnAndOffCardButton(PlayerRef playerRef, bool isOn, int buttonIdx)
+    {
+        if (Runner.LocalPlayer != playerRef) return;
+
+        UIManager.Instance.cardButtons[buttonIdx].SetActive(isOn);
+    }
 //     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
 //     public void RPC_UpdateNicknames(string[] nicknames)
 //     {
