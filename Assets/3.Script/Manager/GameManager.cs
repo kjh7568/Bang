@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    
+
     public HumanList humanList;
     public JobList jobList;
 
@@ -20,38 +20,59 @@ public class GameManager : MonoBehaviour
     // [SerializeField] private VictoryCheck victoryCheck; // 승리 조건 체크용
 
     private Player turnOwner;
-    
+
     private void Awake()
     {
         Instance = this;
     }
-    
+
     private void Start()
     {
-        if(!Server.Instance._runner.IsServer) return;
-        
+        if (!Server.Instance._runner.IsServer) return;
+
         // SetPlayerInfo();
 
         // SyncPlayersToClients();
 
         StartCoroutine(InitializeGame());
-        
-        
-        
+
         CardSystem.Instance.Init();
     }
 
     private IEnumerator InitializeGame()
     {
         yield return new WaitForSeconds(2f);
-        
+
         SetPlayerHuman();
         SetPlayerJob();
-        
+
+        if (Server.Instance._runner.IsServer)
+        {
+            string jobs = "";
+            string humans = "";
+            string str = "";
+
+            foreach (var job in jobList.jobList)
+            {
+                str += $"{job.Name}, ";
+            }
+
+            Debug.Log(str);
+
+            foreach (var player in Player.ConnectedPlayers)
+            {
+                jobs += $"{player.InGameStat.MyJob.Name}, ";
+                humans += $"{player.InGameStat.MyHuman.Name}, ";
+            }
+
+            Debug.Log($"직업들: {jobs}");
+            Debug.Log($"인물들: {humans}");
+        }
+
         turnOwner = GetFirstTurnPlayer();
         Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
     }
-    
+
     // private void Update()
     // {
     //     // if (!BasicSpawner.Instance._runner.IsServer) return;
@@ -75,37 +96,39 @@ public class GameManager : MonoBehaviour
 
     private Player GetFirstTurnPlayer()
     {
-        // for (int i = 0; i < Player.ConnectedPlayers.Count; i++)
-        // {
-        //     if (Player.LocalPlayer.playerGameStat.InGameStat.MyJob.Name == "보안관")
-        //     {
-        //         return Player.GetPlayer(i);
-        //     }
-        // }
-        return Player.GetPlayer(Broadcaster.Instance.turnIdx);
-        
+        for (int i = 0; i < Player.ConnectedPlayers.Count; i++)
+        {
+            if (Player.LocalPlayer.InGameStat.MyJob.Name == "보안관")
+            {
+                return Player.GetPlayer(i);
+            }
+        }
+
         return null;
     }
-    
+
     private void SetPlayerHuman()
     {
         var randomHumanList = Enumerable.Range(0, humanList.humanList.Count).OrderBy(_ => Random.value).ToList();
-        
+
         for (int i = 1; i <= Player.ConnectedPlayers.Count; i++)
         {
-            Broadcaster.Instance.RPC_SendPlayerHuman(Player.GetPlayer(i).playerRef, randomHumanList[i]);
+            Broadcaster.Instance.RPC_SendPlayerHuman(Player.GetPlayer(i).playerRef, randomHumanList[i - 1]);
         }
     }
+
     private void SetPlayerJob()
     {
         var randomJobList = Enumerable.Range(0, jobList.jobList.Count).OrderBy(_ => Random.value).ToList();
-        
+
+        Debug.Log(string.Join(", ", randomJobList));
+
         for (int i = 1; i <= Player.ConnectedPlayers.Count; i++)
         {
-            Broadcaster.Instance.RPC_SendPlayerJob(Player.GetPlayer(i).playerRef, randomJobList[i]);
+            Broadcaster.Instance.RPC_SendPlayerJob(Player.GetPlayer(i).playerRef, randomJobList[i - 1]);
         }
     }
-    
+
     //
     // private void SetPlayerInfo() 
     // {
@@ -118,7 +141,7 @@ public class GameManager : MonoBehaviour
     //     }
     // }
     //
-    
+
     //
     //
     // public void SyncPlayersToClients()

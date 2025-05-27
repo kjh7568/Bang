@@ -116,9 +116,10 @@ public class Broadcaster : NetworkBehaviour
         {
             Player.GetPlayer(playerRef).InGameStat.MyHuman = GameManager.Instance.humanList.humanList[humanIdx];
         }
-        else if (Runner.LocalPlayer != playerRef) return;
-
-        Player.LocalPlayer.InGameStat.MyHuman = GameManager.Instance.humanList.humanList[humanIdx];
+        else if (Runner.LocalPlayer == playerRef)
+        {
+            Player.LocalPlayer.InGameStat.MyHuman = GameManager.Instance.humanList.humanList[humanIdx];
+        }
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -128,9 +129,10 @@ public class Broadcaster : NetworkBehaviour
         {
             Player.GetPlayer(playerRef).InGameStat.MyJob = GameManager.Instance.jobList.jobList[jobIdx];
         }
-        else if (Runner.LocalPlayer != playerRef) return;
-
-        Player.LocalPlayer.InGameStat.MyJob = GameManager.Instance.jobList.jobList[jobIdx];
+        else if (Runner.LocalPlayer == playerRef)
+        {
+            Player.LocalPlayer.InGameStat.MyJob = GameManager.Instance.jobList.jobList[jobIdx];
+        }
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
