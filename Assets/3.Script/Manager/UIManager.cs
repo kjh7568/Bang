@@ -50,6 +50,7 @@ public class UIManager : MonoBehaviour
         Instance = this;
         
         endTurnButton.onClick.AddListener(() => {
+            Broadcaster.Instance.RPC_SendMyCardId2Server(Player.LocalPlayer.playerRef, Player.LocalPlayer.InGameStat.HandCardsId);
             Broadcaster.Instance.RPC_RequestEndTurn();
         });        
         // playerChoicePanel.SetActive(false);
@@ -67,6 +68,8 @@ public class UIManager : MonoBehaviour
     {
         cardListPanel.SetActive(false);
         cardButtons[index].SetActive(false);
+
+        Player.LocalPlayer.InGameStat.HandCardsId[index] = 0;
         
         PlayerRef playerRef = Player.LocalPlayer.playerRef;
         int cardID = Player.GetPlayer(playerRef).InGameStat.HandCardsId[index];
@@ -98,11 +101,9 @@ public class UIManager : MonoBehaviour
         {
             if (cards[i] == 0)
             {
-                cardButtons[i].SetActive(false);
                 continue;    
             }
-            
-            cardButtons[i].SetActive(true);
+
             cardButtons[i].GetComponent<Image>().sprite = CardSystem.Instance.GetCardByIDOrNull(cards[i]).CardSprite;
         }
     }

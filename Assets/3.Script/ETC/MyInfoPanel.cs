@@ -86,9 +86,6 @@ public class MyInfoPanel : MonoBehaviour
     {
         yield return new WaitForSeconds(2.5f);
         
-        Debug.Log($"선택된 직업: {Player.LocalPlayer.InGameStat.MyJob}");
-        Debug.Log($"선택된 인물: {Player.LocalPlayer.InGameStat.MyHuman}");
-        
         var job = Player.LocalPlayer.InGameStat.MyJob;
         var human = Player.LocalPlayer.InGameStat.MyHuman;
 

@@ -35,7 +35,7 @@ public class Broadcaster : NetworkBehaviour
             DrawCard(playerRef);
             RPC_ReceiveHandCardAndUpdateUi(playerRef, Player.GetPlayer(playerRef).InGameStat.HandCardsId);
         }
-        
+
         if (Runner.LocalPlayer == playerRef)
         {
             UIManager.Instance.cardListPanel.SetActive(true);
@@ -45,11 +45,10 @@ public class Broadcaster : NetworkBehaviour
             UIManager.Instance.waitingPanel.SetActive(true);
         }
     }
-    
+
     private void DrawCard(PlayerRef playerRef)
     {
         int drawCardId = CardSystem.Instance.initDeck[0].CardID;
-        CardSystem.Instance.initDeck.RemoveAt(0);
 
         var handCardID = Player.GetPlayer(playerRef).InGameStat.HandCardsId;
         
@@ -58,7 +57,8 @@ public class Broadcaster : NetworkBehaviour
             if (handCardID[i] == 0)
             {
                 Player.GetPlayer(playerRef).InGameStat.HandCardsId[i] = drawCardId;
-                
+                RPC_OnAndOffCardButton(playerRef, true, i);
+                CardSystem.Instance.initDeck.RemoveAt(0);
                 break;
             }
         }
@@ -80,37 +80,57 @@ public class Broadcaster : NetworkBehaviour
         if (Runner.LocalPlayer == playerRef)
         {
             Player.GetPlayer(playerRef).InGameStat.HandCardsId = handCardIds;
+
             UIManager.Instance.UpdateHandCardUI(handCardIds);
         }
     }
-    
+
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_RequestUseCard(PlayerRef playerRef, int cardIdx)
     {
         Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
         Debug.Log($"전달된 카드 Number: {cardIdx}");
-        
-        Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx] = 0;
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_SendPlayerHuman(PlayerRef playerRef, int humanIdx)
     {
-        if (Runner.LocalPlayer != playerRef) return;
-
-        //Debug.Log($"선택된 인물: {GameManager.Instance.humanList.humanList[humanIdx].Name}");
-        
-        Player.LocalPlayer.InGameStat.MyHuman = GameManager.Instance.humanList.humanList[humanIdx];
+        if (Runner.IsServer && Runner.LocalPlayer != playerRef)
+        {
+            Player.GetPlayer(playerRef).InGameStat.MyHuman = GameManager.Instance.humanList.humanList[humanIdx];
+        }
+        else if (Runner.LocalPlayer == playerRef)
+        {
+            Player.LocalPlayer.InGameStat.MyHuman = GameManager.Instance.humanList.humanList[humanIdx];
+        }
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    public void RPC_SendPlayerJob(PlayerRef playerRef, int humanIdx)
+    public void RPC_SendPlayerJob(PlayerRef playerRef, int jobIdx)
+    {
+        if (Runner.IsServer && Runner.LocalPlayer != playerRef)
+        {
+            Player.GetPlayer(playerRef).InGameStat.MyJob = GameManager.Instance.jobList.jobList[jobIdx];
+        }
+        else if (Runner.LocalPlayer == playerRef)
+        {
+            Player.LocalPlayer.InGameStat.MyJob = GameManager.Instance.jobList.jobList[jobIdx];
+        }
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_SendMyCardId2Server(PlayerRef playerRef, int[] cardId)
+    {
+        Debug.Log($"{playerRef}가 턴을 넘겼고 현재 패 상태는 {string.Join(", ", cardId)}");
+        Player.GetPlayer(playerRef).InGameStat.HandCardsId = cardId;
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_OnAndOffCardButton(PlayerRef playerRef, bool isOn, int buttonIdx)
     {
         if (Runner.LocalPlayer != playerRef) return;
 
-        //Debug.Log($"선택된 직업: {GameManager.Instance.jobList.jobList[humanIdx].Name}");
-        
-        Player.LocalPlayer.InGameStat.MyJob = GameManager.Instance.jobList.jobList[humanIdx];
+        UIManager.Instance.cardButtons[buttonIdx].SetActive(isOn);
     }
     
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]

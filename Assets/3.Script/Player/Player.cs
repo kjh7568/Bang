@@ -32,6 +32,11 @@ public class Player : NetworkBehaviour
         }
     }
 
+    public override void Despawned(NetworkRunner runner, bool hasState)
+    {
+        ConnectedPlayers.Remove(this);
+    }
+
     public static Player GetPlayer(PlayerRef playerRef)
     {
         return ConnectedPlayers.Find(p => p.playerRef == playerRef);
