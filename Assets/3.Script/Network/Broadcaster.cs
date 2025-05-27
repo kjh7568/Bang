@@ -186,7 +186,7 @@ public class Broadcaster : NetworkBehaviour
     {
         Debug.Log($"{attackRef}가 {targetRef}에게 뱅을 사용하여 1 데미지를 입혔습니다!");
 
-        if (Runner.IsServer)
+        if (Runner.IsServer && Runner.LocalPlayer != targetRef)
         {
             Player.GetPlayer(targetRef).InGameStat.hp--;
         }
@@ -208,7 +208,7 @@ public class Broadcaster : NetworkBehaviour
     {
         Debug.Log($"{playerRef}가 맥주를 사용하여 체력 1을 회복했습니다!");
 
-        if (Runner.IsServer)
+        if (Runner.IsServer && Runner.LocalPlayer != playerRef)
         {
             Player.GetPlayer(playerRef).InGameStat.hp += 1;
         }

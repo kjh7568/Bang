@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         
         StartCoroutine(InitializeGame());
 
-        CardSystem.Instance.Init();
+        // CardSystem.Instance.Init();
     }
 
     private void Update()
@@ -60,11 +60,14 @@ public class GameManager : MonoBehaviour
 
         SetPlayerHuman();
         SetPlayerJob();
+        
+        CardSystem.Instance.Init();
 
         turnOwner = GetFirstTurnPlayer();
         Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
 
         Broadcaster.Instance.RPC_EndLoading();
+        
     }
     
     public void StartLoading()
