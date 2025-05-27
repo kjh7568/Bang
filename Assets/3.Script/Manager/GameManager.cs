@@ -89,20 +89,20 @@ public class GameManager : MonoBehaviour
     
     private void SetPlayerHuman()
     {
-        var randomList = Enumerable.Range(0, humanList.humanList.Count).OrderBy(_ => Random.value).ToList();
+        var randomHumanList = Enumerable.Range(0, humanList.humanList.Count).OrderBy(_ => Random.value).ToList();
         
         for (int i = 1; i <= Player.ConnectedPlayers.Count; i++)
         {
-            Broadcaster.Instance.RPC_SendPlayerHuman(Player.GetPlayer(i).playerRef, randomList[i]);
+            Broadcaster.Instance.RPC_SendPlayerHuman(Player.GetPlayer(i).playerRef, randomHumanList[i]);
         }
     }
     private void SetPlayerJob()
     {
-        var randomList = Enumerable.Range(0, jobList.jobList.Count).OrderBy(_ => Random.value).ToList();
+        var randomJobList = Enumerable.Range(0, jobList.jobList.Count).OrderBy(_ => Random.value).ToList();
         
         for (int i = 1; i <= Player.ConnectedPlayers.Count; i++)
         {
-            Broadcaster.Instance.RPC_SendPlayerJob(Player.GetPlayer(i).playerRef, randomList[i]);
+            Broadcaster.Instance.RPC_SendPlayerJob(Player.GetPlayer(i).playerRef, randomJobList[i]);
         }
     }
     
