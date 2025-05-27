@@ -4259,7 +4259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b01bb3c784a96d3439c2ca97093a1ddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deckData: {fileID: 11400000, guid: eb7fded0ed4dd1b4ab2dd75dc0d87f6a, type: 2}
+  deckData: {fileID: 11400000, guid: 898cec359c69a7c418494225a8e4f225, type: 2}
   initDeck: []
 --- !u!1 &270260537
 GameObject:
@@ -7535,57 +7535,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 515995690}
   m_Mesh: {fileID: 4300000, guid: 01ca46dca8110be46968fff207ce9393, type: 3}
---- !u!1 &519066528
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 519066530}
-  - component: {fileID: 519066529}
-  m_Layer: 0
-  m_Name: CardUIManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &519066529
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519066528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59767b6744eb5134a8c78bc187fd375d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handCardImageList:
-  - {fileID: 20989745}
-  - {fileID: 229979372}
-  - {fileID: 560705374}
-  - {fileID: 891913279}
-  - {fileID: 513956714}
-  deckData: {fileID: 11400000, guid: eb7fded0ed4dd1b4ab2dd75dc0d87f6a, type: 2}
---- !u!4 &519066530
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519066528}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2096215117}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &521526636
 GameObject:
   m_ObjectHideFlags: 0
@@ -18075,8 +18024,7 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 1208964157}
+  NetworkedBehaviours: []
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &1208964157
 MonoBehaviour:
@@ -26361,6 +26309,8 @@ MonoBehaviour:
   missedPanel: {fileID: 286373796}
   useMissedButton: {fileID: 1836420865}
   dontUseMissedButton: {fileID: 15825076}
+  ResultPanel: {fileID: 0}
+  resultText: {fileID: 0}
 --- !u!4 &1853056236
 Transform:
   m_ObjectHideFlags: 0
@@ -29993,7 +29943,6 @@ Transform:
   - {fileID: 726887971}
   - {fileID: 270049310}
   - {fileID: 1853056236}
-  - {fileID: 519066530}
   - {fileID: 1155128138}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
