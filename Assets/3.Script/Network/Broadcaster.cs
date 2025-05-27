@@ -123,6 +123,14 @@ public class Broadcaster : NetworkBehaviour
         Player.LocalPlayer.InGameStat.MyJob = GameManager.Instance.jobList.jobList[humanIdx];
     }
     
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_SendMyCardId2Server(PlayerRef playerRef, int[] cardId)
+    {
+        Debug.Log($"{playerRef}가 턴을 넘겼고 현재 패 상태는 {string.Join(", ", cardId)}");
+        Player.GetPlayer(playerRef).InGameStat.HandCardsId = cardId;
+    }
+    
 //     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
 //     public void RPC_UpdateNicknames(string[] nicknames)
 //     {

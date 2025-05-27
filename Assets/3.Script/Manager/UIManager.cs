@@ -49,6 +49,7 @@ public class UIManager : MonoBehaviour
         Instance = this;
         
         endTurnButton.onClick.AddListener(() => {
+            Broadcaster.Instance.RPC_SendMyCardId2Server(Player.LocalPlayer.playerRef, Player.LocalPlayer.InGameStat.HandCardsId);
             Broadcaster.Instance.RPC_RequestEndTurn();
         });        
         // playerChoicePanel.SetActive(false);
@@ -64,10 +65,10 @@ public class UIManager : MonoBehaviour
     
     public void OnCardClicked(int index)
     {
-        cardListPanel.SetActive(false);
+        // cardListPanel.SetActive(false);
         cardButtons[index].SetActive(false);
-        
-        Broadcaster.Instance.RPC_RequestUseCard(Server.Instance._runner.LocalPlayer, index);
+
+        Player.LocalPlayer.InGameStat.HandCardsId[index] = 0;
     }
     
     public void UpdateHandCardUI(int[] cards)
