@@ -163,12 +163,6 @@ public class CardSystem : MonoBehaviour
 
      private void UseBeer(PlayerRef user, PlayerRef? target)
      {
-         if (Player.GetPlayer(user).InGameStat.hp >= 5)
-         {
-             Debug.Log("풀피인데 맥주를 먹으면 안되죠...");
-             return;
-         }
-         
          Player.GetPlayer(user).InGameStat.hp++;
          Broadcaster.Instance.RPC_NotifyBeer(user);
          // 예: PlayerManager.Instance.Heal(user, 1);

@@ -19,10 +19,6 @@ public class GameManager : MonoBehaviour
 
     public GameObject loadingUI;
     [SerializeField] private Slider loadingBar;
-
-    private bool isChecked = false;
-    
-    [SerializeField] private Transform[] spawnPoints;
     
     //
     // [SerializeField] private CardSystem cardSystem;
@@ -47,16 +43,7 @@ public class GameManager : MonoBehaviour
         
         StartCoroutine(InitializeGame());
 
-        // CardSystem.Instance.Init();
-    }
-
-    private void Update()
-    {
-        if (Player.LocalPlayer.InGameStat.hp <= 0 && !isChecked)
-        {
-            isChecked = true;
-            Broadcaster.Instance.RPC_VictoryCheck(Player.LocalPlayer.playerRef);
-        }
+        CardSystem.Instance.Init();
     }
 
     private IEnumerator InitializeGame()
@@ -65,16 +52,11 @@ public class GameManager : MonoBehaviour
 
         SetPlayerHuman();
         SetPlayerJob();
-        
-        CardSystem.Instance.Init();
 
         turnOwner = GetFirstTurnPlayer();
         Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
 
-        Server.Instance.MovePlayersToSpawnPoints(spawnPoints);
-        
         Broadcaster.Instance.RPC_EndLoading();
-        
     }
     
     public void StartLoading()

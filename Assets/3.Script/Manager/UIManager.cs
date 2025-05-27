@@ -28,9 +28,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button useMissedButton;
     [SerializeField] private Button dontUseMissedButton;
     
-    
-    [SerializeField] private GameObject ResultPanel;
-    [SerializeField] private TMP_Text resultText;
     // public TMP_Text waitingUserTurnText;
     //
     //
@@ -183,16 +180,8 @@ public class UIManager : MonoBehaviour
             Player.GetPlayer(targetRef).InGameStat.hp--;
             Broadcaster.Instance.RPC_NotifyBang(attackRef, targetRef);
         });
-        
     }
-    public void ShowResultPanel(string result)
-    {
-        ResultPanel.SetActive(true);
-        resultText.text = result;
-        
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible    = true;
-    }
+    
     //
     // private void Update()
     // {

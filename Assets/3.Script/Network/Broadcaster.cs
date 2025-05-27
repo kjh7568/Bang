@@ -28,8 +28,6 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_StartPlayerTurn(PlayerRef playerRef)
     {
-        RPC_SendMyCardId2Server(playerRef, Player.GetPlayer(playerRef).InGameStat.HandCardsId);
-        
         UIManager.Instance.ResetPanel();
 
         if (Runner.IsServer)
@@ -188,7 +186,7 @@ public class Broadcaster : NetworkBehaviour
     {
         Debug.Log($"{attackRef}가 {targetRef}에게 뱅을 사용하여 1 데미지를 입혔습니다!");
 
-        if (Runner.IsServer && Runner.LocalPlayer != targetRef)
+        if (Runner.IsServer)
         {
             Player.GetPlayer(targetRef).InGameStat.hp--;
         }
@@ -210,93 +208,19 @@ public class Broadcaster : NetworkBehaviour
     {
         Debug.Log($"{playerRef}가 맥주를 사용하여 체력 1을 회복했습니다!");
 
-        if (Runner.IsServer && Runner.LocalPlayer != playerRef)
+        if (Runner.IsServer)
         {
             Player.GetPlayer(playerRef).InGameStat.hp += 1;
         }
     }
-
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    public void RPC_VictoryCheck(PlayerRef playerRef)
-    {
-        List<Player> players = new List<Player>(Player.ConnectedPlayers);
-        
-        string result = "not victory yet";
-        
-        bool sheriffAlive = players.Any(p => 
-            p.InGameStat != null &&
-            p.InGameStat.MyJob != null &&
-            p.InGameStat.MyJob.Name == "보안관" &&
-            !p.InGameStat.IsDead);
-
-        bool renegadeAlive = players.Any(p => 
-            p.InGameStat != null &&
-            p.InGameStat.MyJob != null &&
-            p.InGameStat.MyJob.Name == "배신자" &&
-            !p.InGameStat.IsDead);
-
-        int outlawAlive = players.Count(p => 
-            p.InGameStat != null &&
-            p.InGameStat.MyJob != null &&
-            p.InGameStat.MyJob.Name == "무법자" &&
-            !p.InGameStat.IsDead);
-        
-        
-
-        foreach (var p in players)
-        {
-            if (p.InGameStat == null)
-            {
-                Debug.LogWarning("InGameStat이 null입니다: " + p);
-                continue;
-            }
     
-            if (p.InGameStat.MyJob == null)
-            {
-                Debug.LogWarning("MyJob이 null입니다: " + p);
-                continue;
-            }
-        }
-        
-        if (!sheriffAlive)
-        {
-            if (outlawAlive > 0)
-            {
-                Debug.Log("무법자 승리!");
-                result = "무법자 승리!";
-                RPC_ShowResultToClients(result);
-                return;
-            }
-            else if (renegadeAlive)
-            {
-                Debug.Log("배신자 승리!");
-                result = "배신자 승리!";
-                RPC_ShowResultToClients(result);
-                return;
-            }
-        }
-        else if (outlawAlive == 0 && !renegadeAlive)
-        {
-            Debug.Log("보안관 승리!");
-            result = "보안관 승리!";
-            RPC_ShowResultToClients(result);
-            return;
-        }
-    }
-    
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_ShowResultToClients(string result)
-    {
-        UIManager.Instance.ShowResultPanel(result);
-    }
-    
-     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-     public void RPC_UpdateNicknames(string[] nicknames)
-     {
-         WatingSetting ui = FindObjectOfType<WatingSetting>();
-         if (ui != null)
-             ui.UpdateNicknameTexts(nicknames);
-     }
+//     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+//     public void RPC_UpdateNicknames(string[] nicknames)
+//     {
+//         WatingSetting ui = FindObjectOfType<WatingSetting>();
+//         if (ui != null)
+//             ui.UpdateNicknameTexts(nicknames);
+//     }
 //
 //     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
 //     public void RPC_SendNicknameToHost(string nickname, RpcInfo info = default)
