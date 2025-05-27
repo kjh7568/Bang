@@ -92,7 +92,7 @@ public class UIManager : MonoBehaviour
         }
 
         Player.GetPlayer(playerRef).InGameStat.HandCardsId[index] = 0;
-        Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, index);
+        // Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, index);
     }
     
     public void UpdateHandCardUI(int[] cards)
@@ -163,7 +163,7 @@ public class UIManager : MonoBehaviour
                 if (card.Name == "Missed")
                 {
                     Player.GetPlayer(targetRef).InGameStat.HandCardsId[i] = 0;
-                    Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, i);
+                    // Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, i);
                     Broadcaster.Instance.RPC_NotifyMissed(attackRef, targetRef);
                     return;
                 }
@@ -174,7 +174,8 @@ public class UIManager : MonoBehaviour
         {
             missedPanel.SetActive(false);
             waitingPanel.SetActive(true);
-            
+
+            Player.GetPlayer(targetRef).InGameStat.hp--;
             Broadcaster.Instance.RPC_NotifyBang(attackRef, targetRef);
         });
     }

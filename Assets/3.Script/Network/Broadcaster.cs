@@ -164,7 +164,7 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_NotifyMissed(PlayerRef attackRef, PlayerRef targetRef)
     {
-        Debug.Log($"{targetRef}가 {attackRef}의 뱅을 빗나감으로 회피하였슴둥");
+        Debug.Log($"{targetRef}가 {attackRef}의 뱅을 빗나감으로 회피하였습니다!");
         Debug.Log($"Runner.LocalPlayer ::: {Runner.LocalPlayer}");
         Debug.Log($"attackRef ::: {attackRef}");
         Debug.Log($"targetRef ::: {targetRef}");
@@ -184,11 +184,11 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_NotifyBang(PlayerRef attackRef, PlayerRef targetRef)
     {
-        Debug.Log($"{attackRef}가 {targetRef}에게 뱅을 사용하여 1 데미지를 입혔음둥");
+        Debug.Log($"{attackRef}가 {targetRef}에게 뱅을 사용하여 1 데미지를 입혔습니다!");
 
         if (Runner.IsServer)
         {
-            Player.GetPlayer(targetRef).InGameStat.hp -= 1;
+            Player.GetPlayer(targetRef).InGameStat.hp--;
         }
         
         if (Runner.LocalPlayer == attackRef)
@@ -200,6 +200,17 @@ public class Broadcaster : NetworkBehaviour
         {
             UIManager.Instance.ResetPanel();
             UIManager.Instance.waitingPanel.SetActive(true);
+        }
+    }
+    
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_NotifyBeer(PlayerRef playerRef)
+    {
+        Debug.Log($"{playerRef}가 맥주를 사용하여 체력 1을 회복했습니다!");
+
+        if (Runner.IsServer)
+        {
+            Player.GetPlayer(playerRef).InGameStat.hp += 1;
         }
     }
     
