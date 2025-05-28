@@ -44,7 +44,7 @@ public class MyInfoPanel : MonoBehaviour
 
         targetPosition = hiddenPosition;
 
-        StartCoroutine(UpdateMyInfo());
+        // InitializedMyInfoPanel();
     }
 
     void Update()
@@ -82,10 +82,8 @@ public class MyInfoPanel : MonoBehaviour
         shouldMove = true;
     }
 
-    private IEnumerator UpdateMyInfo()
+    public void InitializedMyInfoPanel()
     {
-        yield return new WaitForSeconds(3f);
-        
         var job = Player.LocalPlayer.InGameStat.MyJob;
         var human = Player.LocalPlayer.InGameStat.MyHuman;
 

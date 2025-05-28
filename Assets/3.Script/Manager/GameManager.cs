@@ -23,12 +23,6 @@ public class GameManager : MonoBehaviour
     private bool isChecked = false;
     
     [SerializeField] private Transform[] spawnPoints;
-    
-    //
-    // [SerializeField] private CardSystem cardSystem;
-    // [SerializeField] private UINameSynchronizer uiSystem;
-    //
-    // [SerializeField] private VictoryCheck victoryCheck; // 승리 조건 체크용
 
     private Player turnOwner;
 
@@ -43,11 +37,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        //클라에서는 안도는게 맞음
         if(!Server.Instance._runner.IsServer) return;
-        
-        StartCoroutine(InitializeGame());
 
-        // CardSystem.Instance.Init();
+        InitializeGame();
     }
 
     private void Update()
@@ -59,20 +52,33 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private IEnumerator InitializeGame()
+    private async void InitializeGame()
     {
-        yield return new WaitForSeconds(3f);
-
+        Debug.Log(Player.ConnectedPlayers.Count);
+        
+        await WaitForFourPlayersAsync();
+        
+        Debug.Log("실행은 됐나요?");
         SetPlayerHuman();
+        Debug.Log("인물 설정 완");
         SetPlayerJob();
+        Debug.Log("직업 설정 완");
         
         Server.Instance.MovePlayersToSpawnPoints(spawnPoints);
+        Debug.Log("뭔지 모를 거 완");
         
         turnOwner = GetFirstTurnPlayer();
+        Debug.Log($"선턴 잡기 완: {turnOwner}");
         
         CardSystem.Instance.Init();
+        Debug.Log("카드 매니저 인잇 완");
+        
         Broadcaster.Instance.RPC_EndLoading();
+        Debug.Log("로딩 완");
         Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
+        Debug.Log("플레이어 턴 시작 완");
+        Broadcaster.Instance.RPC_SetClientPanel();
+        Debug.Log("클라 패널 셋팅 완");
     }
     
     public void StartLoading()
@@ -111,9 +117,10 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < Player.ConnectedPlayers.Count; i++)
         {
-            if (Player.LocalPlayer.InGameStat.MyJob.Name == "보안관")
+            if (Player.ConnectedPlayers[i].InGameStat.MyJob.Name == "보안관")
             {
-                return Player.GetPlayer(i);
+                Broadcaster.Instance.turnIdx = i + 1;
+                return Player.GetPlayer(i + 1);
             }
         }
         //나중에 지울 것
@@ -140,6 +147,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public async Task WaitForFourPlayersAsync()
+    {
+        while (Player.ConnectedPlayers.Count < 4)
+        {
+            await Task.Yield();
+        }
+    }
+    
     //
     // private void SetPlayerInfo() 
     // {

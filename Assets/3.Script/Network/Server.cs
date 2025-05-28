@@ -193,7 +193,7 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
         }
     }
 
-    private async Task<Broadcaster> WaitForBroadcasterAsync()
+    public async Task<Broadcaster> WaitForBroadcasterAsync()
     {
         Broadcaster broadcaster = null;
 

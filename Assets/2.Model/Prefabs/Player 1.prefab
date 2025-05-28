@@ -2624,7 +2624,7 @@ MonoBehaviour:
     password: 
     nickName: Noh
   playerInGameStat:
-    hp: 5
+    hp: 1
     bulletRange: 0
     HandCardsId: 0000000000000000000000000000000000000000
     isBang: 0

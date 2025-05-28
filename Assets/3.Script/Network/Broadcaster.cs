@@ -56,7 +56,7 @@ public class Broadcaster : NetworkBehaviour
             if (handCardID[i] == 0)
             {
                 Player.GetPlayer(playerRef).InGameStat.HandCardsId[i] = drawCardId;
-                // RPC_OnAndOffCardButton(playerRef, true, i);
+
                 CardSystem.Instance.initDeck.RemoveAt(0);
                 break;
             }
@@ -314,6 +314,20 @@ public void RPC_VictoryCheck(PlayerRef playerRef)
     //         ui.UpdateNicknameTexts(nicknames);
     // }
 
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_SetClientPanel()
+    {
+        FindObjectOfType<MyInfoPanel>().InitializedMyInfoPanel();
+    }
+    
+    // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    // public void RPC_UpdateNicknames(string[] nicknames)
+    // {
+    //     WatingSetting ui = FindObjectOfType<WatingSetting>();
+    //     if (ui != null)
+    //         ui.UpdateNicknameTexts(nicknames);
+    // }
+
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_SendMyNickName2Server(string nickname, PlayerRef playerRef)
     {
@@ -330,6 +344,14 @@ public void RPC_VictoryCheck(PlayerRef playerRef)
         Debug.Log("UI 수정 완료!");
         FindObjectOfType<WatingSetting>()?.UpdateNicknameTexts(nicknames);
     }
+    
+     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+     public void RPC_UpdateNicknames(string[] nicknames)
+     {
+         WatingSetting ui = FindObjectOfType<WatingSetting>();
+         if (ui != null)
+             ui.UpdateNicknameTexts(nicknames);
+     }
 //
 //     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
 //     public void RPC_SendNicknameToHost(string nickname, RpcInfo info = default)
