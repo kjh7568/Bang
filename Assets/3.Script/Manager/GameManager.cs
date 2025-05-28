@@ -61,20 +61,18 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator InitializeGame()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
 
         SetPlayerHuman();
         SetPlayerJob();
         
-        CardSystem.Instance.Init();
-
-        turnOwner = GetFirstTurnPlayer();
-        Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
-
         Server.Instance.MovePlayersToSpawnPoints(spawnPoints);
         
-        Broadcaster.Instance.RPC_EndLoading();
+        turnOwner = GetFirstTurnPlayer();
         
+        CardSystem.Instance.Init();
+        Broadcaster.Instance.RPC_EndLoading();
+        Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
     }
     
     public void StartLoading()
@@ -113,15 +111,13 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < Player.ConnectedPlayers.Count; i++)
         {
-            if (Player.LocalPlayer.InGameStat.MyJob.Name == "보안관")
+            if (Player.ConnectedPlayers[i].InGameStat.MyJob.Name == "보안관")
             {
                 return Player.GetPlayer(i);
             }
         }
         //나중에 지울 것
         return Player.GetPlayer(Broadcaster.Instance.turnIdx);
-        
-        return null;
     }
 
     private void SetPlayerHuman()

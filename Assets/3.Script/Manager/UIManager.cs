@@ -147,9 +147,9 @@ public class UIManager : MonoBehaviour
         useMissedButton.onClick.RemoveAllListeners();
         dontUseMissedButton.onClick.RemoveAllListeners();
         
-        missedPanel.SetActive(true);
+        useMissedButton.interactable = hasMissed;
     
-        useMissedButton.enabled = hasMissed;
+        missedPanel.SetActive(true);
         
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible    = true;
