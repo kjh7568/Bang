@@ -21,9 +21,17 @@ public class Broadcaster : NetworkBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_StartPlayerTurn(PlayerRef playerRef)
     {
+        //애니메이션
+        Player player = Player.GetPlayer(playerRef);
+        
+        Animator playerAnimator = player.GetComponent<Animator>();
+        playerAnimator.SetTrigger("drawing");
+        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
+        //애니메이션
+        
         UIManager.Instance.ResetPanel();
 
         if (Runner.IsServer)
@@ -44,13 +52,7 @@ public class Broadcaster : NetworkBehaviour
 
     private void DrawCard(PlayerRef playerRef)
     {
-        //애니메이션
-        Player player = Player.GetPlayer(playerRef);
         
-        Animator playerAnimator = player.GetComponent<Animator>();
-        playerAnimator.SetTrigger("drawing");
-        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
-        //애니메이션
         
         int drawCardId = CardSystem.Instance.initDeck[0].CardID;
 
