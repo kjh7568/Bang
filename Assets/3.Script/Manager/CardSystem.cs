@@ -80,6 +80,7 @@ public class CardSystem : MonoBehaviour
             { "Missed", UseMissed },
             { "Beer", UseBeer },
             { "StageCoach", UseStageCoach },
+            { "WellsFargo", UseWellsFargo },
         };
     }
 
@@ -153,8 +154,15 @@ public class CardSystem : MonoBehaviour
 
     private void UseStageCoach(PlayerRef user, PlayerRef? target)
     {
-        Debug.Log("역마차 발동!");
-        
+        Broadcaster.Instance.RPC_RequestDrawCard(user);
+        Task.Delay(500);
+        Broadcaster.Instance.RPC_RequestDrawCard(user);
+    }
+
+    private void UseWellsFargo(PlayerRef user, PlayerRef? target)
+    {
+        Broadcaster.Instance.RPC_RequestDrawCard(user);
+        Task.Delay(500);
         Broadcaster.Instance.RPC_RequestDrawCard(user);
         Task.Delay(500);
         Broadcaster.Instance.RPC_RequestDrawCard(user);
