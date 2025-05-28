@@ -211,17 +211,11 @@ public class UIManager : MonoBehaviour
             {
                 cardListPanel.SetActive(false);
                 isPanelOn = false;
-
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
             }
             else
             {
                 cardListPanel.SetActive(true);
                 isPanelOn = true;
-
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
             }
         }
     }
