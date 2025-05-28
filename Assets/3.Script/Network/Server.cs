@@ -64,6 +64,11 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
         LoadMenuScene();
     }
 
+    public void OnConnectedToServer(NetworkRunner runner)
+    {
+        Broadcaster.Instance.RPC_SendMyNickName2Server(Player.LocalPlayer.BasicStat.nickName);
+    }
+    
     public async void StartGame(GameMode mode)
     {
         string randSessionName = Random.Range(0, 10000).ToString();
@@ -277,10 +282,6 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
     }
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
-    {
-    }
-
-    public void OnConnectedToServer(NetworkRunner runner)
     {
     }
 

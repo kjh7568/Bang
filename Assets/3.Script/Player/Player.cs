@@ -23,12 +23,7 @@ public class Player : NetworkBehaviour
     public override void Spawned()
     {
         var nickname = FindObjectOfType<SavePlayerBasicStat>().Nickname;
-        
-        Broadcaster.Instance.RPC_SendMyNickName2Server(nickname);
-        if (!Server.Instance.nicknameBuffer.Contains(nickname))
-        {
-            Broadcaster.Instance.RPC_SetNickNameUi(Server.Instance.nicknameBuffer.ToArray());
-        }
+        BasicStat.nickName = nickname;
         
         ConnectedPlayers.Add(this);
 
@@ -38,6 +33,7 @@ public class Player : NetworkBehaviour
         {
             LocalPlayer = this;
         }
+
     }
 
     public override void Despawned(NetworkRunner runner, bool hasState)
