@@ -19,7 +19,8 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
     public NetworkRunner _runner;
 
     public Dictionary<PlayerRef, NetworkObject> spawnedPlayers = new();
-
+    public Dictionary<PlayerRef, string> playerNickNames = new();
+    
     public List<string> nicknameBuffer = new();
 
     private string sessionNumber;
@@ -35,17 +36,19 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
+    
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        if (_runner.IsServer)
-        {
-            var networkPlayer = SpawnPlayer(runner, player);
-            RegisterNickname(player, networkPlayer);
-            // UpdateNicknameUIAndBroadcast();
-            DontDestroyOnLoad(networkPlayer);
-            CheckStartCondition();
-        }
+        if (!_runner.IsServer) return;
+
+        var networkPlayer = SpawnPlayer(runner, player);
+        RegisterNickname(player, networkPlayer);
+        UpdateNicknameUIAndBroadcast();
+        DontDestroyOnLoad(networkPlayer);
+        CheckStartCondition();
+        
+        var myNickname = FindObjectOfType<SavePlayerBasicStat>()?.Nickname;
+        ReceiveNicknameFromClient(_runner.LocalPlayer, myNickname);
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -55,6 +58,7 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
             runner.Despawn(spawnedPlayers[player]);
 
             spawnedPlayers.Remove(player);
+            playerNickNames.Remove(player);
         }
     }
 
@@ -63,7 +67,6 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
         Instance = null;
         LoadMenuScene();
     }
-
     public async void StartGame(GameMode mode)
     {
         string randSessionName = Random.Range(0, 10000).ToString();
@@ -93,10 +96,10 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
             broadcasterPrefabs,
             Vector3.zero,
             Quaternion.identity,
-            _runner.LocalPlayer // ← 여기에 권한을 줄 PlayerRef
+            _runner.LocalPlayer    // ← 여기에 권한을 줄 PlayerRef
         );
     }
-
+    
     public async void StartGame(GameMode mode, string sessionName)
     {
         //멀티플레이 세션을 만들어야 함 -> 포톤의 주요 컴포넌트들을 셋팅해야함 -> runner
@@ -160,11 +163,12 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
     private void UpdateNicknameUIAndBroadcast()
     {
         var ui = FindObjectOfType<WatingSetting>();
+        var nicknames = playerNickNames.Values.ToArray();
 
-        // ui?.UpdateNicknameTexts(nicknames);
+        ui?.UpdateNicknameTexts(nicknames);
 
         var broadcaster = FindObjectOfType<Broadcaster>();
-        // broadcaster?.RPC_UpdateNicknames(nicknames);
+        broadcaster?.RPC_UpdateNicknames(nicknames);
     }
 
     private void CheckStartCondition()
@@ -191,6 +195,9 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
 
     public void ReceiveNicknameFromClient(PlayerRef playerRef, string nickname)
     {
+        // 닉네임 저장
+        playerNickNames[playerRef] = nickname;
+
         // 플레이어 오브젝트에도 직접 반영
         if (spawnedPlayers.TryGetValue(playerRef, out var obj))
         {
@@ -204,25 +211,25 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
 
         UpdateNicknameUIAndBroadcast();
     }
-
+    
     public void LeaveSession()
     {
         if (_runner != null)
         {
-            _runner.Shutdown();
+            _runner.Shutdown(); 
         }
         else
         {
             Debug.LogWarning("러너가 존재하지 않습니다.");
         }
     }
-
+    
     private void LoadMenuScene()
     {
         //되돌아갈 씬의 Build Index 또는 이름
         SceneManager.LoadScene(1);
     }
-
+    
     public void MovePlayersToSpawnPoints(Transform[] spawnPoints)
     {
         int index = 0;
@@ -237,7 +244,7 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
             index++;
         }
     }
-
+    
     #region interface methods
 
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
@@ -299,7 +306,7 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
     public void OnSceneLoadDone(NetworkRunner runner)
     {
     }
-
+    
     public void OnSceneLoadStart(NetworkRunner runner)
     {
     }
