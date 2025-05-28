@@ -35,14 +35,13 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
+    
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (_runner.IsServer)
         {
             var networkPlayer = SpawnPlayer(runner, player);
             RegisterNickname(player, networkPlayer);
-            // UpdateNicknameUIAndBroadcast();
             DontDestroyOnLoad(networkPlayer);
             CheckStartCondition();
 
@@ -114,7 +113,7 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
             _runner.LocalPlayer // ← 여기에 권한을 줄 PlayerRef
         );
     }
-
+    
     public async void StartGame(GameMode mode, string sessionName)
     {
         //멀티플레이 세션을 만들어야 함 -> 포톤의 주요 컴포넌트들을 셋팅해야함 -> runner
@@ -227,20 +226,20 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (_runner != null)
         {
-            _runner.Shutdown();
+            _runner.Shutdown(); 
         }
         else
         {
             Debug.LogWarning("러너가 존재하지 않습니다.");
         }
     }
-
+    
     private void LoadMenuScene()
     {
         //되돌아갈 씬의 Build Index 또는 이름
         SceneManager.LoadScene(1);
     }
-
+    
     public void MovePlayersToSpawnPoints(Transform[] spawnPoints)
     {
         int index = 0;
@@ -255,7 +254,7 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
             index++;
         }
     }
-
+    
     #region interface methods
 
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
@@ -313,7 +312,7 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
     public void OnSceneLoadDone(NetworkRunner runner)
     {
     }
-
+    
     public void OnSceneLoadStart(NetworkRunner runner)
     {
     }

@@ -26,7 +26,7 @@ public class Broadcaster : NetworkBehaviour
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_StartPlayerTurn(PlayerRef playerRef)
-    {
+    {        
         UIManager.Instance.ResetPanel();
 
         if (Runner.IsServer)

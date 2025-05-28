@@ -33,7 +33,6 @@ public class Player : NetworkBehaviour
         {
             LocalPlayer = this;
         }
-
     }
 
     public override void Despawned(NetworkRunner runner, bool hasState)
