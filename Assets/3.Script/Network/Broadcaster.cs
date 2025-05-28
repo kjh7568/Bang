@@ -180,10 +180,16 @@ public class Broadcaster : NetworkBehaviour
     public void RPC_NotifyBang(PlayerRef attackRef, PlayerRef targetRef)
     {
         Debug.Log($"{attackRef}가 {targetRef}에게 뱅을 사용하여 1 데미지를 입혔습니다!");
-
+        
         if (Runner.IsServer && Runner.LocalPlayer != targetRef)
         {
             Player.GetPlayer(targetRef).InGameStat.hp--;
+        }
+
+        if (Runner.IsServer)
+        {
+            Player.GetPlayer(targetRef).SyncPlayerHp--;
+            RPC_PlayerHpSync();
         }
 
         if (Runner.LocalPlayer == attackRef)
@@ -196,6 +202,7 @@ public class Broadcaster : NetworkBehaviour
             UIManager.Instance.ResetPanel();
             UIManager.Instance.waitingPanel.SetActive(true);
         }
+        
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -205,10 +212,27 @@ public class Broadcaster : NetworkBehaviour
 
         if (Runner.IsServer && Runner.LocalPlayer != playerRef)
         {
-            Player.GetPlayer(playerRef).InGameStat.hp += 1;
+            Player.GetPlayer(playerRef).InGameStat.hp ++;
+        }
+
+        if (Runner.IsServer)
+        {
+            Player.GetPlayer(playerRef).SyncPlayerHp ++;
+            RPC_PlayerHpSync();
         }
     }
-
+ 
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_PlayerHpSync()
+    {
+        foreach (var player in Player.ConnectedPlayers)
+        {
+            var ui = player.GetComponentInChildren<PlayerUI>();
+            if (ui != null)
+                ui.UpdatePlayerHp();
+        }
+    }
+    
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_VictoryCheck(PlayerRef playerRef)
     {

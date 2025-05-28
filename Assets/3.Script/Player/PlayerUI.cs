@@ -14,20 +14,26 @@ public class PlayerUI : NetworkBehaviour
     //[SerializeField] private List<GameObject> Hpcoins = new List<GameObject>();
     [SerializeField] private List<GameObject> playerHP;
 
-    private int hp;
+    //private int hp;
+    
+    public void UpdatePlayerHp()
+    {
+        int hp = player.SyncPlayerHp;  
+        for (int i = 0; i < playerHP.Count; i++)
+            playerHP[i].SetActive(i < hp);
+    }
     
     private void Start()
     {
         SetPlayerHumanCardSprite();
-        
     }
 
-    public override void FixedUpdateNetwork()
-    {
-        base.FixedUpdateNetwork();
-
-        UpdatePlayerHp();
-    }
+    // public override void FixedUpdateNetwork()
+    // {
+    //     base.FixedUpdateNetwork();
+    //
+    //     //UpdatePlayerHp();
+    // }
 
     private void SetPlayerHumanCardSprite()
     {
@@ -42,6 +48,7 @@ public class PlayerUI : NetworkBehaviour
         // foreach (var humanData in humanList.humanList)
         // {
         //     if (humanData.Name == humanName)
+        //     if (humanData.Name == humanName)
         //     {
         //         spriteRenderer.sprite = humanData.CardSprite;
         //         RPC_SetPlayerHumanCardSprite(humanName);
@@ -50,15 +57,15 @@ public class PlayerUI : NetworkBehaviour
         // }
     }
     
-    private void UpdatePlayerHp()
-    {
-        hp = Player.LocalPlayer.InGameStat.hp;
-        
-        for (int i = 0; i < playerHP.Count; i++)
-        {
-            playerHP[i].SetActive(i < hp);
-        }
-    }
+    // public void UpdatePlayerHp()
+    // {
+    //     hp = Player.LocalPlayer.InGameStat.hp;
+    //     
+    //     for (int i = 0; i < playerHP.Count; i++)
+    //     {
+    //         playerHP[i].SetActive(i < hp);
+    //     }
+    // }
     
     [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
     public void RPC_SetPlayerHumanCardSprite(string humanName)

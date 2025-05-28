@@ -1682,7 +1682,7 @@ MonoBehaviour:
     password: 
     nickName: Kim2
   playerInGameStat:
-    hp: 1
+    hp: 5
     bulletRange: 0
     HandCardsId: 0000000000000000000000000000000000000000
     isBang: 0
@@ -2958,7 +2958,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3253455636200791959
 Transform:
   m_ObjectHideFlags: 0
