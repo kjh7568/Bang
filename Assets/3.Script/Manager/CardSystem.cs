@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Fusion;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -153,6 +154,10 @@ public class CardSystem : MonoBehaviour
     private void UseStageCoach(PlayerRef user, PlayerRef? target)
     {
         Debug.Log("역마차 발동!");
+        
+        Broadcaster.Instance.RPC_RequestDrawCard(user);
+        Task.Delay(500);
+        Broadcaster.Instance.RPC_RequestDrawCard(user);
     }
 
     private void UseAnyCard(PlayerRef user, PlayerRef? target)
