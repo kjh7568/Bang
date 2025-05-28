@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button useMissedButton;
     [SerializeField] private Button dontUseMissedButton;
 
+    public GameObject deadPanel;
 
     [SerializeField] private GameObject ResultPanel;
     [SerializeField] private TMP_Text resultText;
@@ -63,6 +64,8 @@ public class UIManager : MonoBehaviour
     {
         cardListPanel.SetActive(false);
         waitingPanel.SetActive(false);
+        targetPanel.SetActive(false);
+        missedPanel.SetActive(false);
     }
 
     public void OnCardClicked(int index)

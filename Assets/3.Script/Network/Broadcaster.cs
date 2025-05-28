@@ -18,6 +18,7 @@ public class Broadcaster : NetworkBehaviour
 
     public int turnIdx = 1;
 
+    public List<int> deadPlayers = new();
     private HashSet<PlayerRef> clientsReady = new();
 
     public override void Spawned()
@@ -41,7 +42,7 @@ public class Broadcaster : NetworkBehaviour
         {
             UIManager.Instance.cardListPanel.SetActive(true);
         }
-        else
+        else if (GameManager.Instance.isDead == false)
         {
             UIManager.Instance.waitingPanel.SetActive(true);
         }
@@ -68,8 +69,16 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_RequestEndTurn()
     {
-        turnIdx = turnIdx % Player.ConnectedPlayers.Count + 1;
+        turnIdx = turnIdx % Runner.ActivePlayers.Count() + 1;
 
+        for (int i = 0; i < deadPlayers.Count; i++)
+        {
+            if (deadPlayers.Contains(turnIdx))
+            {
+                turnIdx = turnIdx % Runner.ActivePlayers.Count() + 1;
+            }
+        }
+        
         var nextPlayer = Player.GetPlayer(turnIdx).playerRef;
 
         RPC_StartPlayerTurn(nextPlayer);
@@ -142,7 +151,7 @@ public class Broadcaster : NetworkBehaviour
             UIManager.Instance.ResetPanel();
             UIManager.Instance.ShowMissedPanel(hasMissed, attackRef, targetRef);
         }
-        else
+        else if (GameManager.Instance.isDead == false)
         {
             UIManager.Instance.ResetPanel();
             UIManager.Instance.waitingPanel.SetActive(true);
@@ -162,7 +171,7 @@ public class Broadcaster : NetworkBehaviour
             UIManager.Instance.ResetPanel();
             UIManager.Instance.cardListPanel.SetActive(true);
         }
-        else
+        else if (GameManager.Instance.isDead == false)
         {
             UIManager.Instance.ResetPanel();
             UIManager.Instance.waitingPanel.SetActive(true);
@@ -190,7 +199,7 @@ public class Broadcaster : NetworkBehaviour
             UIManager.Instance.ResetPanel();
             UIManager.Instance.cardListPanel.SetActive(true);
         }
-        else
+        else if (GameManager.Instance.isDead == false)
         {
             UIManager.Instance.ResetPanel();
             UIManager.Instance.waitingPanel.SetActive(true);
@@ -374,5 +383,12 @@ public class Broadcaster : NetworkBehaviour
         {
             StartCoroutine(GameManager.Instance.InitializeGame());
         }
+    }
+    
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_PlayerDead(Player player)
+    {
+        Player.RemovePlayer(player);
+        deadPlayers.Add(player.playerRef.AsIndex);
     }
 }

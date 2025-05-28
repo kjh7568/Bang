@@ -7,6 +7,7 @@ using DG.Tweening;
 using Fusion;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -20,7 +21,7 @@ public class GameManager : MonoBehaviour
     public GameObject loadingUI;
     [SerializeField] private Slider loadingBar;
 
-    private bool isChecked = false;
+    public bool isDead = false;
     
     [SerializeField] private Transform[] spawnPoints;
 
@@ -45,10 +46,17 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Player.LocalPlayer.InGameStat.hp <= 0 && !isChecked)
+        if (Player.LocalPlayer.InGameStat.hp <= 0 && !isDead)
         {
-            isChecked = true;
+            isDead = true;
             Broadcaster.Instance.RPC_VictoryCheck(Player.LocalPlayer.playerRef);
+
+            if (isDead)
+            {
+                UIManager.Instance.ResetPanel();
+                UIManager.Instance.deadPanel.SetActive(true);
+                PlayerDead();
+            }
         }
     }
 
@@ -113,5 +121,10 @@ public class GameManager : MonoBehaviour
         {
             Broadcaster.Instance.RPC_SendPlayerJob(Player.GetPlayer(i).playerRef, randomJobList[i - 1]);
         }
+    }
+
+    private void PlayerDead()
+    {
+        Broadcaster.Instance.RPC_PlayerDead(Player.LocalPlayer);
     }
 }
