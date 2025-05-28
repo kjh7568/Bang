@@ -37,6 +37,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        // 플레이어 카메라 설정 ( ALL )
+        CameraManager.Instance.GetCameraByIndex(Player.LocalPlayer.BasicStat.iD);
+        
         //클라에서는 안도는게 맞음
         if(!Server.Instance._runner.IsServer) return;
 
@@ -113,5 +116,10 @@ public class GameManager : MonoBehaviour
         {
             Broadcaster.Instance.RPC_SendPlayerJob(Player.GetPlayer(i).playerRef, randomJobList[i - 1]);
         }
+    }
+
+    public void SetPlayerCameraIndex()
+    {
+        //
     }
 }
