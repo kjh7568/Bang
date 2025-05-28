@@ -1678,7 +1678,7 @@ MonoBehaviour:
     sessionNumber: 0
     characterModelNum: 0
   playerBasicStat:
-    iD: 
+    iD: 3
     password: 
     nickName: Kim2
   playerInGameStat:
@@ -1692,6 +1692,7 @@ MonoBehaviour:
     isJail: 0
     isDynamite: 0
     playerHpObj: []
+  _SyncPlayerHp: 0
 --- !u!114 &8577810841607768586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2846,7 +2847,7 @@ Transform:
   m_GameObject: {fileID: 1170833923898492919}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6, y: 0.05, z: 0.15}
+  m_LocalPosition: {x: 1, y: -0.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3032,7 +3033,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4047071320892216013
 Transform:
   m_ObjectHideFlags: 0
