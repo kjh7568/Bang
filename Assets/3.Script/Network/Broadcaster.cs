@@ -14,6 +14,7 @@ public class Broadcaster : NetworkBehaviour
 
     private HashSet<PlayerRef> clientsReady = new();
 
+    
     public override void Spawned()
     {
         Instance = this;
@@ -45,10 +46,10 @@ public class Broadcaster : NetworkBehaviour
     {
         //애니메이션
         Player player = Player.GetPlayer(playerRef);
-       
         
         Animator playerAnimator = player.GetComponent<Animator>();
         playerAnimator.SetTrigger("drawing");
+        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
         //애니메이션
         
         int drawCardId = CardSystem.Instance.initDeck[0].CardID;
@@ -143,6 +144,7 @@ public class Broadcaster : NetworkBehaviour
         
         Animator attackerAnimator = attacker.GetComponent<Animator>();
         attackerAnimator.SetTrigger("pointing");
+        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
         //애니메이션
         
         if (Runner.LocalPlayer == targetRef)
@@ -176,6 +178,7 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log("miss : "+ attacker.name + " : " + target.name + " : " );
         attackerAnimator.SetTrigger("shooting");
         targetAnimator.SetTrigger("dodging");
+        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
         //애니메이션
         
         if (Runner.LocalPlayer == attackRef)
@@ -204,6 +207,7 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log("miss : "+ attacker.name + " : " + target.name + " : " );
         attackerAnimator.SetTrigger("shooting");
         targetAnimator.SetTrigger("hitting");
+        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
         //애니메이션
         
         if (Runner.IsServer && Runner.LocalPlayer != targetRef)
@@ -238,6 +242,7 @@ public class Broadcaster : NetworkBehaviour
         Player player = Player.GetPlayer(playerRef);
         Animator playerAnimator = player.GetComponent<Animator>();
         playerAnimator.SetTrigger("drinking");
+        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
         //애니메이션
         if (Runner.IsServer && Runner.LocalPlayer != playerRef)
         {
@@ -269,6 +274,7 @@ public class Broadcaster : NetworkBehaviour
         Player player = Player.GetPlayer(playerRef);
         Animator playerAnimator = player.GetComponent<Animator>();
         playerAnimator.SetTrigger("dying");
+        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
         //애니메이션
         List<Player> players = new List<Player>(Player.ConnectedPlayers);
         string result = "not victory yet";

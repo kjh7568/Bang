@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
 
     private bool isChecked = false;
     
-    [SerializeField] private Transform[] spawnPoints;
+    public Transform[] spawnPoints;
 
     private Player turnOwner;
 
