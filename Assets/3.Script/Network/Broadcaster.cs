@@ -9,13 +9,6 @@ public class Broadcaster : NetworkBehaviour
 {
     public static Broadcaster Instance;
 
-//     [Networked] public int TurnIndex { get; set; }
-//     public PlayerRef[] syncedPlayerRefs;
-//     public Player[] syncedPlayerClass;
-//
-//     public Player LocalPlayer;
-//     public PlayerRef LocalRef;
-
     public int turnIdx = 1;
 
     private HashSet<PlayerRef> clientsReady = new();
@@ -134,11 +127,25 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log($"Runner.LocalPlayer ::: {Runner.LocalPlayer}");
         Debug.Log($"attackRef ::: {attackRef}");
         Debug.Log($"targetRef ::: {targetRef}");
-
+        
+        Player attacker = Player.GetPlayer(attackRef);
+        Player target = Player.GetPlayer(targetRef);
+        if (attacker == null)
+        {
+            Debug.LogError("공격자 플레이어를 찾을 수 없습니다.");
+            return;
+        }
+        Animator attackerAnimator = attacker.GetComponent<Animator>();
+        Animator targetAnimator =target.GetComponent<Animator>();
+       
+        
         if (Runner.LocalPlayer == targetRef)
         {
             var hasMissed = CardSystem.Instance.CheckHasMissed(targetRef);
 
+            attackerAnimator.SetTrigger("pointing");
+            attacker.transform.LookAt(target.transform);
+            
             UIManager.Instance.ResetPanel();
             UIManager.Instance.ShowMissedPanel(hasMissed, attackRef, targetRef);
         }
@@ -298,23 +305,6 @@ public class Broadcaster : NetworkBehaviour
     {
         FindObjectOfType<MyInfoPanel>().InitializedMyInfoPanel();
     }
-
-    // [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    // public void RPC_SendMyNickName2Server(string nickname, PlayerRef playerRef)
-    // {
-    //     Server.Instance.nicknameBuffer.Add(nickname);
-    //     
-    //     Player.GetPlayer(playerRef).BasicStat.nickName = nickname;
-    //     
-    //     RPC_SetNickNameUi(Server.Instance.nicknameBuffer.ToArray());
-    // }
-
-    // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    // public void RPC_SetNickNameUi(string[] nicknames)
-    // {
-    //     Debug.Log("UI 수정 완료!");
-    //     FindObjectOfType<WatingSetting>()?.UpdateNicknameTexts(nicknames);
-    // }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_SendMyNickName2Server(string nickname, PlayerRef playerRef)

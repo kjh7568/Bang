@@ -140,6 +140,12 @@ public class UIManager : MonoBehaviour
 
     public void ShowMissedPanel(bool hasMissed, PlayerRef attackRef, PlayerRef targetRef)
     {
+        Player attacker = Player.GetPlayer(attackRef);
+        Player target = Player.GetPlayer(targetRef);
+        
+        Animator attackerAnimator = attacker.GetComponent<Animator>();
+        Animator targetAnimator =target.GetComponent<Animator>();
+        
         Debug.Log($"빗나감 패널 메서드 시작");
 
         useMissedButton.onClick.RemoveAllListeners();
@@ -173,6 +179,9 @@ public class UIManager : MonoBehaviour
                     return;
                 }
             }
+            attackerAnimator.SetTrigger("shooting");
+            targetAnimator.SetTrigger("dodging");
+            
         });
 
         dontUseMissedButton.onClick.AddListener(() =>
@@ -182,6 +191,7 @@ public class UIManager : MonoBehaviour
 
             Player.GetPlayer(targetRef).InGameStat.hp--;
             Broadcaster.Instance.RPC_NotifyBang(attackRef, targetRef);
+            attackerAnimator.SetTrigger("shooting");
         });
     }
 
