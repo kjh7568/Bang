@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < Player.ConnectedPlayers.Count; i++)
         {
-            if (Player.ConnectedPlayers[i].InGameStat.MyJob.Name == "보안관")
+            if (Player.LocalPlayer.InGameStat.MyJob.Name == "보안관")
             {
                 return Player.GetPlayer(i);
             }
