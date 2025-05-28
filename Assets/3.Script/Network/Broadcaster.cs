@@ -216,76 +216,94 @@ public class Broadcaster : NetworkBehaviour
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    public void RPC_VictoryCheck(PlayerRef playerRef)
+public void RPC_VictoryCheck(PlayerRef playerRef)
+{
+    List<Player> players = new List<Player>(Player.ConnectedPlayers);
+    string result = "not victory yet";
+
+    bool sheriffAlive = players.Any(p =>
+        p.InGameStat != null &&
+        p.InGameStat.MyJob != null &&
+        p.InGameStat.MyJob.Name == "보안관" &&
+        !p.InGameStat.IsDead);
+
+    bool renegadeAlive = players.Any(p =>
+        p.InGameStat != null &&
+        p.InGameStat.MyJob != null &&
+        p.InGameStat.MyJob.Name == "배신자" &&
+        !p.InGameStat.IsDead);
+
+    int outlawAlive = players.Count(p =>
+        p.InGameStat != null &&
+        p.InGameStat.MyJob != null &&
+        p.InGameStat.MyJob.Name == "무법자" &&
+        !p.InGameStat.IsDead);
+
+    foreach (var p in players)
     {
-        List<Player> players = new List<Player>(Player.ConnectedPlayers);
-
-        string result = "not victory yet";
-
-        bool sheriffAlive = players.Any(p =>
-            p.InGameStat != null &&
-            p.InGameStat.MyJob != null &&
-            p.InGameStat.MyJob.Name == "보안관" &&
-            !p.InGameStat.IsDead);
-
-        bool renegadeAlive = players.Any(p =>
-            p.InGameStat != null &&
-            p.InGameStat.MyJob != null &&
-            p.InGameStat.MyJob.Name == "배신자" &&
-            !p.InGameStat.IsDead);
-
-        int outlawAlive = players.Count(p =>
-            p.InGameStat != null &&
-            p.InGameStat.MyJob != null &&
-            p.InGameStat.MyJob.Name == "무법자" &&
-            !p.InGameStat.IsDead);
-
-
-        foreach (var p in players)
+        if (p.InGameStat == null)
         {
-            if (p.InGameStat == null)
-            {
-                Debug.LogWarning("InGameStat이 null입니다: " + p);
-                continue;
-            }
-
-            if (p.InGameStat.MyJob == null)
-            {
-                Debug.LogWarning("MyJob이 null입니다: " + p);
-                continue;
-            }
+            Debug.LogWarning("InGameStat이 null입니다: " + p);
+            continue;
         }
 
-        if (!sheriffAlive)
+        if (p.InGameStat.MyJob == null)
         {
-            if (outlawAlive > 0)
-            {
-                Debug.Log("무법자 승리!");
-                result = "무법자 승리!";
-                RPC_ShowResultToClients(result);
-                return;
-            }
-            else if (renegadeAlive)
-            {
-                Debug.Log("배신자 승리!");
-                result = "배신자 승리!";
-                RPC_ShowResultToClients(result);
-                return;
-            }
-        }
-        else if (outlawAlive == 0 && !renegadeAlive)
-        {
-            Debug.Log("보안관 승리!");
-            result = "보안관 승리!";
-            RPC_ShowResultToClients(result);
-            return;
+            Debug.LogWarning("MyJob이 null입니다: " + p);
+            continue;
         }
     }
 
+    // 승리 조건 판단
+    if (!sheriffAlive)
+    {
+        if (outlawAlive > 0)
+        {
+            result = "무법자 승리!";
+        }
+        else if (renegadeAlive)
+        {
+            result = "배신자 승리!";
+        }
+    }
+    else if (outlawAlive == 0 && !renegadeAlive)
+    {
+        result = "보안관 승리!";
+    }
+
+    // 승리가 결정되었다면 이름 정리 후 결과 RPC 전송
+    if (result != "not victory yet")
+    {
+        string[] playerNames = new string[4]; // 보안관, 무법자1, 무법자2, 배신자
+        int outlawIndex = 1;
+
+        foreach (var p in players)
+        {
+            if (p.InGameStat == null || p.InGameStat.MyJob == null) continue;
+
+            string name = p.BasicStat.nickName;
+            string job = p.InGameStat.MyJob.Name;
+
+            if (job == "보안관") playerNames[0] = name;
+            else if (job == "무법자" && outlawIndex <= 2) playerNames[outlawIndex++] = name;
+            else if (job == "배신자") playerNames[3] = name;
+        }
+
+        RPC_ShowResultToClients(result, playerNames);
+    }
+}
+
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_ShowResultToClients(string result)
+    public void RPC_ShowResultToClients(string result, string[] playerNames)
     {
         UIManager.Instance.ShowResultPanel(result);
+
+        // 모든 클라이언트가 받은 데이터로 이름 설정
+        for (int i = 0; i < playerNames.Length; i++)
+        {
+            if (UIManager.Instance.resultPlayerNameText[i] != null)
+                UIManager.Instance.resultPlayerNameText[i].text = playerNames[i];
+        }
     }
 
     // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]

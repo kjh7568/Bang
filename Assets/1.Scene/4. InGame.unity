@@ -26185,6 +26185,11 @@ MonoBehaviour:
   dontUseMissedButton: {fileID: 15825076}
   ResultPanel: {fileID: 107413108}
   resultText: {fileID: 524362641}
+  resultPlayerNameText:
+  - {fileID: 235639802}
+  - {fileID: 1871722130}
+  - {fileID: 1929209957}
+  - {fileID: 1569299022}
 --- !u!4 &1853056236
 Transform:
   m_ObjectHideFlags: 0
