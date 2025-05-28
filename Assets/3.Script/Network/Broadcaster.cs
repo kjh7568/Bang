@@ -177,8 +177,12 @@ public class Broadcaster : NetworkBehaviour
         if (Runner.IsServer && Runner.LocalPlayer != targetRef)
         {
             Player.GetPlayer(targetRef).InGameStat.hp--;
+        }
+
+        if (Runner.IsServer)
+        {
             Player.GetPlayer(targetRef).SyncPlayerHp--;
-            //RPC_PlayerHpSync(targetRef);
+            RPC_PlayerHpSync();
         }
 
         if (Runner.LocalPlayer == attackRef)
@@ -201,26 +205,19 @@ public class Broadcaster : NetworkBehaviour
 
         if (Runner.IsServer && Runner.LocalPlayer != playerRef)
         {
-            Player.GetPlayer(playerRef).InGameStat.hp += 1;
-            //RPC_PlayerHpSync(playerRef);
+            Player.GetPlayer(playerRef).InGameStat.hp ++;
+        }
+
+        if (Runner.IsServer)
+        {
+            Player.GetPlayer(playerRef).SyncPlayerHp ++;
+            RPC_PlayerHpSync();
         }
     }
  
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_PlayerHpSync(PlayerRef targetRef)
+    public void RPC_PlayerHpSync()
     {
-        
-        // if (Runner.LocalPlayer == targetRef){
-        //     var player = Player.GetPlayer(targetRef);
-        //     var ui = player.GetComponentInChildren<PlayerUI>();
-        //     ui.UpdatePlayerHp();
-        // }
-        
-        // foreach (var ui in FindObjectsOfType<PlayerUI>())
-        // {
-        //     ui.UpdatePlayerHp();
-        // }
-        
         foreach (var player in Player.ConnectedPlayers)
         {
             var ui = player.GetComponentInChildren<PlayerUI>();
@@ -229,23 +226,6 @@ public class Broadcaster : NetworkBehaviour
         }
     }
     
-    // public void RPC_PlayerHpSync(PlayerRef targetRef)
-    // {
-    //     var player = Player.GetPlayer(targetRef);
-    //     var ui     = player.GetComponentInChildren<PlayerUI>();
-    //     ui?.UpdatePlayerHp();
-    // }
-    
-    // [Rpc(RpcSources.All, RpcTargets.All)]
-    // public void RPC_PlayerHpSync()
-    // {
-    //     foreach (var player in Player.ConnectedPlayers)
-    //     {
-    //         var playerUI = player.GetComponentInChildren<PlayerUI>();
-    //         playerUI.UpdatePlayerHp();
-    //     }
-    // }
-
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_VictoryCheck(PlayerRef playerRef)
     {
