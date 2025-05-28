@@ -52,33 +52,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private async void InitializeGame()
+    public IEnumerator InitializeGame()
     {
-        Debug.Log(Player.ConnectedPlayers.Count);
-        
-        await WaitForFourPlayersAsync();
-        
-        Debug.Log("실행은 됐나요?");
+        yield return null;
+
         SetPlayerHuman();
-        Debug.Log("인물 설정 완");
         SetPlayerJob();
-        Debug.Log("직업 설정 완");
         
         Server.Instance.MovePlayersToSpawnPoints(spawnPoints);
-        Debug.Log("뭔지 모를 거 완");
         
         turnOwner = GetFirstTurnPlayer();
-        Debug.Log($"선턴 잡기 완: {turnOwner}");
         
         CardSystem.Instance.Init();
-        Debug.Log("카드 매니저 인잇 완");
         
         Broadcaster.Instance.RPC_EndLoading();
-        Debug.Log("로딩 완");
         Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
-        Debug.Log("플레이어 턴 시작 완");
         Broadcaster.Instance.RPC_SetClientPanel();
-        Debug.Log("클라 패널 셋팅 완");
     }
     
     public void StartLoading()
@@ -91,27 +80,6 @@ public class GameManager : MonoBehaviour
     {
         loadingUI.SetActive(false);
     }
-
-    // private void Update()
-    // {
-    //     // if (!BasicSpawner.Instance._runner.IsServer) return;
-    //     //
-    //     // victoryCheck.CheckVictoryConditions();
-    //
-    //     // while (true)
-    //     // {
-    //     //     RPC_StartPlayerTurn(turnOwner.playerRef);
-    //     //
-    //     //     bool taskRes = TaskCompletionSource<bool>();
-    //     //
-    //     //     if (taskRes)
-    //     //     {
-    //     //         currentTurnIndex++;
-    //     //     }
-    //     //
-    //     //     RPC_StartPlayerTurn(Player.GetPlayer(currentTurnIndex).playerRef);
-    //     // }
-    // }
 
     private Player GetFirstTurnPlayer()
     {
@@ -146,63 +114,4 @@ public class GameManager : MonoBehaviour
             Broadcaster.Instance.RPC_SendPlayerJob(Player.GetPlayer(i).playerRef, randomJobList[i - 1]);
         }
     }
-
-    public async Task WaitForFourPlayersAsync()
-    {
-        while (Player.ConnectedPlayers.Count < 4)
-        {
-            await Task.Yield();
-        }
-    }
-    
-    //
-    // private void SetPlayerInfo() 
-    // {
-    //     foreach (var player in players)
-    //     {
-    //         cardSystem.Init();
-    //         
-    //         //todo 이거 수정
-    //         uiSystem.Init(player);
-    //     }
-    // }
-    //
-    
-    //
-    //
-    // public void SyncPlayersToClients()
-    // {
-    //     var playerRefsArray = playerRef.ToArray();  
-    //     var playerClassArray = players.ToArray();  
-    //
-    //     // 초기 플레이어 정보 동기화
-    //     Broadcaster.Instance.RPC_SyncSpawnedPlayers(playerRefsArray, playerClassArray);
-    // }
-    //
-    // public void SetLocalPlayer(PlayerRef[] playerRefs)
-    // {
-    //     Debug.Log($"SetLocalPlayer 실행");
-    //
-    //     foreach (var playerRef in playerRefs)
-    //     {
-    //         Debug.Log($"SetLocalPlayer ::{Broadcaster.Instance.LocalRef}");
-    //        
-    //         if (Server.Instance.spawnedPlayers.TryGetValue(playerRef, out var obj))
-    //         {
-    //             var player = obj.GetComponent<Player>();
-    //
-    //             Broadcaster.Instance.LocalPlayer = player;
-    //             Broadcaster.Instance.LocalRef = playerRef;
-    //             // UIManager.Instance.localPlayer = playerRef;
-    //
-    //             // Debug.Log($"내 플레이어 설정 완료: {player.BasicStat.nickName}");
-    //         }
-    //         else
-    //         {
-    //             Debug.LogWarning($"[SetLocalPlayer] spawnedPlayers에 {playerRef}가 없습니다.");
-    //         }
-    //
-    //         break;
-    //     }
-    // }
 }

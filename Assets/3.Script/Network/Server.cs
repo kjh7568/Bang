@@ -36,6 +36,22 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
         DontDestroyOnLoad(gameObject);
     }
     
+    void Start()
+    {
+        StartCoroutine(NotifyServerWhenReady());
+    }
+
+    IEnumerator NotifyServerWhenReady()
+    {
+        yield return new WaitUntil(() =>
+            GameManager.Instance != null &&
+            CardSystem.Instance != null &&
+            UIManager.Instance != null &&
+            Player.LocalPlayer != null);
+
+        Broadcaster.Instance.RPC_ClientReady(Player.LocalPlayer.playerRef);
+    }
+    
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (_runner.IsServer)

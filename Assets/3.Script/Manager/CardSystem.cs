@@ -18,41 +18,25 @@ using Random = UnityEngine.Random;
 public class CardSystem : MonoBehaviour
 {
      public static CardSystem Instance;
-//     
-//     //함수명, 멤버 변수 명 등 전부 원하시는대로 바꿔도 됨
+
      [SerializeField] private DeckData deckData;
-//     [SerializeField] private GameObject[] cardPrefab;
-//     [SerializeField] private Transform deckParent;
 
      public List<CardData> initDeck = new List<CardData>();
      public Dictionary<int, CardData> cardByID_Dic;
 
      public Dictionary<string, Action<PlayerRef, PlayerRef?>> actionByName_Dic;
-     
-//     // private List<CardData> usedDeck = new List<CardData>();
-//     
-//     // 카드 id 초기 리스트
-//     List<int> cardToIdList = new List<int>();
-//     // 셔플된 초기 카드
-//     public List<CardData> initDeck = new List<CardData>();
-//     // 사용된 카드
-//     private List<CardData> usedDeck = new List<CardData>();
-//     
 
      private void Awake()
      {
          Instance = this;
 
          InitializeDic();
-         // 카드 아이디 컨버팅
-         // ConvertCardListToIdList();
      }
      
      public void Init()
      {
          MakeDeck();
          InitDistributeHandCards();
-         //CardUIManager.Instance.SetHandCardImageList();
      }
      
      private void MakeDeck()
@@ -77,7 +61,6 @@ public class CardSystem : MonoBehaviour
              for (int i = 3; i < 5; i++)
              {
                  newHandID[i] = 0;
-                 // Broadcaster.Instance.RPC_OnAndOffCardButton(player.playerRef, false, i);
              }
      
              player.InGameStat.HandCardsId = newHandID;
@@ -171,48 +154,11 @@ public class CardSystem : MonoBehaviour
          
          Player.GetPlayer(user).InGameStat.hp++;
          Broadcaster.Instance.RPC_NotifyBeer(user);
-         // 예: PlayerManager.Instance.Heal(user, 1);
      }
      
      private void UseAnyCard(PlayerRef user, PlayerRef? target)
      {
          Debug.Log($"{user}가 아무 카드를 사용");
          UIManager.Instance.cardListPanel.SetActive(true);
-         // 예: PlayerManager.Instance.Heal(user, 1);
      }
-     
-//     
-//     /*
-//      void Start()
-//      {
-//         Vector3 startPos = deckParent.position;
-//         int count = cardPrefab.Length;
-//
-//         for (int i = 0; i < count; i++)
-//         {
-//             int randNum = Random.Range(0, cardPrefab.Length);
-//
-//             if (deckObject.Contains(cardPrefab[randNum]))
-//             {
-//                 i--;
-//                 continue;
-//             }
-//
-//             deckObject.Add(Instantiate(cardPrefab[randNum], startPos, Quaternion.Euler(-90f, 0f, 0f), deckParent));
-//             startPos += new Vector3(0, 0.01f, 0);
-//         }
-//      }
-//      */
-//     
-//     public void ConvertCardListToIdList()
-//     {
-//         foreach (var card in deckData.cardList)
-//         {
-//             int id = card.CardID;
-//             cardToIdList.Add(id);
-//         }
-//
-//         //return cardToIdList;
-//     }
-
 }
