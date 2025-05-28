@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
 
     private bool isChecked = false;
     
-    [SerializeField] private Transform[] spawnPoints;
+    public Transform[] spawnPoints;
 
     private Player turnOwner;
 
@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
     {
         if (Player.LocalPlayer.InGameStat.hp <= 0 && !isChecked)
         {
+            
             isChecked = true;
             Broadcaster.Instance.RPC_VictoryCheck(Player.LocalPlayer.playerRef);
         }
