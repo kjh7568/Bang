@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Broadcaster : NetworkBehaviour
@@ -42,6 +43,14 @@ public class Broadcaster : NetworkBehaviour
 
     private void DrawCard(PlayerRef playerRef)
     {
+        //애니메이션
+        Player player = Player.GetPlayer(playerRef);
+       
+        
+        Animator playerAnimator = player.GetComponent<Animator>();
+        playerAnimator.SetTrigger("drawing");
+        //애니메이션
+        
         int drawCardId = CardSystem.Instance.initDeck[0].CardID;
 
         var handCardID = Player.GetPlayer(playerRef).InGameStat.HandCardsId;
@@ -128,23 +137,17 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log($"attackRef ::: {attackRef}");
         Debug.Log($"targetRef ::: {targetRef}");
         
+        //애니메이션
         Player attacker = Player.GetPlayer(attackRef);
         Player target = Player.GetPlayer(targetRef);
-        if (attacker == null)
-        {
-            Debug.LogError("공격자 플레이어를 찾을 수 없습니다.");
-            return;
-        }
+        
         Animator attackerAnimator = attacker.GetComponent<Animator>();
-        Animator targetAnimator =target.GetComponent<Animator>();
-       
+        attackerAnimator.SetTrigger("pointing");
+        //애니메이션
         
         if (Runner.LocalPlayer == targetRef)
         {
             var hasMissed = CardSystem.Instance.CheckHasMissed(targetRef);
-
-            attackerAnimator.SetTrigger("pointing");
-            attacker.transform.LookAt(target.transform);
             
             UIManager.Instance.ResetPanel();
             UIManager.Instance.ShowMissedPanel(hasMissed, attackRef, targetRef);
@@ -163,7 +166,18 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log($"Runner.LocalPlayer ::: {Runner.LocalPlayer}");
         Debug.Log($"attackRef ::: {attackRef}");
         Debug.Log($"targetRef ::: {targetRef}");
-
+        
+        //애니메이션
+        Player attacker = Player.GetPlayer(attackRef);
+        Player target = Player.GetPlayer(targetRef);
+        
+        Animator attackerAnimator = attacker.GetComponent<Animator>();
+        Animator targetAnimator =target.GetComponent<Animator>();
+        Debug.Log("miss : "+ attacker.name + " : " + target.name + " : " );
+        attackerAnimator.SetTrigger("shooting");
+        targetAnimator.SetTrigger("dodging");
+        //애니메이션
+        
         if (Runner.LocalPlayer == attackRef)
         {
             UIManager.Instance.ResetPanel();
@@ -180,6 +194,17 @@ public class Broadcaster : NetworkBehaviour
     public void RPC_NotifyBang(PlayerRef attackRef, PlayerRef targetRef)
     {
         Debug.Log($"{attackRef}가 {targetRef}에게 뱅을 사용하여 1 데미지를 입혔습니다!");
+        
+        //애니메이션
+        Player attacker = Player.GetPlayer(attackRef);
+        Player target = Player.GetPlayer(targetRef);
+        
+        Animator attackerAnimator = attacker.GetComponent<Animator>();
+        Animator targetAnimator =target.GetComponent<Animator>();
+        Debug.Log("miss : "+ attacker.name + " : " + target.name + " : " );
+        attackerAnimator.SetTrigger("shooting");
+        targetAnimator.SetTrigger("hitting");
+        //애니메이션
         
         if (Runner.IsServer && Runner.LocalPlayer != targetRef)
         {
@@ -209,7 +234,11 @@ public class Broadcaster : NetworkBehaviour
     public void RPC_NotifyBeer(PlayerRef playerRef)
     {
         Debug.Log($"{playerRef}가 맥주를 사용하여 체력 1을 회복했습니다!");
-
+        //애니메이션
+        Player player = Player.GetPlayer(playerRef);
+        Animator playerAnimator = player.GetComponent<Animator>();
+        playerAnimator.SetTrigger("drinking");
+        //애니메이션
         if (Runner.IsServer && Runner.LocalPlayer != playerRef)
         {
             Player.GetPlayer(playerRef).InGameStat.hp ++;
@@ -236,6 +265,11 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_VictoryCheck(PlayerRef playerRef)
     {
+        //애니메이션
+        Player player = Player.GetPlayer(playerRef);
+        Animator playerAnimator = player.GetComponent<Animator>();
+        playerAnimator.SetTrigger("dying");
+        //애니메이션
         List<Player> players = new List<Player>(Player.ConnectedPlayers);
         string result = "not victory yet";
 

@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
     {
         if (Player.LocalPlayer.InGameStat.hp <= 0 && !isChecked)
         {
+            
             isChecked = true;
             Broadcaster.Instance.RPC_VictoryCheck(Player.LocalPlayer.playerRef);
         }
