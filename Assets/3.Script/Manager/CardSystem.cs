@@ -81,6 +81,7 @@ public class CardSystem : MonoBehaviour
             { "Beer", UseBeer },
             { "StageCoach", UseStageCoach },
             { "WellsFargo", UseWellsFargo },
+            { "Gatling", UseGatling },
         };
     }
 
@@ -166,6 +167,10 @@ public class CardSystem : MonoBehaviour
         Broadcaster.Instance.RPC_RequestDrawCard(user);
         Task.Delay(500);
         Broadcaster.Instance.RPC_RequestDrawCard(user);
+    }
+
+    private void UseGatling(PlayerRef user, PlayerRef? target)
+    {
     }
 
     private void UseAnyCard(PlayerRef user, PlayerRef? target)
