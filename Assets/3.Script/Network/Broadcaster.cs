@@ -3,33 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Broadcaster : NetworkBehaviour
 {
     public static Broadcaster Instance;
 
-//     [Networked] public int TurnIndex { get; set; }
-//     public PlayerRef[] syncedPlayerRefs;
-//     public Player[] syncedPlayerClass;
-//
-//     public Player LocalPlayer;
-//     public PlayerRef LocalRef;
-
     public int turnIdx = 1;
 
     public List<int> deadPlayers = new();
     private HashSet<PlayerRef> clientsReady = new();
 
+    
     public override void Spawned()
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_StartPlayerTurn(PlayerRef playerRef)
     {
+        //애니메이션
+        Player player = Player.GetPlayer(playerRef);
+        
+        Animator playerAnimator = player.GetComponent<Animator>();
+        playerAnimator.SetTrigger("drawing");
+        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
+        //애니메이션
+        
         UIManager.Instance.ResetPanel();
 
         if (Runner.IsServer)
@@ -50,6 +53,8 @@ public class Broadcaster : NetworkBehaviour
 
     private void DrawCard(PlayerRef playerRef)
     {
+        
+        
         int drawCardId = CardSystem.Instance.initDeck[0].CardID;
 
         var handCardID = Player.GetPlayer(playerRef).InGameStat.HandCardsId;
@@ -143,11 +148,20 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log($"Runner.LocalPlayer ::: {Runner.LocalPlayer}");
         Debug.Log($"attackRef ::: {attackRef}");
         Debug.Log($"targetRef ::: {targetRef}");
-
+        
+        //애니메이션
+        Player attacker = Player.GetPlayer(attackRef);
+        Player target = Player.GetPlayer(targetRef);
+        
+        Animator attackerAnimator = attacker.GetComponent<Animator>();
+        attackerAnimator.SetTrigger("pointing");
+        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
+        //애니메이션
+        
         if (Runner.LocalPlayer == targetRef)
         {
             var hasMissed = CardSystem.Instance.CheckHasMissed(targetRef);
-
+            
             UIManager.Instance.ResetPanel();
             UIManager.Instance.ShowMissedPanel(hasMissed, attackRef, targetRef);
         }
@@ -165,7 +179,19 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log($"Runner.LocalPlayer ::: {Runner.LocalPlayer}");
         Debug.Log($"attackRef ::: {attackRef}");
         Debug.Log($"targetRef ::: {targetRef}");
-
+        
+        //애니메이션
+        Player attacker = Player.GetPlayer(attackRef);
+        Player target = Player.GetPlayer(targetRef);
+        
+        Animator attackerAnimator = attacker.GetComponent<Animator>();
+        Animator targetAnimator =target.GetComponent<Animator>();
+        Debug.Log("miss : "+ attacker.name + " : " + target.name + " : " );
+        attackerAnimator.SetTrigger("shooting");
+        targetAnimator.SetTrigger("dodging");
+        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
+        //애니메이션
+        
         if (Runner.LocalPlayer == attackRef)
         {
             UIManager.Instance.ResetPanel();
@@ -182,6 +208,18 @@ public class Broadcaster : NetworkBehaviour
     public void RPC_NotifyBang(PlayerRef attackRef, PlayerRef targetRef)
     {
         Debug.Log($"{attackRef}가 {targetRef}에게 뱅을 사용하여 1 데미지를 입혔습니다!");
+        
+        //애니메이션
+        Player attacker = Player.GetPlayer(attackRef);
+        Player target = Player.GetPlayer(targetRef);
+        
+        Animator attackerAnimator = attacker.GetComponent<Animator>();
+        Animator targetAnimator =target.GetComponent<Animator>();
+        Debug.Log("miss : "+ attacker.name + " : " + target.name + " : " );
+        attackerAnimator.SetTrigger("shooting");
+        targetAnimator.SetTrigger("hitting");
+        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
+        //애니메이션
         
         if (Runner.IsServer && Runner.LocalPlayer != targetRef)
         {
@@ -211,7 +249,12 @@ public class Broadcaster : NetworkBehaviour
     public void RPC_NotifyBeer(PlayerRef playerRef)
     {
         Debug.Log($"{playerRef}가 맥주를 사용하여 체력 1을 회복했습니다!");
-
+        //애니메이션
+        Player player = Player.GetPlayer(playerRef);
+        Animator playerAnimator = player.GetComponent<Animator>();
+        playerAnimator.SetTrigger("drinking");
+        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
+        //애니메이션
         if (Runner.IsServer && Runner.LocalPlayer != playerRef)
         {
             Player.GetPlayer(playerRef).InGameStat.hp ++;
@@ -238,6 +281,12 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_VictoryCheck(PlayerRef playerRef)
     {
+        //애니메이션
+        Player player = Player.GetPlayer(playerRef);
+        Animator playerAnimator = player.GetComponent<Animator>();
+        playerAnimator.SetTrigger("dying");
+        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
+        //애니메이션
         List<Player> players = new List<Player>(Player.ConnectedPlayers);
         string result = "not victory yet";
 
@@ -331,23 +380,6 @@ public class Broadcaster : NetworkBehaviour
     {
         FindObjectOfType<MyInfoPanel>().InitializedMyInfoPanel();
     }
-
-    // [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    // public void RPC_SendMyNickName2Server(string nickname, PlayerRef playerRef)
-    // {
-    //     Server.Instance.nicknameBuffer.Add(nickname);
-    //     
-    //     Player.GetPlayer(playerRef).BasicStat.nickName = nickname;
-    //     
-    //     RPC_SetNickNameUi(Server.Instance.nicknameBuffer.ToArray());
-    // }
-
-    // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    // public void RPC_SetNickNameUi(string[] nicknames)
-    // {
-    //     Debug.Log("UI 수정 완료!");
-    //     FindObjectOfType<WatingSetting>()?.UpdateNicknameTexts(nicknames);
-    // }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_SendMyNickName2Server(string nickname, PlayerRef playerRef)

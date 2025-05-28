@@ -7,7 +7,6 @@ using DG.Tweening;
 using Fusion;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -23,7 +22,7 @@ public class GameManager : MonoBehaviour
 
     public bool isDead = false;
     
-    [SerializeField] private Transform[] spawnPoints;
+    public Transform[] spawnPoints;
 
     private Player turnOwner;
 

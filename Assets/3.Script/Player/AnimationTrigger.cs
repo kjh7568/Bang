@@ -25,9 +25,8 @@ public class AnimationTrigger : NetworkBehaviour
 
             animator.enabled = true;
         }
-        
 
-        
+        CheckInput();
     }
 
     private void CheckInput()
@@ -52,7 +51,7 @@ public class AnimationTrigger : NetworkBehaviour
     {
         if (animator != null)
         {
-            animator.SetTrigger(trigger);
+            animator.SetTrigger("shooting");
         }
     }
 
