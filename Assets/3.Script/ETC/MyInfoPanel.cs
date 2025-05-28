@@ -64,7 +64,7 @@ public class MyInfoPanel : MonoBehaviour
             }
         }
 
-        //UpdatePlayerHp();
+        UpdatePlayerHp();
     }
 
     void OpenMyPanel()

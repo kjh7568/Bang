@@ -1678,7 +1678,7 @@ MonoBehaviour:
     sessionNumber: 0
     characterModelNum: 0
   playerBasicStat:
-    iD: 
+    iD: 3
     password: 
     nickName: Kim2
   playerInGameStat:
@@ -1692,6 +1692,8 @@ MonoBehaviour:
     isJail: 0
     isDynamite: 0
     playerHpObj: []
+  _SyncPlayerHp: 0
+  assignedCamIndex: 0
 --- !u!114 &8577810841607768586
 MonoBehaviour:
   m_ObjectHideFlags: 0

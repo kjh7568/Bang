@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerBasicStat
 {
-    public string iD;
+    public int iD;
     public string password;
     public string nickName;
 }
