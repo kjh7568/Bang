@@ -18,6 +18,8 @@ public class Player : NetworkBehaviour
     public static Player LocalPlayer;
     public static List<Player> ConnectedPlayers = new();
 
+    [Networked] public int SyncPlayerHp {get; set;}
+    
     public PlayerRef playerRef;
 
     public override void Spawned()
@@ -28,10 +30,15 @@ public class Player : NetworkBehaviour
         ConnectedPlayers.Add(this);
 
         playerRef = Object.InputAuthority;
-
+        
         if (Object.HasInputAuthority)
         {
             LocalPlayer = this;
+        }
+        
+        if (Runner.IsServer)
+        {
+            SyncPlayerHp = playerInGameStat.hp;  
         }
     }
 
