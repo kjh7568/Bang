@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using Fusion;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -19,6 +20,7 @@ public class Player : NetworkBehaviour
     public static List<Player> ConnectedPlayers = new();
 
     [Networked] public int SyncPlayerHp {get; set;}
+
     
     public PlayerRef playerRef;
 

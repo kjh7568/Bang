@@ -2620,7 +2620,7 @@ MonoBehaviour:
     sessionNumber: 0
     characterModelNum: 0
   playerBasicStat:
-    iD: 
+    iD: 0
     password: 
     nickName: Noh
   playerInGameStat:
@@ -2634,6 +2634,7 @@ MonoBehaviour:
     isJail: 0
     isDynamite: 0
     playerHpObj: []
+  _SyncPlayerHp: 0
 --- !u!114 &6984535308722545104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2849,7 +2850,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.528, y: 2.025, z: -0}
-  m_LocalScale: {x: 0.49999982, y: 0.5, z: 0.49999982}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8004071112205334152}
@@ -2921,7 +2922,7 @@ Transform:
   m_GameObject: {fileID: 244188864010641647}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6, y: 0.05, z: 0.15}
+  m_LocalPosition: {x: 1, y: -0.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3116,7 +3117,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4063906209348704113
 Transform:
   m_ObjectHideFlags: 0
