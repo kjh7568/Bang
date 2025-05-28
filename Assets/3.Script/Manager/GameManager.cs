@@ -61,20 +61,18 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator InitializeGame()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
 
         SetPlayerHuman();
         SetPlayerJob();
         
-        CardSystem.Instance.Init();
-
-        turnOwner = GetFirstTurnPlayer();
-        Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
-
         Server.Instance.MovePlayersToSpawnPoints(spawnPoints);
         
-        Broadcaster.Instance.RPC_EndLoading();
+        turnOwner = GetFirstTurnPlayer();
         
+        CardSystem.Instance.Init();
+        Broadcaster.Instance.RPC_EndLoading();
+        Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
     }
     
     public void StartLoading()
