@@ -45,6 +45,12 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
             // UpdateNicknameUIAndBroadcast();
             DontDestroyOnLoad(networkPlayer);
             CheckStartCondition();
+
+            if (!nicknameBuffer.Contains(Player.LocalPlayer.BasicStat.nickName))
+            {
+                nicknameBuffer.Add(Player.LocalPlayer.BasicStat.nickName);
+                Broadcaster.Instance.RPC_SetNickNameUi(nicknameBuffer.ToArray());
+            }
         }
     }
 
@@ -66,7 +72,14 @@ public class Server : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnConnectedToServer(NetworkRunner runner)
     {
-        Broadcaster.Instance.RPC_SendMyNickName2Server(Player.LocalPlayer.BasicStat.nickName);
+        SyncNickName(runner.LocalPlayer);
+    }
+
+    public async void SyncNickName(PlayerRef playerRef)
+    {
+        var broadcaster = await WaitForBroadcasterAsync();
+        
+        Broadcaster.Instance.RPC_SendMyNickName2Server(Player.LocalPlayer.BasicStat.nickName, playerRef);
     }
     
     public async void StartGame(GameMode mode)

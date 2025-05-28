@@ -26,7 +26,7 @@ public class Broadcaster : NetworkBehaviour
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_StartPlayerTurn(PlayerRef playerRef)
-    {        
+    {
         UIManager.Instance.ResetPanel();
 
         if (Runner.IsServer)
@@ -50,7 +50,7 @@ public class Broadcaster : NetworkBehaviour
         int drawCardId = CardSystem.Instance.initDeck[0].CardID;
 
         var handCardID = Player.GetPlayer(playerRef).InGameStat.HandCardsId;
-        
+
         for (int i = 0; i < handCardID.Length; i++)
         {
             if (handCardID[i] == 0)
@@ -89,7 +89,7 @@ public class Broadcaster : NetworkBehaviour
     {
         Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
         Debug.Log($"전달된 카드 Number: {cardIdx}");
-        
+
         Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx] = 0;
     }
 
@@ -133,13 +133,13 @@ public class Broadcaster : NetworkBehaviour
     //
     //     UIManager.Instance.cardButtons[buttonIdx].SetActive(isOn);
     // }
-    
+
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_EndLoading(RpcInfo info = default)
     {
         GameManager.Instance.EndLoading();
     }
-    
+
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_RequestBang(PlayerRef attackRef, PlayerRef targetRef)
     {
@@ -151,7 +151,7 @@ public class Broadcaster : NetworkBehaviour
         if (Runner.LocalPlayer == targetRef)
         {
             var hasMissed = CardSystem.Instance.CheckHasMissed(targetRef);
-            
+
             UIManager.Instance.ResetPanel();
             UIManager.Instance.ShowMissedPanel(hasMissed, attackRef, targetRef);
         }
@@ -161,7 +161,7 @@ public class Broadcaster : NetworkBehaviour
             UIManager.Instance.waitingPanel.SetActive(true);
         }
     }
-    
+
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_NotifyMissed(PlayerRef attackRef, PlayerRef targetRef)
     {
@@ -169,7 +169,7 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log($"Runner.LocalPlayer ::: {Runner.LocalPlayer}");
         Debug.Log($"attackRef ::: {attackRef}");
         Debug.Log($"targetRef ::: {targetRef}");
-        
+
         if (Runner.LocalPlayer == attackRef)
         {
             UIManager.Instance.ResetPanel();
@@ -181,7 +181,7 @@ public class Broadcaster : NetworkBehaviour
             UIManager.Instance.waitingPanel.SetActive(true);
         }
     }
-    
+
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_NotifyBang(PlayerRef attackRef, PlayerRef targetRef)
     {
@@ -191,7 +191,7 @@ public class Broadcaster : NetworkBehaviour
         {
             Player.GetPlayer(targetRef).InGameStat.hp--;
         }
-        
+
         if (Runner.LocalPlayer == attackRef)
         {
             UIManager.Instance.ResetPanel();
@@ -203,7 +203,7 @@ public class Broadcaster : NetworkBehaviour
             UIManager.Instance.waitingPanel.SetActive(true);
         }
     }
-    
+
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_NotifyBeer(PlayerRef playerRef)
     {
@@ -219,28 +219,27 @@ public class Broadcaster : NetworkBehaviour
     public void RPC_VictoryCheck(PlayerRef playerRef)
     {
         List<Player> players = new List<Player>(Player.ConnectedPlayers);
-        
+
         string result = "not victory yet";
-        
-        bool sheriffAlive = players.Any(p => 
+
+        bool sheriffAlive = players.Any(p =>
             p.InGameStat != null &&
             p.InGameStat.MyJob != null &&
             p.InGameStat.MyJob.Name == "보안관" &&
             !p.InGameStat.IsDead);
 
-        bool renegadeAlive = players.Any(p => 
+        bool renegadeAlive = players.Any(p =>
             p.InGameStat != null &&
             p.InGameStat.MyJob != null &&
             p.InGameStat.MyJob.Name == "배신자" &&
             !p.InGameStat.IsDead);
 
-        int outlawAlive = players.Count(p => 
+        int outlawAlive = players.Count(p =>
             p.InGameStat != null &&
             p.InGameStat.MyJob != null &&
             p.InGameStat.MyJob.Name == "무법자" &&
             !p.InGameStat.IsDead);
-        
-        
+
 
         foreach (var p in players)
         {
@@ -249,14 +248,14 @@ public class Broadcaster : NetworkBehaviour
                 Debug.LogWarning("InGameStat이 null입니다: " + p);
                 continue;
             }
-    
+
             if (p.InGameStat.MyJob == null)
             {
                 Debug.LogWarning("MyJob이 null입니다: " + p);
                 continue;
             }
         }
-        
+
         if (!sheriffAlive)
         {
             if (outlawAlive > 0)
@@ -282,32 +281,37 @@ public class Broadcaster : NetworkBehaviour
             return;
         }
     }
-    
+
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_ShowResultToClients(string result)
     {
         UIManager.Instance.ShowResultPanel(result);
     }
-    
-     // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-     // public void RPC_UpdateNicknames(string[] nicknames)
-     // {
-     //     WatingSetting ui = FindObjectOfType<WatingSetting>();
-     //     if (ui != null)
-     //         ui.UpdateNicknameTexts(nicknames);
-     // }
 
-     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-     public void RPC_SendMyNickName2Server(string nickname)
-     {
-         Server.Instance.nicknameBuffer.Add(nickname);
-     }
-     
-     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-     public void RPC_SetNickNameUi(string[] nicknames)
-     {
-         FindObjectOfType<WatingSetting>().UpdateNicknameTexts(nicknames);
-     }
+    // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    // public void RPC_UpdateNicknames(string[] nicknames)
+    // {
+    //     WatingSetting ui = FindObjectOfType<WatingSetting>();
+    //     if (ui != null)
+    //         ui.UpdateNicknameTexts(nicknames);
+    // }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_SendMyNickName2Server(string nickname, PlayerRef playerRef)
+    {
+        Server.Instance.nicknameBuffer.Add(nickname);
+        
+        Player.GetPlayer(playerRef).BasicStat.nickName = nickname;
+        
+        RPC_SetNickNameUi(Server.Instance.nicknameBuffer.ToArray());
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_SetNickNameUi(string[] nicknames)
+    {
+        Debug.Log("UI 수정 완료!");
+        FindObjectOfType<WatingSetting>()?.UpdateNicknameTexts(nicknames);
+    }
 //
 //     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
 //     public void RPC_SendNicknameToHost(string nickname, RpcInfo info = default)
