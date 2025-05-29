@@ -75,6 +75,13 @@ public class Broadcaster : NetworkBehaviour
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_RequestDrawCard(PlayerRef playerRef)
+    {
+        DrawCard(playerRef);
+        RPC_ReceiveHandCardAndUpdateUi(playerRef, Player.GetPlayer(playerRef).InGameStat.HandCardsId);
+    }
+    
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_RequestEndTurn()
     {
         SoundManager.Instance.PlaySound(SoundType.Button);
@@ -108,10 +115,8 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_RequestUseCard(PlayerRef playerRef, int cardIdx)
     {
-        Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
-        Debug.Log($"전달된 카드 Number: {cardIdx}");
-
         Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx] = 0;
+        Debug.Log($"서버가 인식하는 {playerRef}의 핸드: {string.Join(", ", Player.GetPlayer(playerRef).InGameStat.HandCardsId)}");
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -171,6 +176,25 @@ public class Broadcaster : NetworkBehaviour
             UIManager.Instance.ShowMissedPanel(hasMissed, attackRef, targetRef);
         }
         else if (GameManager.Instance.isDead == false)
+        {
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.waitingPanel.SetActive(true);
+        }
+    }
+    
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_RequestGatling(PlayerRef attackRef)
+    {
+        var targetRef = Player.LocalPlayer.playerRef;
+        
+        if (targetRef != attackRef)
+        {
+            var hasMissed = CardSystem.Instance.CheckHasMissed(targetRef);
+
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.ShowMissedPanel(hasMissed, attackRef, targetRef);
+        }
+        else
         {
             UIManager.Instance.ResetPanel();
             UIManager.Instance.waitingPanel.SetActive(true);

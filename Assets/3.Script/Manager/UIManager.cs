@@ -90,7 +90,7 @@ public class UIManager : MonoBehaviour
 
         Player.LocalPlayer.InGameStat.HandCardsId[index] = 0;
         Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, index);
-        
+
         if (card.IsTargetRequired) // 대상 필요 여부
         {
             // 대상 지정 UI 패널 열기
