@@ -1682,7 +1682,7 @@ MonoBehaviour:
     password: 
     nickName: Kim2
   playerInGameStat:
-    hp: 5
+    hp: 4
     bulletRange: 0
     HandCardsId: 0000000000000000000000000000000000000000
     isBang: 0
