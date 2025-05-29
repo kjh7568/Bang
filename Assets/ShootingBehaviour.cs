@@ -22,7 +22,10 @@ public class ShootingBehaviour : StateMachineBehaviour
         Debug.Log("ShootingBehaviour ::: OnStateExit");
         // 플레이어가 스폰 포인트로 이동
         var player = animator.GetComponent<Player>();
-        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
+        Broadcaster.Instance.RPC_RequestResetSpawnPoints();
+        
+        player.Beer.gameObject.SetActive(false);
+        player.Gun.gameObject.SetActive(false);
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

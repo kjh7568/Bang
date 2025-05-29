@@ -131,6 +131,8 @@ public class Broadcaster : NetworkBehaviour
             RPC_RequestUseCard(playerRef, cardIdx);
         }
     }
+
+    
     
     public void HandleUseCard(PlayerRef playerRef, int cardIdx)
     {
@@ -191,28 +193,67 @@ public class Broadcaster : NetworkBehaviour
     {
         GameManager.Instance.EndLoading();
     }
-
+    
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RPC_RequestBangAim(PlayerRef attackRef, PlayerRef targetRef)
+    public void RPC_RequestResetSpawnPoints()
     {
+        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
+    }
+    
+    public void RequestBangAim(PlayerRef attacker, PlayerRef target)
+    {
+        if (Runner.IsServer && Runner.LocalPlayer == attacker)
+        {
+            Debug.Log("RotateBangAim 실행");
+            // 서버가 자기 자신이면 RPC 대신 직접 처리
+            RotateBangAim(attacker, target);
+        }
+        else
+        {
+            // 그 외의 경우는 RPC로 요청
+            RPC_RequestBangAim(attacker, target);
+        }
+    }   
+
+    public void RotateBangAim(PlayerRef attackRef, PlayerRef targetRef)
+    {
+        
         //애니메이션
         Player attacker = Player.GetPlayer(attackRef);
         Player target = Player.GetPlayer(targetRef);
+        Debug.Log($"{attacker}, {attacker.BasicStat.nickName}");
+        Debug.Log($"{target}, {target.BasicStat.nickName}");
 
-        Vector3 direction = target.transform.position - attacker.transform.position;
+        Vector3 Attackerdirection = target.transform.position - attacker.transform.position;
+        Vector3 Targetdirection = attacker.transform.position - target.transform.position;
         
-        direction.y = 0f;
-        Debug.Log("direction: " + direction);
-        if (direction != Vector3.zero)
+        Attackerdirection.y = 0f;
+        Targetdirection.y = 0f;
+        Debug.Log("direction: " + Attackerdirection);
+        if (Attackerdirection != Vector3.zero)
         {
             Debug.Log("방향전환중");
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            attacker.transform.rotation = lookRotation;
+            if (attacker.HasStateAuthority)
+            {
+                Quaternion AttackerlookRotation = Quaternion.LookRotation(Attackerdirection);
+                Quaternion TargetlookRotation = Quaternion.LookRotation(Targetdirection);
+                attacker.GetComponent<NetworkTransform>().Teleport(null,AttackerlookRotation);
+                target.GetComponent<NetworkTransform>().Teleport(null,TargetlookRotation);
+            }
+            else
+            {
+                Debug.Log("StateAuthority가 아니라 회전 불가");
+            };
             
             // 회전을 fixedUpdate에서 적용
             // 너 내가 여기로 회전하고 싶어 예약
         }
-        
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_RequestBangAim(PlayerRef attackRef, PlayerRef targetRef)
+    {
+        RotateBangAim(attackRef, targetRef);
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -281,21 +322,8 @@ public class Broadcaster : NetworkBehaviour
         Animator targetAnimator =target.GetComponent<Animator>();
         Debug.Log("miss : "+ attacker.name + " : " + target.name + " : " );
         
-        Vector3 direction = target.transform.position - attacker.transform.position;
-        
-        direction.y = 0f;
-        Debug.Log("direction: " + direction);
-        if (direction != Vector3.zero)
-        {
-            Debug.Log("방향전환중");
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            attacker.transform.rotation = lookRotation;
-            
-            // 회전을 fixedUpdate에서 적용
-            // 너 내가 여기로 회전하고 싶어 예약
-        }
-        
         attackerAnimator.SetTrigger("shooting");
+        attacker.Gun.gameObject.SetActive(true);
         SoundManager.Instance.PlaySound(SoundType.Bang);
 
         targetAnimator.SetTrigger("dodging");
@@ -329,6 +357,7 @@ public class Broadcaster : NetworkBehaviour
         Animator targetAnimator =target.GetComponent<Animator>();
         Debug.Log("miss : "+ attacker.name + " : " + target.name + " : " );
         attackerAnimator.SetTrigger("shooting");
+        attacker.Gun.gameObject.SetActive(true);
         targetAnimator.SetTrigger("hitting");
         
         SoundManager.Instance.PlaySound(SoundType.Bang);
@@ -367,7 +396,7 @@ public class Broadcaster : NetworkBehaviour
         Player player = Player.GetPlayer(playerRef);
         Animator playerAnimator = player.GetComponent<Animator>();
         playerAnimator.SetTrigger("drinking");
-        
+        player.Beer.gameObject.SetActive(true);
         SoundManager.Instance.PlaySound(SoundType.Beer);
         
         Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);

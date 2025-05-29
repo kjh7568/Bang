@@ -23,6 +23,9 @@ public class Player : NetworkBehaviour
 
     public PlayerRef playerRef;
 
+    public GameObject Beer;
+
+    public GameObject Gun;
     public override void Spawned()
     {
         var nickname = FindObjectOfType<SavePlayerBasicStat>().Nickname;
