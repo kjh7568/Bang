@@ -102,7 +102,7 @@ public class MyInfoPanel : MonoBehaviour
     
     private void UpdatePlayerHp()
     {
-        int hp = Player.LocalPlayer.InGameStat.hp;
+        int hp = Player.LocalPlayer.SyncPlayerHp;
         
         for (int i = 0; i < playerHP.Count; i++)
         {

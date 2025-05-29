@@ -17,18 +17,19 @@ public class Broadcaster : NetworkBehaviour
     public List<int> deadPlayers = new();
     private HashSet<PlayerRef> clientsReady = new();
 
+    private int missedCheckCount;
     
     public override void Spawned()
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        
+        missedCheckCount = 0;
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_StartPlayerTurn(PlayerRef playerRef)
     {
-       
-
         //애니메이션
         Player player = Player.GetPlayer(playerRef);
         
@@ -37,8 +38,6 @@ public class Broadcaster : NetworkBehaviour
         Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
         //애니메이션
         
-        UIManager.Instance.ResetPanel();
-
         if (Runner.IsServer)
         {
             DrawCard(playerRef);
@@ -48,6 +47,7 @@ public class Broadcaster : NetworkBehaviour
         if (Runner.LocalPlayer == playerRef)
         {
             player.InGameStat.isBang = false;
+            UIManager.Instance.waitingPanel.SetActive(false);
             UIManager.Instance.cardListPanel.SetActive(true);
         }
         else if (GameManager.Instance.isDead == false)
@@ -136,9 +136,6 @@ public class Broadcaster : NetworkBehaviour
     
     public void HandleUseCard(PlayerRef playerRef, int cardIdx)
     {
-        Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
-        Debug.Log($"전달된 카드 Number: {cardIdx}");
-
         int cardId = Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx];
         var usedCard = CardSystem.Instance.GetCardByIDOrNull(cardId);
 
@@ -179,12 +176,6 @@ public class Broadcaster : NetworkBehaviour
         else if (Runner.LocalPlayer == playerRef)
         {
             Player.LocalPlayer.InGameStat.MyJob = GameManager.Instance.jobList.jobList[jobIdx];
-
-            if (GameManager.Instance.jobList.jobList[jobIdx].Name.Equals("보안관"))
-            {
-                Player.LocalPlayer.SyncPlayerHp = 5;
-                Player.LocalPlayer.InGameStat.hp = 5;
-            }
         }
     }
 
@@ -259,30 +250,22 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_RequestBang(PlayerRef attackRef, PlayerRef targetRef)
     {
-        Debug.Log($"{attackRef}가 {targetRef}에게 뱅을 사용함");
-        Debug.Log($"Runner.LocalPlayer ::: {Runner.LocalPlayer}");
-        Debug.Log($"attackRef ::: {attackRef}");
-        Debug.Log($"targetRef ::: {targetRef}");
-        
-        
         //애니메이션
         Player attacker = Player.GetPlayer(attackRef);
         Player target = Player.GetPlayer(targetRef);
 
         Animator attackerAnimator = attacker.GetComponent<Animator>();
         attackerAnimator.SetTrigger("pointing");
-       
         
         if (Runner.LocalPlayer == targetRef)
         {
             var hasMissed = CardSystem.Instance.CheckHasMissed(targetRef);
             
-            UIManager.Instance.ResetPanel();
+            UIManager.Instance.waitingPanel.SetActive(false);
             UIManager.Instance.ShowMissedPanel(hasMissed, attackRef, targetRef);
         }
         else if (GameManager.Instance.isDead == false)
         {
-            UIManager.Instance.ResetPanel();
             UIManager.Instance.waitingPanel.SetActive(true);
         }
     }
@@ -290,37 +273,29 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_RequestGatling(PlayerRef attackRef)
     {
-        var targetRef = Player.LocalPlayer.playerRef;
-        
-        if (targetRef != attackRef)
+        if (Runner.LocalPlayer == attackRef)
         {
-            var hasMissed = CardSystem.Instance.CheckHasMissed(targetRef);
-
-            UIManager.Instance.ResetPanel();
-            UIManager.Instance.ShowMissedPanel(hasMissed, attackRef, targetRef);
+            UIManager.Instance.waitingPanel.SetActive(true);
         }
         else
         {
-            UIManager.Instance.ResetPanel();
-            UIManager.Instance.waitingPanel.SetActive(true);
+            var targetRef = Player.LocalPlayer.playerRef;
+            var hasMissed = CardSystem.Instance.CheckHasMissed(targetRef);
+            UIManager.Instance.waitingPanel.SetActive(false);
+            UIManager.Instance.ShowMissedPanel_Gatling(hasMissed, attackRef, targetRef);
         }
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_NotifyMissed(PlayerRef attackRef, PlayerRef targetRef)
     {
-        Debug.Log($"{targetRef}가 {attackRef}의 뱅을 빗나감으로 회피하였습니다!");
-        Debug.Log($"Runner.LocalPlayer ::: {Runner.LocalPlayer}");
-        Debug.Log($"attackRef ::: {attackRef}");
-        Debug.Log($"targetRef ::: {targetRef}");
-        
         //애니메이션
         Player attacker = Player.GetPlayer(attackRef);
         Player target = Player.GetPlayer(targetRef);
         
         Animator attackerAnimator = attacker.GetComponent<Animator>();
         Animator targetAnimator =target.GetComponent<Animator>();
-        Debug.Log("miss : "+ attacker.name + " : " + target.name + " : " );
+        Debug.Log("Missed : "+ attacker.name + " : " + target.name + " : " );
         
         attackerAnimator.SetTrigger("shooting");
         attacker.Gun.gameObject.SetActive(true);
@@ -334,28 +309,61 @@ public class Broadcaster : NetworkBehaviour
         
         if (Runner.LocalPlayer == attackRef)
         {
-            UIManager.Instance.ResetPanel();
+            UIManager.Instance.waitingPanel.SetActive(false);
             UIManager.Instance.cardListPanel.SetActive(true);
         }
-        else if (GameManager.Instance.isDead == false)
-        {
-            UIManager.Instance.ResetPanel();
-            UIManager.Instance.waitingPanel.SetActive(true);
-        }
     }
-
+    
     [Rpc(RpcSources.All, RpcTargets.All)]
-    public void RPC_NotifyBang(PlayerRef attackRef, PlayerRef targetRef)
+    public void RPC_NotifyMissed_Gatling(PlayerRef attackRef, PlayerRef targetRef)
     {
-        Debug.Log($"{attackRef}가 {targetRef}에게 뱅을 사용하여 1 데미지를 입혔습니다!");
-        
         //애니메이션
         Player attacker = Player.GetPlayer(attackRef);
         Player target = Player.GetPlayer(targetRef);
         
         Animator attackerAnimator = attacker.GetComponent<Animator>();
         Animator targetAnimator =target.GetComponent<Animator>();
-        Debug.Log("miss : "+ attacker.name + " : " + target.name + " : " );
+        Debug.Log("Missed : "+ attacker.name + " : " + target.name + " : " );
+        
+        Vector3 direction = target.transform.position - attacker.transform.position;
+        
+        direction.y = 0f;
+        Debug.Log("direction: " + direction);
+        if (direction != Vector3.zero)
+        {
+            Debug.Log("방향전환중");
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            attacker.transform.rotation = lookRotation;
+            
+            // 회전을 fixedUpdate에서 적용
+            // 너 내가 여기로 회전하고 싶어 예약
+        }
+        
+        attackerAnimator.SetTrigger("shooting");
+        SoundManager.Instance.PlaySound(SoundType.Bang);
+
+        targetAnimator.SetTrigger("dodging");
+        SoundManager.Instance.PlaySound(SoundType.Dodging);
+
+        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
+        //애니메이션
+
+        if (Runner.LocalPlayer == targetRef)
+        {
+            RPC_SetCountAndGatling(attackRef);
+        }
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_NotifyBang(PlayerRef attackRef, PlayerRef targetRef)
+    {
+        //애니메이션
+        Player attacker = Player.GetPlayer(attackRef);
+        Player target = Player.GetPlayer(targetRef);
+        
+        Animator attackerAnimator = attacker.GetComponent<Animator>();
+        Animator targetAnimator =target.GetComponent<Animator>();
+        Debug.Log("Bang : "+ attacker.name + " : " + target.name + " : " );
         attackerAnimator.SetTrigger("shooting");
         attacker.Gun.gameObject.SetActive(true);
         targetAnimator.SetTrigger("hitting");
@@ -377,21 +385,69 @@ public class Broadcaster : NetworkBehaviour
 
         if (Runner.LocalPlayer == attackRef)
         {
-            UIManager.Instance.ResetPanel();
+            UIManager.Instance.waitingPanel.SetActive(false);
             UIManager.Instance.cardListPanel.SetActive(true);
         }
-        else if (GameManager.Instance.isDead == false)
-        {
-            UIManager.Instance.ResetPanel();
-            UIManager.Instance.waitingPanel.SetActive(true);
-        }
+    }
+    
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_NotifyGatling(PlayerRef attackRef, PlayerRef targetRef)
+    {
+        //애니메이션
+        Player attacker = Player.GetPlayer(attackRef);
+        Player target = Player.GetPlayer(targetRef);
         
+        Animator attackerAnimator = attacker.GetComponent<Animator>();
+        Animator targetAnimator =target.GetComponent<Animator>();
+        Debug.Log("Gatling : "+ attacker.name + " : " + target.name + " : " );
+        attackerAnimator.SetTrigger("shooting");
+        targetAnimator.SetTrigger("hitting");
+        
+        SoundManager.Instance.PlaySound(SoundType.Bang);
+
+        //애니메이션
+        
+        if (Runner.IsServer && Runner.LocalPlayer != targetRef)
+        {
+            Player.GetPlayer(targetRef).InGameStat.hp--;
+        }
+
+        if (Runner.IsServer)
+        {
+            Player.GetPlayer(targetRef).SyncPlayerHp--;
+            RPC_PlayerHpSync();
+        }
+
+        if (Runner.LocalPlayer == targetRef)
+        {
+            RPC_SetCountAndGatling(attackRef);
+        }
+    }
+    
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_SetCountAndGatling(PlayerRef attackRef)
+    {
+        missedCheckCount++;
+        
+        if (missedCheckCount > 2)
+        {
+            RPC_TurnOnPanel(attackRef);
+        }
+    }
+    
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_TurnOnPanel(PlayerRef attackRef)
+    {
+        if (Runner.LocalPlayer == attackRef)
+        {
+            UIManager.Instance.waitingPanel.SetActive(false);
+            UIManager.Instance.cardListPanel.SetActive(true);
+        }
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_NotifyBeer(PlayerRef playerRef)
     {
-        Debug.Log($"{playerRef}가 맥주를 사용하여 체력 1을 회복했습니다!");
         //애니메이션
         Player player = Player.GetPlayer(playerRef);
         Animator playerAnimator = player.GetComponent<Animator>();

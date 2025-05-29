@@ -88,11 +88,10 @@ public class UIManager : MonoBehaviour
         if (Player.LocalPlayer.InGameStat.isBang && card.Name == "Bang") return;
         
         cardListPanel.SetActive(false);
-        cardButtons[index].SetActive(false);
         
         Broadcaster.Instance.RequestUseCard(Player.LocalPlayer.playerRef, index);
         Player.LocalPlayer.InGameStat.HandCardsId[index] = 0;
-        
+        UpdateHandCardUI(Player.LocalPlayer.InGameStat.HandCardsId);
 
         if (card.IsTargetRequired) // 대상 필요 여부
         {
@@ -178,10 +177,10 @@ public class UIManager : MonoBehaviour
                 if (card.Name == "Missed")
                 {
                     Broadcaster.Instance.RequestUseCard(Player.LocalPlayer.playerRef, i);
-                    
-                    Player.GetPlayer(targetRef).InGameStat.HandCardsId[i] = 0;
-                    Broadcaster.Instance.RequestBangAim(attackRef , targetRef);
+                    Player.LocalPlayer.InGameStat.HandCardsId[i] = 0;
+                    UpdateHandCardUI(Player.LocalPlayer.InGameStat.HandCardsId);
                     Broadcaster.Instance.RPC_NotifyMissed(attackRef, targetRef);
+                    
                     return;
                 }
             }
@@ -193,9 +192,60 @@ public class UIManager : MonoBehaviour
             waitingPanel.SetActive(true);
 
             Player.GetPlayer(targetRef).InGameStat.hp--;
-            Broadcaster.Instance.RequestBangAim(attackRef , targetRef);
             Broadcaster.Instance.RPC_NotifyBang(attackRef, targetRef);
             
+        });
+    }
+
+    public bool isSelectedMissedPanel;
+    
+    public void ShowMissedPanel_Gatling(bool hasMissed, PlayerRef attackRef, PlayerRef targetRef)
+    {
+        isSelectedMissedPanel = false;
+        
+        useMissedButton.onClick.RemoveAllListeners();
+        dontUseMissedButton.onClick.RemoveAllListeners();
+
+        useMissedButton.interactable = hasMissed;
+
+        missedPanel.SetActive(true);
+
+        useMissedButton.onClick.AddListener(() =>
+        {
+            missedPanel.SetActive(false);
+            waitingPanel.SetActive(true);
+
+            var cardID = Player.GetPlayer(targetRef).InGameStat.HandCardsId;
+
+            for (int i = 0; i < cardID.Length; i++)
+            {
+                if (cardID[i] == 0) continue;
+
+                var card = CardSystem.Instance.GetCardByIDOrNull(cardID[i]);
+
+                if (card.Name == "Missed")
+                {
+                    isSelectedMissedPanel = true;
+                    
+                    Broadcaster.Instance.RequestUseCard(Player.LocalPlayer.playerRef, i);
+                    Player.LocalPlayer.InGameStat.HandCardsId[i] = 0;
+                    UpdateHandCardUI(Player.LocalPlayer.InGameStat.HandCardsId);
+                    Broadcaster.Instance.RPC_NotifyMissed_Gatling(attackRef, targetRef);
+                    
+                    return;
+                }
+            }
+        });
+
+        dontUseMissedButton.onClick.AddListener(() =>
+        {
+            missedPanel.SetActive(false);
+            waitingPanel.SetActive(true);
+
+            isSelectedMissedPanel = true;
+            
+            Player.GetPlayer(targetRef).InGameStat.hp--;
+            Broadcaster.Instance.RPC_NotifyGatling(attackRef, targetRef);
         });
     }
     
