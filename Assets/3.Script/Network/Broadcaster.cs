@@ -195,7 +195,7 @@ public class Broadcaster : NetworkBehaviour
     {
         if (Runner.IsServer && Runner.LocalPlayer == attacker)
         {
-            Debug.Log("RotateBangAim 실행");
+            
             // 서버가 자기 자신이면 RPC 대신 직접 처리
             RotateBangAim(attacker, target);
         }
@@ -212,18 +212,17 @@ public class Broadcaster : NetworkBehaviour
         //애니메이션
         Player attacker = Player.GetPlayer(attackRef);
         Player target = Player.GetPlayer(targetRef);
-        Debug.Log($"{attacker}, {attacker.BasicStat.nickName}");
-        Debug.Log($"{target}, {target.BasicStat.nickName}");
+        
 
         Vector3 Attackerdirection = target.transform.position - attacker.transform.position;
         Vector3 Targetdirection = attacker.transform.position - target.transform.position;
         
         Attackerdirection.y = 0f;
         Targetdirection.y = 0f;
-        Debug.Log("direction: " + Attackerdirection);
+      
         if (Attackerdirection != Vector3.zero)
         {
-            Debug.Log("방향전환중");
+            
             if (attacker.HasStateAuthority)
             {
                 Quaternion AttackerlookRotation = Quaternion.LookRotation(Attackerdirection);
@@ -233,7 +232,7 @@ public class Broadcaster : NetworkBehaviour
             }
             else
             {
-                Debug.Log("StateAuthority가 아니라 회전 불가");
+                
             };
             
             // 회전을 fixedUpdate에서 적용
@@ -325,20 +324,6 @@ public class Broadcaster : NetworkBehaviour
         Animator targetAnimator =target.GetComponent<Animator>();
         Debug.Log("Missed : "+ attacker.name + " : " + target.name + " : " );
         
-        Vector3 direction = target.transform.position - attacker.transform.position;
-        
-        direction.y = 0f;
-        Debug.Log("direction: " + direction);
-        if (direction != Vector3.zero)
-        {
-            Debug.Log("방향전환중");
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            attacker.transform.rotation = lookRotation;
-            
-            // 회전을 fixedUpdate에서 적용
-            // 너 내가 여기로 회전하고 싶어 예약
-        }
-        
         attackerAnimator.SetTrigger("shooting");
         SoundManager.Instance.PlaySound(SoundType.Bang);
 
@@ -400,6 +385,7 @@ public class Broadcaster : NetworkBehaviour
         Animator attackerAnimator = attacker.GetComponent<Animator>();
         Animator targetAnimator =target.GetComponent<Animator>();
         Debug.Log("Gatling : "+ attacker.name + " : " + target.name + " : " );
+        attacker.Gun.gameObject.SetActive(true);
         attackerAnimator.SetTrigger("shooting");
         targetAnimator.SetTrigger("hitting");
         
@@ -515,13 +501,13 @@ public class Broadcaster : NetworkBehaviour
         {
             if (p.InGameStat == null)
             {
-                Debug.LogWarning("InGameStat이 null입니다: " + p);
+                
                 continue;
             }
 
             if (p.InGameStat.MyJob == null)
             {
-                Debug.LogWarning("MyJob이 null입니다: " + p);
+                
                 continue;
             }
         }

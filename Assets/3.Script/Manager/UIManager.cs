@@ -232,6 +232,7 @@ public class UIManager : MonoBehaviour
                     Broadcaster.Instance.RequestUseCard(Player.LocalPlayer.playerRef, i);
                     Player.LocalPlayer.InGameStat.HandCardsId[i] = 0;
                     UpdateHandCardUI(Player.LocalPlayer.InGameStat.HandCardsId);
+                    Broadcaster.Instance.RequestBangAim(attackRef , targetRef);
                     Broadcaster.Instance.RPC_NotifyMissed_Gatling(attackRef, targetRef);
                     
                     return;
@@ -247,6 +248,7 @@ public class UIManager : MonoBehaviour
             isSelectedMissedPanel = true;
             
             Player.GetPlayer(targetRef).InGameStat.hp--;
+            Broadcaster.Instance.RequestBangAim(attackRef , targetRef);
             Broadcaster.Instance.RPC_NotifyGatling(attackRef, targetRef);
         });
     }
@@ -303,7 +305,7 @@ public class UIManager : MonoBehaviour
             if (connectedPlayer == null || connectedPlayer.InGameStat == null ||
                 connectedPlayer.InGameStat.MyJob == null)
             {
-                Debug.LogWarning($"Player {i} 정보가 부족합니다.");
+                
                 continue;
             }
 
