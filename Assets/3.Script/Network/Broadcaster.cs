@@ -145,6 +145,7 @@ public class Broadcaster : NetworkBehaviour
 
             if (GameManager.Instance.jobList.jobList[jobIdx].Name.Equals("보안관"))
             {
+                Player.LocalPlayer.SyncPlayerHp = 5;
                 Player.LocalPlayer.InGameStat.hp = 5;
             }
         }

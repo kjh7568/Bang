@@ -21,7 +21,6 @@ public class Player : NetworkBehaviour
 
     [Networked] public int SyncPlayerHp {get; set;}
 
-    
     public PlayerRef playerRef;
 
     public override void Spawned()

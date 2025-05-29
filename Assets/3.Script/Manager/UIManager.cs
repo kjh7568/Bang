@@ -154,18 +154,12 @@ public class UIManager : MonoBehaviour
 
     public void ShowMissedPanel(bool hasMissed, PlayerRef attackRef, PlayerRef targetRef)
     {
-        
-        Debug.Log($"빗나감 패널 메서드 시작");
-
         useMissedButton.onClick.RemoveAllListeners();
         dontUseMissedButton.onClick.RemoveAllListeners();
 
         useMissedButton.interactable = hasMissed;
 
         missedPanel.SetActive(true);
-
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
 
         useMissedButton.onClick.AddListener(() =>
         {
@@ -188,7 +182,6 @@ public class UIManager : MonoBehaviour
                     return;
                 }
             }
-            
         });
 
         dontUseMissedButton.onClick.AddListener(() =>
@@ -201,7 +194,7 @@ public class UIManager : MonoBehaviour
             
         });
     }
-
+    
     public void ShowResultPanel(string result)
     {
         ResultPanel.SetActive(true);
