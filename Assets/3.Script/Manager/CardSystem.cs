@@ -144,7 +144,10 @@ public class CardSystem : MonoBehaviour
 
     private void UseBeer(PlayerRef user, PlayerRef? target)
     {
-        if (Player.GetPlayer(user).InGameStat.hp >= 5)
+        int currentHp = Player.GetPlayer(user).InGameStat.hp;
+        int maxHp = Player.LocalPlayer.InGameStat.MyJob.Name == "보안관" ? 5 : 4;
+
+        if (currentHp >= maxHp)
         {
             Debug.Log("풀피인데 맥주를 먹으면 안되죠...");
             return;
