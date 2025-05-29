@@ -189,8 +189,12 @@ public class Broadcaster : NetworkBehaviour
         Animator attackerAnimator = attacker.GetComponent<Animator>();
         Animator targetAnimator =target.GetComponent<Animator>();
         Debug.Log("miss : "+ attacker.name + " : " + target.name + " : " );
+        
         attackerAnimator.SetTrigger("shooting");
+        //SoundManager.Instance.PlaySound(SoundType.Bang);
+
         targetAnimator.SetTrigger("dodging");
+
         Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
         //애니메이션
         

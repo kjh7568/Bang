@@ -11,7 +11,7 @@ public enum SoundType
     Drop,
     Pickup,
     Notify,
-    Bullet,
+    Bang,
     Input
 }
 
@@ -29,7 +29,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip notifyClip;
     public AudioClip pickupClip;
     public AudioClip dropClip;
-    public AudioClip bulletClip;
+    public AudioClip bangClip;
     public AudioClip inputClip;
 
     
@@ -99,7 +99,6 @@ public class SoundManager : MonoBehaviour
             case SoundType.Drop:
                 PlayEffect(dropClip);
                 break;
-
             case SoundType.Notify:
                 PlayEffect(notifyClip);
                 break;
@@ -108,6 +107,9 @@ public class SoundManager : MonoBehaviour
                 break;
             case SoundType.Input:
                 PlayEffect(inputClip);
+                break;
+            case SoundType.Bang:
+                PlayEffect(bangClip);
                 break;
             default:
                 Debug.LogWarning("SoundType not handled: " + soundType);
