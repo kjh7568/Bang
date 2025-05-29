@@ -1481,7 +1481,7 @@ MonoBehaviour:
   bangClip: {fileID: 8300000, guid: 0dbe91efb8ee94e6695ef0f552d202ce, type: 3}
   inputClip: {fileID: 8300000, guid: 625ad317b451ec147984e94636d712a6, type: 3}
   dodgingClip: {fileID: 8300000, guid: 7001cfa7004b1c84c806e0426759ca2d, type: 3}
-  beerClip: {fileID: 0}
+  beerClip: {fileID: 8300000, guid: 236f54253860cd54cba60700ff53e920, type: 3}
   bgmVolume: 0.5
   sfxVolume: 1
   bgmVolumeSlider: {fileID: 0}
