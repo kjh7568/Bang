@@ -7,7 +7,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using Object = UnityEngine.Object;
-
+using Random = UnityEngine.Random;
 public class Broadcaster : NetworkBehaviour
 {
     public static Broadcaster Instance;
@@ -27,6 +27,8 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_StartPlayerTurn(PlayerRef playerRef)
     {
+       
+
         //애니메이션
         Player player = Player.GetPlayer(playerRef);
         
@@ -56,7 +58,11 @@ public class Broadcaster : NetworkBehaviour
 
     private void DrawCard(PlayerRef playerRef)
     {
-        
+        if (CardSystem.Instance.initDeck.Count == 0)
+        {
+            CardSystem.Instance.initDeck = CardSystem.Instance.UsedDeck.OrderBy(x => Random.value).ToList();
+            CardSystem.Instance.UsedDeck.Clear();
+        }
         
         int drawCardId = CardSystem.Instance.initDeck[0].CardID;
 
@@ -112,11 +118,40 @@ public class Broadcaster : NetworkBehaviour
         }
     }
 
+    public void RequestUseCard(PlayerRef playerRef, int cardIdx)
+    {
+        if (Runner.IsServer && Runner.LocalPlayer == playerRef)
+        {
+            // 서버가 자기 자신이면 RPC 대신 직접 처리
+            HandleUseCard(playerRef, cardIdx);
+        }
+        else
+        {
+            // 그 외의 경우는 RPC로 요청
+            RPC_RequestUseCard(playerRef, cardIdx);
+        }
+    }
+    
+    public void HandleUseCard(PlayerRef playerRef, int cardIdx)
+    {
+        Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
+        Debug.Log($"전달된 카드 Number: {cardIdx}");
+
+        int cardId = Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx];
+        var usedCard = CardSystem.Instance.GetCardByIDOrNull(cardId);
+
+        if (usedCard != null)
+        {
+            CardSystem.Instance.UsedDeck.Add(usedCard);
+        }
+
+        Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx] = 0;
+    }
+
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_RequestUseCard(PlayerRef playerRef, int cardIdx)
     {
-        Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx] = 0;
-        Debug.Log($"서버가 인식하는 {playerRef}의 핸드: {string.Join(", ", Player.GetPlayer(playerRef).InGameStat.HandCardsId)}");
+        HandleUseCard(playerRef, cardIdx);
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -321,6 +356,7 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_VictoryCheck(PlayerRef playerRef)
     {
+        UIManager.Instance.ResetPanel();
         //애니메이션
         Player player = Player.GetPlayer(playerRef);
         Animator playerAnimator = player.GetComponent<Animator>();
