@@ -22,6 +22,7 @@ public class CardSystem : MonoBehaviour
      [SerializeField] private DeckData deckData;
 
      public List<CardData> initDeck = new List<CardData>();
+     public List<CardData> UsedDeck = new List<CardData>();
      public Dictionary<int, CardData> cardByID_Dic;
 
      public Dictionary<string, Action<PlayerRef, PlayerRef?>> actionByName_Dic;

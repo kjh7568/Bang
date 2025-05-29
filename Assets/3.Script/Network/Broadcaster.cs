@@ -7,7 +7,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using Object = UnityEngine.Object;
-
+using Random = UnityEngine.Random;
 public class Broadcaster : NetworkBehaviour
 {
     public static Broadcaster Instance;
@@ -56,7 +56,12 @@ public class Broadcaster : NetworkBehaviour
     private void DrawCard(PlayerRef playerRef)
     {
         
-        
+        if (CardSystem.Instance.initDeck.Count == 0 )
+        {
+            CardSystem.Instance.initDeck = CardSystem.Instance.UsedDeck.OrderBy(x => Random.value).ToList();
+            CardSystem.Instance.UsedDeck.Clear();
+            Debug.Log("UsedDeck을 섞어서 initDeck으로 재사용합니다.");
+        }
         int drawCardId = CardSystem.Instance.initDeck[0].CardID;
 
         var handCardID = Player.GetPlayer(playerRef).InGameStat.HandCardsId;
@@ -103,15 +108,42 @@ public class Broadcaster : NetworkBehaviour
             UIManager.Instance.UpdateHandCardUI(handCardIds);
         }
     }
-
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RPC_RequestUseCard(PlayerRef playerRef, int cardIdx)
+// 바꾼거
+    public void HandleUseCard(PlayerRef playerRef, int cardIdx)
     {
         Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
         Debug.Log($"전달된 카드 Number: {cardIdx}");
 
+        int cardId = Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx];
+        var usedCard = CardSystem.Instance.GetCardByIDOrNull(cardId);
+
+        if (usedCard != null)
+        {
+            CardSystem.Instance.UsedDeck.Add(usedCard);
+        }
+
         Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx] = 0;
     }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_RequestUseCard(PlayerRef playerRef, int cardIdx)
+    {
+        HandleUseCard(playerRef, cardIdx);
+    }
+    public void RequestUseCard(PlayerRef playerRef, int cardIdx)
+    {
+        if (Runner.IsServer)
+        {
+            // 서버가 자기 자신이면 RPC 대신 직접 처리
+            HandleUseCard(playerRef, cardIdx);
+        }
+        else
+        {
+            // 그 외의 경우는 RPC로 요청
+            RPC_RequestUseCard(playerRef, cardIdx);
+        }
+    }
+    // 바꾼거
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_SendPlayerHuman(PlayerRef playerRef, int humanIdx)
