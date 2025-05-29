@@ -179,6 +179,7 @@ public class UIManager : MonoBehaviour
                     Broadcaster.Instance.RequestUseCard(Player.LocalPlayer.playerRef, i);
                     Player.LocalPlayer.InGameStat.HandCardsId[i] = 0;
                     UpdateHandCardUI(Player.LocalPlayer.InGameStat.HandCardsId);
+                    Broadcaster.Instance.RequestBangAim(attackRef , targetRef);
                     Broadcaster.Instance.RPC_NotifyMissed(attackRef, targetRef);
                     
                     return;
@@ -192,6 +193,7 @@ public class UIManager : MonoBehaviour
             waitingPanel.SetActive(true);
 
             Player.GetPlayer(targetRef).InGameStat.hp--;
+            Broadcaster.Instance.RequestBangAim(attackRef , targetRef);
             Broadcaster.Instance.RPC_NotifyBang(attackRef, targetRef);
             
         });
