@@ -7,7 +7,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using Object = UnityEngine.Object;
-
+using Random = UnityEngine.Random;
 public class Broadcaster : NetworkBehaviour
 {
     public static Broadcaster Instance;
@@ -27,6 +27,8 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_StartPlayerTurn(PlayerRef playerRef)
     {
+       
+
         //애니메이션
         Player player = Player.GetPlayer(playerRef);
         
@@ -56,7 +58,11 @@ public class Broadcaster : NetworkBehaviour
 
     private void DrawCard(PlayerRef playerRef)
     {
-        
+        if (CardSystem.Instance.initDeck.Count == 0)
+        {
+            CardSystem.Instance.initDeck = CardSystem.Instance.UsedDeck.OrderBy(x => Random.value).ToList();
+            CardSystem.Instance.UsedDeck.Clear();
+        }
         
         int drawCardId = CardSystem.Instance.initDeck[0].CardID;
 
@@ -112,11 +118,40 @@ public class Broadcaster : NetworkBehaviour
         }
     }
 
+    public void RequestUseCard(PlayerRef playerRef, int cardIdx)
+    {
+        if (Runner.IsServer && Runner.LocalPlayer == playerRef)
+        {
+            // 서버가 자기 자신이면 RPC 대신 직접 처리
+            HandleUseCard(playerRef, cardIdx);
+        }
+        else
+        {
+            // 그 외의 경우는 RPC로 요청
+            RPC_RequestUseCard(playerRef, cardIdx);
+        }
+    }
+    
+    public void HandleUseCard(PlayerRef playerRef, int cardIdx)
+    {
+        Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
+        Debug.Log($"전달된 카드 Number: {cardIdx}");
+
+        int cardId = Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx];
+        var usedCard = CardSystem.Instance.GetCardByIDOrNull(cardId);
+
+        if (usedCard != null)
+        {
+            CardSystem.Instance.UsedDeck.Add(usedCard);
+        }
+
+        Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx] = 0;
+    }
+
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_RequestUseCard(PlayerRef playerRef, int cardIdx)
     {
-        Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx] = 0;
-        Debug.Log($"서버가 인식하는 {playerRef}의 핸드: {string.Join(", ", Player.GetPlayer(playerRef).InGameStat.HandCardsId)}");
+        HandleUseCard(playerRef, cardIdx);
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -157,6 +192,29 @@ public class Broadcaster : NetworkBehaviour
         GameManager.Instance.EndLoading();
     }
 
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_RequestBangAim(PlayerRef attackRef, PlayerRef targetRef)
+    {
+        //애니메이션
+        Player attacker = Player.GetPlayer(attackRef);
+        Player target = Player.GetPlayer(targetRef);
+
+        Vector3 direction = target.transform.position - attacker.transform.position;
+        
+        direction.y = 0f;
+        Debug.Log("direction: " + direction);
+        if (direction != Vector3.zero)
+        {
+            Debug.Log("방향전환중");
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            attacker.transform.rotation = lookRotation;
+            
+            // 회전을 fixedUpdate에서 적용
+            // 너 내가 여기로 회전하고 싶어 예약
+        }
+        
+    }
+
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_RequestBang(PlayerRef attackRef, PlayerRef targetRef)
     {
@@ -165,14 +223,14 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log($"attackRef ::: {attackRef}");
         Debug.Log($"targetRef ::: {targetRef}");
         
+        
         //애니메이션
         Player attacker = Player.GetPlayer(attackRef);
         Player target = Player.GetPlayer(targetRef);
-        
+
         Animator attackerAnimator = attacker.GetComponent<Animator>();
         attackerAnimator.SetTrigger("pointing");
-        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
-        //애니메이션
+       
         
         if (Runner.LocalPlayer == targetRef)
         {
@@ -223,6 +281,20 @@ public class Broadcaster : NetworkBehaviour
         Animator targetAnimator =target.GetComponent<Animator>();
         Debug.Log("miss : "+ attacker.name + " : " + target.name + " : " );
         
+        Vector3 direction = target.transform.position - attacker.transform.position;
+        
+        direction.y = 0f;
+        Debug.Log("direction: " + direction);
+        if (direction != Vector3.zero)
+        {
+            Debug.Log("방향전환중");
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            attacker.transform.rotation = lookRotation;
+            
+            // 회전을 fixedUpdate에서 적용
+            // 너 내가 여기로 회전하고 싶어 예약
+        }
+        
         attackerAnimator.SetTrigger("shooting");
         SoundManager.Instance.PlaySound(SoundType.Bang);
 
@@ -261,7 +333,6 @@ public class Broadcaster : NetworkBehaviour
         
         SoundManager.Instance.PlaySound(SoundType.Bang);
 
-        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
         //애니메이션
         
         if (Runner.IsServer && Runner.LocalPlayer != targetRef)
@@ -327,6 +398,7 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_VictoryCheck(PlayerRef playerRef)
     {
+        UIManager.Instance.ResetPanel();
         //애니메이션
         Player player = Player.GetPlayer(playerRef);
         Animator playerAnimator = player.GetComponent<Animator>();

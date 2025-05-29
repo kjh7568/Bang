@@ -89,9 +89,10 @@ public class UIManager : MonoBehaviour
         
         cardListPanel.SetActive(false);
         cardButtons[index].SetActive(false);
-
+        
+        Broadcaster.Instance.RequestUseCard(Player.LocalPlayer.playerRef, index);
         Player.LocalPlayer.InGameStat.HandCardsId[index] = 0;
-        Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, index);
+        
 
         if (card.IsTargetRequired) // 대상 필요 여부
         {
@@ -178,8 +179,10 @@ public class UIManager : MonoBehaviour
 
                 if (card.Name == "Missed")
                 {
+                    Broadcaster.Instance.RequestUseCard(Player.LocalPlayer.playerRef, i);
+                    
                     Player.GetPlayer(targetRef).InGameStat.HandCardsId[i] = 0;
-                    Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, i);
+                    
                     Broadcaster.Instance.RPC_NotifyMissed(attackRef, targetRef);
                     return;
                 }
