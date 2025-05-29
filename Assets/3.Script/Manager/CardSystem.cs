@@ -16,6 +16,7 @@ public class CardSystem : MonoBehaviour
     [SerializeField] private DeckData deckData;
 
     public List<CardData> initDeck = new List<CardData>();
+    public List<CardData> UsedDeck = new List<CardData>();
     public Dictionary<int, CardData> cardByID_Dic;
 
     public Dictionary<string, Action<PlayerRef, PlayerRef?>> actionByName_Dic;
@@ -134,6 +135,8 @@ public class CardSystem : MonoBehaviour
         }
 
          Player.LocalPlayer.InGameStat.isBang = true;
+
+         Broadcaster.Instance.RPC_RequestBangAim(user, target.Value);
          Broadcaster.Instance.RPC_RequestBang(user, target.Value);
      }
 
