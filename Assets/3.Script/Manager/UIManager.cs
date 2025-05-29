@@ -154,6 +154,8 @@ public class UIManager : MonoBehaviour
 
     public void ShowMissedPanel(bool hasMissed, PlayerRef attackRef, PlayerRef targetRef)
     {
+        if (Player.LocalPlayer.playerRef != targetRef) return;
+        
         useMissedButton.onClick.RemoveAllListeners();
         dontUseMissedButton.onClick.RemoveAllListeners();
 
