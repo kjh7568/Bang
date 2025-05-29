@@ -191,9 +191,10 @@ public class Broadcaster : NetworkBehaviour
         Debug.Log("miss : "+ attacker.name + " : " + target.name + " : " );
         
         attackerAnimator.SetTrigger("shooting");
-        //SoundManager.Instance.PlaySound(SoundType.Bang);
+        SoundManager.Instance.PlaySound(SoundType.Bang);
 
         targetAnimator.SetTrigger("dodging");
+        SoundManager.Instance.PlaySound(SoundType.Dodging);
 
         Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
         //애니메이션
@@ -223,7 +224,11 @@ public class Broadcaster : NetworkBehaviour
         Animator targetAnimator =target.GetComponent<Animator>();
         Debug.Log("miss : "+ attacker.name + " : " + target.name + " : " );
         attackerAnimator.SetTrigger("shooting");
+        SoundManager.Instance.PlaySound(SoundType.Bang);
+        
         targetAnimator.SetTrigger("hitting");
+        SoundManager.Instance.PlaySound(SoundType.Dodging);
+
         Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
         //애니메이션
         
