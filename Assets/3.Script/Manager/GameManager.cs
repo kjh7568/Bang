@@ -74,7 +74,8 @@ public class GameManager : MonoBehaviour
         turnOwner = GetFirstTurnPlayer();
         
         CardSystem.Instance.Init();
-        
+
+        Broadcaster.Instance.RPC_PlayerHpSync();
         Broadcaster.Instance.RPC_EndLoading();
         Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
         Broadcaster.Instance.RPC_SetClientPanel();
