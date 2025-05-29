@@ -101,9 +101,13 @@ public class GameManager : MonoBehaviour
             if (Player.ConnectedPlayers[i].InGameStat.MyJob.Name == "보안관")
             {
                 Broadcaster.Instance.turnIdx = i + 1;
+                Player.ConnectedPlayers[i].SyncPlayerHp++;
+                Player.ConnectedPlayers[i].InGameStat.hp++;
+                
                 return Player.GetPlayer(i + 1);
             }
         }
+        
         //나중에 지울 것
         return Player.GetPlayer(Broadcaster.Instance.turnIdx);
     }
