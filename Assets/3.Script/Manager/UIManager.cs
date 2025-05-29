@@ -79,16 +79,18 @@ public class UIManager : MonoBehaviour
     {
         SoundManager.Instance.PlaySound(SoundType.Button);
 
-        cardListPanel.SetActive(false);
-        cardButtons[index].SetActive(false);
-
         PlayerRef playerRef = Player.LocalPlayer.playerRef;
         int cardID = Player.GetPlayer(playerRef).InGameStat.HandCardsId[index];
         var card = CardSystem.Instance.GetCardByIDOrNull(cardID);
+        
+        if (Player.LocalPlayer.InGameStat.isBang && card.Name == "Bang") return;
+        
+        cardListPanel.SetActive(false);
+        cardButtons[index].SetActive(false);
 
         Player.LocalPlayer.InGameStat.HandCardsId[index] = 0;
-        Broadcaster.Instance.RequestUseCard(Player.LocalPlayer.playerRef, index);
-        
+        Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, index);
+
         if (card.IsTargetRequired) // 대상 필요 여부
         {
             // 대상 지정 UI 패널 열기
@@ -179,7 +181,7 @@ public class UIManager : MonoBehaviour
                 if (card.Name == "Missed")
                 {
                     Player.GetPlayer(targetRef).InGameStat.HandCardsId[i] = 0;
-                    Broadcaster.Instance.RequestUseCard(Player.LocalPlayer.playerRef, i);
+                    Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, i);
                     Broadcaster.Instance.RPC_NotifyMissed(attackRef, targetRef);
                     return;
                 }

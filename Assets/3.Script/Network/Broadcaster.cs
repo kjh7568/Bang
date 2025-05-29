@@ -7,7 +7,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
+
 public class Broadcaster : NetworkBehaviour
 {
     public static Broadcaster Instance;
@@ -45,6 +45,7 @@ public class Broadcaster : NetworkBehaviour
 
         if (Runner.LocalPlayer == playerRef)
         {
+            player.InGameStat.isBang = false;
             UIManager.Instance.cardListPanel.SetActive(true);
         }
         else if (GameManager.Instance.isDead == false)
@@ -56,12 +57,7 @@ public class Broadcaster : NetworkBehaviour
     private void DrawCard(PlayerRef playerRef)
     {
         
-        if (CardSystem.Instance.initDeck.Count == 0 )
-        {
-            CardSystem.Instance.initDeck = CardSystem.Instance.UsedDeck.OrderBy(x => Random.value).ToList();
-            CardSystem.Instance.UsedDeck.Clear();
-            Debug.Log("UsedDeck을 섞어서 initDeck으로 재사용합니다.");
-        }
+        
         int drawCardId = CardSystem.Instance.initDeck[0].CardID;
 
         var handCardID = Player.GetPlayer(playerRef).InGameStat.HandCardsId;
@@ -78,6 +74,13 @@ public class Broadcaster : NetworkBehaviour
         }
     }
 
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_RequestDrawCard(PlayerRef playerRef)
+    {
+        DrawCard(playerRef);
+        RPC_ReceiveHandCardAndUpdateUi(playerRef, Player.GetPlayer(playerRef).InGameStat.HandCardsId);
+    }
+    
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_RequestEndTurn()
     {
@@ -108,42 +111,13 @@ public class Broadcaster : NetworkBehaviour
             UIManager.Instance.UpdateHandCardUI(handCardIds);
         }
     }
-// 바꾼거
-    public void HandleUseCard(PlayerRef playerRef, int cardIdx)
-    {
-        Debug.Log($"{playerRef} 클라이언트 → 카드 사용 요청");
-        Debug.Log($"전달된 카드 Number: {cardIdx}");
-
-        int cardId = Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx];
-        var usedCard = CardSystem.Instance.GetCardByIDOrNull(cardId);
-
-        if (usedCard != null)
-        {
-            CardSystem.Instance.UsedDeck.Add(usedCard);
-        }
-
-        Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx] = 0;
-    }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_RequestUseCard(PlayerRef playerRef, int cardIdx)
     {
-        HandleUseCard(playerRef, cardIdx);
+        Player.GetPlayer(playerRef).InGameStat.HandCardsId[cardIdx] = 0;
+        Debug.Log($"서버가 인식하는 {playerRef}의 핸드: {string.Join(", ", Player.GetPlayer(playerRef).InGameStat.HandCardsId)}");
     }
-    public void RequestUseCard(PlayerRef playerRef, int cardIdx)
-    {
-        if (Runner.IsServer)
-        {
-            // 서버가 자기 자신이면 RPC 대신 직접 처리
-            HandleUseCard(playerRef, cardIdx);
-        }
-        else
-        {
-            // 그 외의 경우는 RPC로 요청
-            RPC_RequestUseCard(playerRef, cardIdx);
-        }
-    }
-    // 바꾼거
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_SendPlayerHuman(PlayerRef playerRef, int humanIdx)
@@ -207,6 +181,25 @@ public class Broadcaster : NetworkBehaviour
             UIManager.Instance.waitingPanel.SetActive(true);
         }
     }
+    
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_RequestGatling(PlayerRef attackRef)
+    {
+        var targetRef = Player.LocalPlayer.playerRef;
+        
+        if (targetRef != attackRef)
+        {
+            var hasMissed = CardSystem.Instance.CheckHasMissed(targetRef);
+
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.ShowMissedPanel(hasMissed, attackRef, targetRef);
+        }
+        else
+        {
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.waitingPanel.SetActive(true);
+        }
+    }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_NotifyMissed(PlayerRef attackRef, PlayerRef targetRef)
@@ -258,10 +251,9 @@ public class Broadcaster : NetworkBehaviour
         Animator targetAnimator =target.GetComponent<Animator>();
         Debug.Log("miss : "+ attacker.name + " : " + target.name + " : " );
         attackerAnimator.SetTrigger("shooting");
-        SoundManager.Instance.PlaySound(SoundType.Bang);
-        
         targetAnimator.SetTrigger("hitting");
-        SoundManager.Instance.PlaySound(SoundType.Dodging);
+        
+        SoundManager.Instance.PlaySound(SoundType.Bang);
 
         Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
         //애니메이션
@@ -298,6 +290,9 @@ public class Broadcaster : NetworkBehaviour
         Player player = Player.GetPlayer(playerRef);
         Animator playerAnimator = player.GetComponent<Animator>();
         playerAnimator.SetTrigger("drinking");
+        
+        SoundManager.Instance.PlaySound(SoundType.Beer);
+        
         Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
         //애니메이션
         if (Runner.IsServer && Runner.LocalPlayer != playerRef)
