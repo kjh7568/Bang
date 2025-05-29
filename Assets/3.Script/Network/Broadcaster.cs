@@ -453,6 +453,7 @@ public class Broadcaster : NetworkBehaviour
         if (missedCheckCount > 2)
         {
             RPC_TurnOnPanel(attackRef);
+            missedCheckCount = 0;
         }
     }
     
