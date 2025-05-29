@@ -18,7 +18,7 @@ public class WatingSetting : MonoBehaviour
     
     private void Start()
     {
-        sessionNumberText.text = $"Session number: {Server.Instance.GetSessionNumber()}";
+        sessionNumberText.text = $"{Server.Instance.GetSessionNumber()}";
     }
 
     public void UpdateNicknameTexts(string[] nickNames)

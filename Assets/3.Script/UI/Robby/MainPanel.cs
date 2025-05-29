@@ -13,19 +13,16 @@ public class MainPanel : MonoBehaviour
 
     public void OnEnterRoomButton()
     {
-        currentPanel.SetActive(false);
         selectRoomTypePanel.SetActive(true);
     }
 
     public void OnSettingButton()
     {
-        currentPanel.SetActive(false);
         settingPanel.SetActive(true);
     }
 
     public void OnExitButton()
     {
-        currentPanel.SetActive(false);
         exitPanel.SetActive(true);
     }
 }

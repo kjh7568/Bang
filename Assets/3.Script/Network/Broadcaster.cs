@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Fusion;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class Broadcaster : NetworkBehaviour
 {
@@ -422,5 +424,31 @@ public class Broadcaster : NetworkBehaviour
     {
         Player.RemovePlayer(player);
         deadPlayers.Add(player.playerRef.AsIndex);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_RequestAllNicknames(PlayerRef requester)
+    {
+        List<PlayerRef> refs = new();
+        List<string> nicks = new();
+
+        foreach (var p in Player.ConnectedPlayers)
+        {
+            refs.Add(p.playerRef);
+            nicks.Add(p.BasicStat.nickName);
+        }
+
+        RPC_ReceiveAllNicknames(requester, refs.ToArray(), nicks.ToArray());
+    }
+    
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_ReceiveAllNicknames(PlayerRef requester, PlayerRef[] refs, string[] nicks)
+    {
+        if (Runner.LocalPlayer != requester) return;
+
+        for (int i = 0; i < refs.Length; i++)
+        {
+            UIManager.NicknameCache[refs[i]] = nicks[i];
+        }
     }
 }

@@ -34,6 +34,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text resultText;
 
     public TMP_Text[] resultPlayerNameText;
+    
+    public static Dictionary<PlayerRef, string> NicknameCache = new();
 
     // public TMP_Text waitingUserTurnText;
     //
@@ -58,6 +60,11 @@ public class UIManager : MonoBehaviour
         Instance = this;
 
         endTurnButton.onClick.AddListener(() => { Broadcaster.Instance.RPC_RequestEndTurn(); });
+    }
+
+    private void Start()
+    {
+        Broadcaster.Instance.RPC_RequestAllNicknames(Player.LocalPlayer.playerRef);
     }
 
     public void ResetPanel()
@@ -127,7 +134,7 @@ public class UIManager : MonoBehaviour
 
             var playerRef = targetPlayer.playerRef;
             var button = Instantiate(targetButtonPrefab, targetTextPanel.transform);
-            button.GetComponentInChildren<TMP_Text>().text = playerRef.ToString();
+            button.GetComponentInChildren<TMP_Text>().text = NicknameCache[playerRef];
 
             button.onClick.RemoveAllListeners();
 
