@@ -79,6 +79,8 @@ public class UIManager : MonoBehaviour
     {
         SoundManager.Instance.PlaySound(SoundType.Button);
 
+        if (Player.LocalPlayer.InGameStat.isBang) return;
+        
         cardListPanel.SetActive(false);
         cardButtons[index].SetActive(false);
 
