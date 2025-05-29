@@ -76,6 +76,8 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_RequestEndTurn()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
+
         turnIdx = turnIdx % Runner.ActivePlayers.Count() + 1;
 
         for (int i = 0; i < deadPlayers.Count; i++)
@@ -189,8 +191,12 @@ public class Broadcaster : NetworkBehaviour
         Animator attackerAnimator = attacker.GetComponent<Animator>();
         Animator targetAnimator =target.GetComponent<Animator>();
         Debug.Log("miss : "+ attacker.name + " : " + target.name + " : " );
+        
         attackerAnimator.SetTrigger("shooting");
+        //SoundManager.Instance.PlaySound(SoundType.Bang);
+
         targetAnimator.SetTrigger("dodging");
+
         Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
         //애니메이션
         

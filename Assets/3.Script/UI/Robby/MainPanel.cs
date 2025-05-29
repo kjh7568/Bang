@@ -13,16 +13,19 @@ public class MainPanel : MonoBehaviour
 
     public void OnEnterRoomButton()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
         selectRoomTypePanel.SetActive(true);
     }
 
     public void OnSettingButton()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
         settingPanel.SetActive(true);
     }
 
     public void OnExitButton()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
         exitPanel.SetActive(true);
     }
 }

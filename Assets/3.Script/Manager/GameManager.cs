@@ -78,6 +78,8 @@ public class GameManager : MonoBehaviour
         Broadcaster.Instance.RPC_EndLoading();
         Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
         Broadcaster.Instance.RPC_SetClientPanel();
+        
+        SoundManager.Instance.PlayInBackground();
     }
     
     public void StartLoading()

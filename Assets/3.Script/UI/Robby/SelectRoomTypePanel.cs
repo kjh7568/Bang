@@ -16,6 +16,8 @@ public class SelectRoomTypePanel : MonoBehaviour
     
     public void OnMakeRoomButton()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
+
         if (isRequesting) return;
 
         isRequesting = true;
@@ -26,12 +28,16 @@ public class SelectRoomTypePanel : MonoBehaviour
 
     public void OnEnterRoomButton()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
+
         currentPanel.SetActive(false);
         enterPanel.SetActive(true);
     }
 
     public void OnBackButton()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
+
         currentPanel.SetActive(false);
         previousPanel.SetActive(true);
     }

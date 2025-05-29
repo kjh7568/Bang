@@ -40,7 +40,16 @@
             buttonStart.interactable = false;
             buttonSignUp.interactable = false;
             InitFirebase();
-            
+            SetInputSound();
+        }
+
+        private void SetInputSound()
+        {
+            inputLoginEmail.onValueChanged.AddListener((_) => SoundManager.Instance.PlaySound(SoundType.Input));
+            inputLoginPassword.onValueChanged.AddListener((_) => SoundManager.Instance.PlaySound(SoundType.Input));
+            inputSignUpEmail.onValueChanged.AddListener((_) => SoundManager.Instance.PlaySound(SoundType.Input));
+            inputSignUpPassword.onValueChanged.AddListener((_) => SoundManager.Instance.PlaySound(SoundType.Input));
+            inputSignUpnickname.onValueChanged.AddListener((_) => SoundManager.Instance.PlaySound(SoundType.Input));
         }
 
         private void InitFirebase()
@@ -69,15 +78,18 @@
 
         public void OnStartButtonClicked()
         {
+            SoundManager.Instance.PlaySound(SoundType.Button);
+            
             string email = inputLoginEmail.text;
             string password = inputLoginPassword.text;
-            
+
             SignIn(email, password);
-            
         }
 
         public void OnSignUpButtonClicked()
         {
+            SoundManager.Instance.PlaySound(SoundType.Button);
+
             string email = inputSignUpEmail.text;
             string password = inputSignUpPassword.text;
             string nickname = inputSignUpnickname.text;

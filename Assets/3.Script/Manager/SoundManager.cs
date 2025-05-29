@@ -11,7 +11,8 @@ public enum SoundType
     Drop,
     Pickup,
     Notify,
-    Bullet,
+    Bang,
+    Input
 }
 
 public class SoundManager : MonoBehaviour
@@ -19,14 +20,19 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance { get; private set; }
 
     [Header("Background Music")]
-    public AudioClip backgroundClip;
+    public AudioClip OutBackgroundClip;
+    public AudioClip InBackgroundClip;
 
+    
     [Header("Effect Sounds")]
     public AudioClip buttonClip;
-    public AudioClip dropClip;
     public AudioClip notifyClip;
     public AudioClip pickupClip;
+    public AudioClip dropClip;
+    public AudioClip bangClip;
+    public AudioClip inputClip;
 
+    
     [Header("Source")]
     private AudioSource bgmSource;
     private AudioSource sfxSource;
@@ -68,7 +74,7 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
-        PlayBackground();
+        PlayOutBackground();
 
         if (bgmVolumeSlider != null)
         {
@@ -93,24 +99,37 @@ public class SoundManager : MonoBehaviour
             case SoundType.Drop:
                 PlayEffect(dropClip);
                 break;
-
             case SoundType.Notify:
                 PlayEffect(notifyClip);
                 break;
             case SoundType.Pickup:
                 PlayEffect(pickupClip);
                 break;
+            case SoundType.Input:
+                PlayEffect(inputClip);
+                break;
+            case SoundType.Bang:
+                PlayEffect(bangClip);
+                break;
             default:
                 Debug.LogWarning("SoundType not handled: " + soundType);
                 break;
         }
     }
-
-    private void PlayBackground()
+    
+    public void PlayInBackground()
     {
-        if (bgmSource.isPlaying) return;
+        if (bgmSource.clip == InBackgroundClip && bgmSource.isPlaying) return;
 
-        bgmSource.clip = backgroundClip;
+        bgmSource.clip = InBackgroundClip;
+        bgmSource.Play();
+    }
+
+    private void PlayOutBackground()
+    {
+        if (bgmSource.clip == OutBackgroundClip && bgmSource.isPlaying) return;
+
+        bgmSource.clip = OutBackgroundClip;
         bgmSource.Play();
     }
     

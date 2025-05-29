@@ -69,6 +69,8 @@ public class MyInfoPanel : MonoBehaviour
 
     void OpenMyPanel()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
+        
         if (isOpen)
         {
             targetPosition = startPosition; 
