@@ -18,6 +18,8 @@ public class ExitPanel : MonoBehaviour
     
     public void OnBackButton()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
+
         currentPanel.SetActive(false);
         previousPanel.SetActive(true);
     }

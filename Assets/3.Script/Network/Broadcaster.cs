@@ -74,6 +74,8 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_RequestEndTurn()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
+
         turnIdx = turnIdx % Runner.ActivePlayers.Count() + 1;
 
         for (int i = 0; i < deadPlayers.Count; i++)

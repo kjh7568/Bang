@@ -10792,6 +10792,7 @@ MonoBehaviour:
   jobList: {fileID: 11400000, guid: 1f96b6aa8e58bcb40a94d9ac756f8f2a, type: 2}
   loadingUI: {fileID: 85158914}
   loadingBar: {fileID: 475517392}
+  isDead: 0
   spawnPoints:
   - {fileID: 993163174}
   - {fileID: 1168627296}

@@ -70,6 +70,8 @@ public class UIManager : MonoBehaviour
 
     public void OnCardClicked(int index)
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
+
         cardListPanel.SetActive(false);
         cardButtons[index].SetActive(false);
 
