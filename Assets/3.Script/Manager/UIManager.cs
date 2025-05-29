@@ -79,14 +79,14 @@ public class UIManager : MonoBehaviour
     {
         SoundManager.Instance.PlaySound(SoundType.Button);
 
-        if (Player.LocalPlayer.InGameStat.isBang) return;
-        
-        cardListPanel.SetActive(false);
-        cardButtons[index].SetActive(false);
-
         PlayerRef playerRef = Player.LocalPlayer.playerRef;
         int cardID = Player.GetPlayer(playerRef).InGameStat.HandCardsId[index];
         var card = CardSystem.Instance.GetCardByIDOrNull(cardID);
+        
+        if (Player.LocalPlayer.InGameStat.isBang && card.Name == "Bang") return;
+        
+        cardListPanel.SetActive(false);
+        cardButtons[index].SetActive(false);
 
         Player.LocalPlayer.InGameStat.HandCardsId[index] = 0;
         Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, index);
