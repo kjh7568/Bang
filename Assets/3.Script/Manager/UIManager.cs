@@ -34,34 +34,33 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text resultText;
 
     public TMP_Text[] resultPlayerNameText;
-    
+
     public static Dictionary<PlayerRef, string> NicknameCache = new();
-    
+
     [SerializeField] private MyInfoPanel myInfoPanel;
 
-    // public TMP_Text waitingUserTurnText;
-    //
-    //
-    //
-    // //public List<GameObject> enemyList = new List<GameObject>();
-    //
-    // // 선택 완료 시 실행할 콜백
-    // //private Action<string> onTargetSelected; 
-    //
-    // private bool isPlayerSelectActive = false;
-    public bool isPanelOn = false;
+    [SerializeField] private GameObject saloonPanel;
+    [SerializeField] private Button allSaloonButton;
+    [SerializeField] private Button mySaloonButton;
 
-    //
-    // [SerializeField] private Transform buttonParent;
-    //
-    // private PlayerRef localPlayer;
-    // private PlayerRef returnPlayer;
-    //
+    public bool isPanelOn = false;
+    public bool isSelectedMissedPanel;
+    
     private void Awake()
     {
         Instance = this;
 
         endTurnButton.onClick.AddListener(() => { Broadcaster.Instance.RPC_RequestEndTurn(); });
+        allSaloonButton.onClick.AddListener(() =>
+        {
+            Broadcaster.Instance.RPC_RequestSaloon(Player.LocalPlayer.playerRef, false);
+            OnAndOffSaloonPanel();
+        });
+        mySaloonButton.onClick.AddListener(() =>
+        {
+            Broadcaster.Instance.RPC_RequestSaloon(Player.LocalPlayer.playerRef, true);
+            OnAndOffSaloonPanel();
+        });
     }
 
     private void Start()
@@ -84,9 +83,9 @@ public class UIManager : MonoBehaviour
         PlayerRef playerRef = Player.LocalPlayer.playerRef;
         int cardID = Player.GetPlayer(playerRef).InGameStat.HandCardsId[index];
         var card = CardSystem.Instance.GetCardByIDOrNull(cardID);
-        
+
         if (Player.LocalPlayer.InGameStat.isBang && card.Name == "Bang") return;
-        
+
         cardListPanel.SetActive(false);
         
         Broadcaster.Instance.RequestUseCard(Player.LocalPlayer.playerRef, index);
@@ -195,11 +194,8 @@ public class UIManager : MonoBehaviour
             Player.GetPlayer(targetRef).InGameStat.hp--;
             Broadcaster.Instance.RequestBangAim(attackRef , targetRef);
             Broadcaster.Instance.RPC_NotifyBang(attackRef, targetRef);
-            
         });
     }
-
-    public bool isSelectedMissedPanel;
     
     public void ShowMissedPanel_Gatling(bool hasMissed, PlayerRef attackRef, PlayerRef targetRef)
     {
@@ -286,13 +282,12 @@ public class UIManager : MonoBehaviour
                 isPanelOn = true;
             }
         }
-        
+
         if (Input.GetKeyDown(KeyCode.V))
         {
             myInfoPanel.OpenMyPanel();
         }
     }
-
 
     public void SetResultPlayerNames()
     {
@@ -319,5 +314,10 @@ public class UIManager : MonoBehaviour
             else if (job == "배신자" && resultPlayerNameText[3] != null)
                 resultPlayerNameText[3].text = nickname;
         }
+    }
+
+    public void OnAndOffSaloonPanel()
+    {
+        saloonPanel.SetActive(!saloonPanel.activeSelf);
     }
 }
