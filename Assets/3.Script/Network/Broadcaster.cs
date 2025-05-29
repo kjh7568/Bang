@@ -15,6 +15,8 @@ public class Broadcaster : NetworkBehaviour
     public int turnIdx = 1;
 
     public List<int> deadPlayers = new();
+    
+    public List<Player> deadPlayersList = new();
     private HashSet<PlayerRef> clientsReady = new();
 
     private int missedCheckCount;
@@ -503,89 +505,69 @@ public class Broadcaster : NetworkBehaviour
     }
     
     [Rpc(RpcSources.All, RpcTargets.All)]
-    public void RPC_VictoryCheck(PlayerRef playerRef)
+public void RPC_VictoryCheck(PlayerRef playerRef)
+{
+    Debug.Log("승리체크");
+
+    // 애니메이션
+    Player player = Player.GetPlayer(playerRef);
+    Animator playerAnimator = player.GetComponent<Animator>();
+    playerAnimator.SetTrigger("dying");
+    Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
+
+    
+
+    // 모든 플레이어 리스트
+    List<Player> allPlayers = Player.AllPlayers;
+
+    // 살아있는 플레이어만 필터링
+    var alivePlayers = allPlayers.Where(p =>
+        p.InGameStat != null &&
+        p.InGameStat.MyJob != null &&
+        !p.InGameStat.IsDead).ToList();
+
+    // 승리 조건 판단
+    bool sheriffAlive = alivePlayers.Any(p => p.InGameStat.MyJob.Name == "보안관");
+    bool renegadeAlive = alivePlayers.Any(p => p.InGameStat.MyJob.Name == "배신자");
+    int outlawAlive = alivePlayers.Count(p => p.InGameStat.MyJob.Name == "무법자");
+
+    string result = "not victory yet";
+
+    if (!sheriffAlive)
     {
-        UIManager.Instance.ResetPanel();
-        //애니메이션
-        Player player = Player.GetPlayer(playerRef);
-        Animator playerAnimator = player.GetComponent<Animator>();
-        playerAnimator.SetTrigger("dying");
-        Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
-        //애니메이션
-        List<Player> players = new List<Player>(Player.ConnectedPlayers);
-        string result = "not victory yet";
-
-        bool sheriffAlive = players.Any(p =>
-            p.InGameStat != null &&
-            p.InGameStat.MyJob != null &&
-            p.InGameStat.MyJob.Name == "보안관" &&
-            !p.InGameStat.IsDead);
-
-        bool renegadeAlive = players.Any(p =>
-            p.InGameStat != null &&
-            p.InGameStat.MyJob != null &&
-            p.InGameStat.MyJob.Name == "배신자" &&
-            !p.InGameStat.IsDead);
-
-        int outlawAlive = players.Count(p =>
-            p.InGameStat != null &&
-            p.InGameStat.MyJob != null &&
-            p.InGameStat.MyJob.Name == "무법자" &&
-            !p.InGameStat.IsDead);
-
-        foreach (var p in players)
-        {
-            if (p.InGameStat == null)
-            {
-                
-                continue;
-            }
-
-            if (p.InGameStat.MyJob == null)
-            {
-                
-                continue;
-            }
-        }
-
-        // 승리 조건 판단
-        if (!sheriffAlive)
-        {
-            if (outlawAlive > 0)
-            {
-                result = "무법자 승리!";
-            }
-            else if (renegadeAlive)
-            {
-                result = "배신자 승리!";
-            }
-        }
-        else if (outlawAlive == 0 && !renegadeAlive)
-        {
-            result = "보안관 승리!";
-        }
-
-        // 승리가 결정되었다면 이름 정리 후 결과 RPC 전송
-        if (result != "not victory yet")
-        {
-            string[] playerNames = new string[4]; // 보안관, 무법자1, 무법자2, 배신자
-            int outlawIndex = 1;
-
-            foreach (var p in players)
-            {
-                if (p.InGameStat == null || p.InGameStat.MyJob == null) continue;
-
-                string name = p.BasicStat.nickName;
-                string job = p.InGameStat.MyJob.Name;
-
-                if (job == "보안관") playerNames[0] = name;
-                else if (job == "무법자" && outlawIndex <= 2) playerNames[outlawIndex++] = name;
-                else if (job == "배신자") playerNames[3] = name;
-            }
-
-            RPC_ShowResultToClients(result, playerNames);
-        }
+        if (outlawAlive > 0)
+            result = "무법자 승리!";
+        else if (renegadeAlive)
+            result = "배신자 승리!";
     }
+    else if (outlawAlive == 0 && !renegadeAlive)
+    {
+        result = "보안관 승리!";
+    }
+
+    // 결과 출력
+    if (result != "not victory yet")
+    {
+        string[] playerNames = new string[4]; // 보안관, 무법자1, 무법자2, 배신자
+        int outlawIndex = 1;
+
+        foreach (var p in allPlayers)
+        {
+            if (p.InGameStat == null || p.InGameStat.MyJob == null) continue;
+
+            string name = p.BasicStat.nickName;
+            string job = p.InGameStat.MyJob.Name;
+
+            if (job == "보안관") playerNames[0] = name;
+            else if (job == "무법자" && outlawIndex <= 2) playerNames[outlawIndex++] = name;
+            else if (job == "배신자") playerNames[3] = name;
+        }
+
+        Debug.Log($"승리 조건 검사: sheriffAlive={sheriffAlive}, renegadeAlive={renegadeAlive}, outlawAlive={outlawAlive}, result={result}");
+        UIManager.Instance.cardListPanel.SetActive(false);
+        RPC_ShowResultToClients(result, playerNames);
+    }
+}
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_ShowResultToClients(string result, string[] playerNames)
@@ -646,7 +628,9 @@ public class Broadcaster : NetworkBehaviour
     public void RPC_PlayerDead(Player player)
     {
         Player.RemovePlayer(player);
+        
         deadPlayers.Add(player.playerRef.AsIndex);
+        deadPlayersList.Add(player);
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]

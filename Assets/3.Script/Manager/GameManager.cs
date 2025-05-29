@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
     {
         if (Player.LocalPlayer.InGameStat.hp <= 0 && !isDead)
         {
+            Debug.Log("hp 체크");
             isDead = true;
             Broadcaster.Instance.RPC_VictoryCheck(Player.LocalPlayer.playerRef);
 

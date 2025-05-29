@@ -18,6 +18,7 @@ public class Player : NetworkBehaviour
 
     public static Player LocalPlayer;
     public static List<Player> ConnectedPlayers = new();
+    public static List<Player> AllPlayers = new();
 
     [Networked] public int SyncPlayerHp {get; set;}
 
@@ -32,7 +33,8 @@ public class Player : NetworkBehaviour
         BasicStat.nickName = nickname;
         
         ConnectedPlayers.Add(this);
-
+        AllPlayers.Add(this);
+        
         playerRef = Object.InputAuthority;
         
         if (Object.HasInputAuthority)
@@ -44,6 +46,7 @@ public class Player : NetworkBehaviour
         {
             SyncPlayerHp = playerInGameStat.hp;  
         }
+        
     }
 
     public override void Despawned(NetworkRunner runner, bool hasState)
