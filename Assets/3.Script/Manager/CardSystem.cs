@@ -83,6 +83,7 @@ public class CardSystem : MonoBehaviour
             { "StageCoach", UseStageCoach },
             { "WellsFargo", UseWellsFargo },
             { "Gatling", UseGatling },
+            { "Saloon", UseSaloon },
         };
     }
 
@@ -134,11 +135,11 @@ public class CardSystem : MonoBehaviour
             return;
         }
 
-         Player.LocalPlayer.InGameStat.isBang = true;
+        Player.LocalPlayer.InGameStat.isBang = true;
 
-         Broadcaster.Instance.RPC_RequestBangAim(user, target.Value);
-         Broadcaster.Instance.RPC_RequestBang(user, target.Value);
-     }
+        Broadcaster.Instance.RPC_RequestBangAim(user, target.Value);
+        Broadcaster.Instance.RPC_RequestBang(user, target.Value);
+    }
 
     private void UseMissed(PlayerRef user, PlayerRef? target)
     {
@@ -179,6 +180,12 @@ public class CardSystem : MonoBehaviour
     private void UseGatling(PlayerRef user, PlayerRef? target)
     {
         Broadcaster.Instance.RPC_RequestGatling(user);
+    }
+
+    private void UseSaloon(PlayerRef user, PlayerRef? target)
+    {
+        UIManager.Instance.ResetPanel();
+        UIManager.Instance.OnAndOffSaloonPanel();
     }
 
     private void UseAnyCard(PlayerRef user, PlayerRef? target)

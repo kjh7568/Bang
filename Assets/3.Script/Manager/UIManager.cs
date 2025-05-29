@@ -34,34 +34,32 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text resultText;
 
     public TMP_Text[] resultPlayerNameText;
-    
+
     public static Dictionary<PlayerRef, string> NicknameCache = new();
-    
+
     [SerializeField] private MyInfoPanel myInfoPanel;
 
-    // public TMP_Text waitingUserTurnText;
-    //
-    //
-    //
-    // //public List<GameObject> enemyList = new List<GameObject>();
-    //
-    // // 선택 완료 시 실행할 콜백
-    // //private Action<string> onTargetSelected; 
-    //
-    // private bool isPlayerSelectActive = false;
+    [SerializeField] private GameObject saloonPanel;
+    [SerializeField] private Button allSaloonButton;
+    [SerializeField] private Button mySaloonButton;
+
     public bool isPanelOn = false;
 
-    //
-    // [SerializeField] private Transform buttonParent;
-    //
-    // private PlayerRef localPlayer;
-    // private PlayerRef returnPlayer;
-    //
     private void Awake()
     {
         Instance = this;
 
         endTurnButton.onClick.AddListener(() => { Broadcaster.Instance.RPC_RequestEndTurn(); });
+        allSaloonButton.onClick.AddListener(() =>
+        {
+            Broadcaster.Instance.RPC_RequestSaloon(Player.LocalPlayer.playerRef, false);
+            OnAndOffSaloonPanel();
+        });
+        mySaloonButton.onClick.AddListener(() =>
+        {
+            Broadcaster.Instance.RPC_RequestSaloon(Player.LocalPlayer.playerRef, true);
+            OnAndOffSaloonPanel();
+        });
     }
 
     private void Start()
@@ -84,15 +82,15 @@ public class UIManager : MonoBehaviour
         PlayerRef playerRef = Player.LocalPlayer.playerRef;
         int cardID = Player.GetPlayer(playerRef).InGameStat.HandCardsId[index];
         var card = CardSystem.Instance.GetCardByIDOrNull(cardID);
-        
+
         if (Player.LocalPlayer.InGameStat.isBang && card.Name == "Bang") return;
-        
+
         cardListPanel.SetActive(false);
         cardButtons[index].SetActive(false);
-        
+
         Broadcaster.Instance.RequestUseCard(Player.LocalPlayer.playerRef, index);
         Player.LocalPlayer.InGameStat.HandCardsId[index] = 0;
-        
+
 
         if (card.IsTargetRequired) // 대상 필요 여부
         {
@@ -107,7 +105,7 @@ public class UIManager : MonoBehaviour
         {
             // 바로 실행 가능한 카드 (예: 맥주)
             CardSystem.Instance.DoActionByName(card.Name, playerRef);
-            cardListPanel.SetActive(true);
+            // cardListPanel.SetActive(true);
         }
     }
 
@@ -178,9 +176,9 @@ public class UIManager : MonoBehaviour
                 if (card.Name == "Missed")
                 {
                     Broadcaster.Instance.RequestUseCard(Player.LocalPlayer.playerRef, i);
-                    
+
                     Player.GetPlayer(targetRef).InGameStat.HandCardsId[i] = 0;
-                    
+
                     Broadcaster.Instance.RPC_NotifyMissed(attackRef, targetRef);
                     return;
                 }
@@ -194,10 +192,9 @@ public class UIManager : MonoBehaviour
 
             Player.GetPlayer(targetRef).InGameStat.hp--;
             Broadcaster.Instance.RPC_NotifyBang(attackRef, targetRef);
-            
         });
     }
-    
+
     public void ShowResultPanel(string result)
     {
         ResultPanel.SetActive(true);
@@ -231,13 +228,12 @@ public class UIManager : MonoBehaviour
                 isPanelOn = true;
             }
         }
-        
+
         if (Input.GetKeyDown(KeyCode.V))
         {
             myInfoPanel.OpenMyPanel();
         }
     }
-
 
     public void SetResultPlayerNames()
     {
@@ -264,5 +260,10 @@ public class UIManager : MonoBehaviour
             else if (job == "배신자" && resultPlayerNameText[3] != null)
                 resultPlayerNameText[3].text = nickname;
         }
+    }
+
+    public void OnAndOffSaloonPanel()
+    {
+        saloonPanel.SetActive(!saloonPanel.activeSelf);
     }
 }
