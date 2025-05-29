@@ -21,6 +21,8 @@ public class Player : NetworkBehaviour
 
     [Networked] public int SyncPlayerHp {get; set;}
 
+    // 예약 된거 저장해야함
+    [Networked] public Quaternion SyncPlayerRotation {get; set;}
     
     public PlayerRef playerRef;
 
@@ -62,5 +64,12 @@ public class Player : NetworkBehaviour
     public static void RemovePlayer(Player player)
     {
         ConnectedPlayers.Remove(player);
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        base.FixedUpdateNetwork();
+        
+        // 회전예야된거 있네? , 그럼 그걸 바꿔
     }
 }
