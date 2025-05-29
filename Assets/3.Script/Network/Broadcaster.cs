@@ -174,12 +174,6 @@ public class Broadcaster : NetworkBehaviour
         else if (Runner.LocalPlayer == playerRef)
         {
             Player.LocalPlayer.InGameStat.MyJob = GameManager.Instance.jobList.jobList[jobIdx];
-
-            if (GameManager.Instance.jobList.jobList[jobIdx].Name.Equals("보안관"))
-            {
-                Player.LocalPlayer.SyncPlayerHp = 5;
-                Player.LocalPlayer.InGameStat.hp = 5;
-            }
         }
     }
 
