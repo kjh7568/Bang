@@ -45,6 +45,7 @@ public class Broadcaster : NetworkBehaviour
 
         if (Runner.LocalPlayer == playerRef)
         {
+            player.InGameStat.isBang = false;
             UIManager.Instance.cardListPanel.SetActive(true);
         }
         else if (GameManager.Instance.isDead == false)

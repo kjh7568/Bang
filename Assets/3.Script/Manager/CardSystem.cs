@@ -136,6 +136,7 @@ public class CardSystem : MonoBehaviour
              return;
          }
 
+         Player.LocalPlayer.InGameStat.isBang = true;
          Broadcaster.Instance.RPC_RequestBang(user, target.Value);
      }
 
