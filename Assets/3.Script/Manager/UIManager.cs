@@ -34,6 +34,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text resultText;
 
     public TMP_Text[] resultPlayerNameText;
+    
+    public static Dictionary<PlayerRef, string> NicknameCache = new();
 
     // public TMP_Text waitingUserTurnText;
     //
@@ -60,6 +62,11 @@ public class UIManager : MonoBehaviour
         endTurnButton.onClick.AddListener(() => { Broadcaster.Instance.RPC_RequestEndTurn(); });
     }
 
+    private void Start()
+    {
+        Broadcaster.Instance.RPC_RequestAllNicknames(Player.LocalPlayer.playerRef);
+    }
+
     public void ResetPanel()
     {
         cardListPanel.SetActive(false);
@@ -80,7 +87,8 @@ public class UIManager : MonoBehaviour
         var card = CardSystem.Instance.GetCardByIDOrNull(cardID);
 
         Player.LocalPlayer.InGameStat.HandCardsId[index] = 0;
-
+        Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, index);
+        
         if (card.IsTargetRequired) // 대상 필요 여부
         {
             // 대상 지정 UI 패널 열기
@@ -96,9 +104,6 @@ public class UIManager : MonoBehaviour
             CardSystem.Instance.DoActionByName(card.Name, playerRef);
             cardListPanel.SetActive(true);
         }
-
-        Player.GetPlayer(playerRef).InGameStat.HandCardsId[index] = 0;
-        Broadcaster.Instance.RPC_RequestUseCard(Player.LocalPlayer.playerRef, index);
     }
 
     public void UpdateHandCardUI(int[] cards)
@@ -129,7 +134,7 @@ public class UIManager : MonoBehaviour
 
             var playerRef = targetPlayer.playerRef;
             var button = Instantiate(targetButtonPrefab, targetTextPanel.transform);
-            button.GetComponentInChildren<TMP_Text>().text = playerRef.ToString();
+            button.GetComponentInChildren<TMP_Text>().text = NicknameCache[playerRef];
 
             button.onClick.RemoveAllListeners();
 
