@@ -20,9 +20,9 @@ public class GameManager : MonoBehaviour
     public GameObject loadingUI;
     [SerializeField] private Slider loadingBar;
 
-    private bool isChecked = false;
+    public bool isDead = false;
     
-    [SerializeField] private Transform[] spawnPoints;
+    public Transform[] spawnPoints;
 
     private Player turnOwner;
 
@@ -48,10 +48,17 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Player.LocalPlayer.InGameStat.hp <= 0 && !isChecked)
+        if (Player.LocalPlayer.InGameStat.hp <= 0 && !isDead)
         {
-            isChecked = true;
+            isDead = true;
             Broadcaster.Instance.RPC_VictoryCheck(Player.LocalPlayer.playerRef);
+
+            if (isDead)
+            {
+                UIManager.Instance.ResetPanel();
+                UIManager.Instance.deadPanel.SetActive(true);
+                PlayerDead();
+            }
         }
     }
 
@@ -71,6 +78,8 @@ public class GameManager : MonoBehaviour
         Broadcaster.Instance.RPC_EndLoading();
         Broadcaster.Instance.RPC_StartPlayerTurn(turnOwner.playerRef);
         Broadcaster.Instance.RPC_SetClientPanel();
+        
+        SoundManager.Instance.PlayInBackground();
     }
     
     public void StartLoading()
@@ -118,8 +127,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetPlayerCameraIndex()
+    private void PlayerDead()
     {
-        //
+        Broadcaster.Instance.RPC_PlayerDead(Player.LocalPlayer);
     }
 }

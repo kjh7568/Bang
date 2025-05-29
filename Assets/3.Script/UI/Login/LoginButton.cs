@@ -14,12 +14,15 @@ public class LoginButton : MonoBehaviour
     }
     public void OnSignUpButton()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
         SignInPanel.SetActive(false);
         SignUpPanel.SetActive(true);
     }
     
     public void OnSignUp2Button()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
+
         SignInPanel.SetActive(true);
         SignUpPanel.SetActive(false);
     }

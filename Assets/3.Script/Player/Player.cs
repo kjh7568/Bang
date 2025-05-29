@@ -58,4 +58,9 @@ public class Player : NetworkBehaviour
     {
         return ConnectedPlayers.Find(p => p.playerRef.AsIndex == index);
     }
+
+    public static void RemovePlayer(Player player)
+    {
+        ConnectedPlayers.Remove(player);
+    }
 }

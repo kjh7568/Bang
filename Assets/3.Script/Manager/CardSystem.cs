@@ -133,8 +133,9 @@ public class CardSystem : MonoBehaviour
             return;
         }
 
-        Broadcaster.Instance.RPC_RequestBang(user, target.Value);
-    }
+         Player.LocalPlayer.InGameStat.isBang = true;
+         Broadcaster.Instance.RPC_RequestBang(user, target.Value);
+     }
 
     private void UseMissed(PlayerRef user, PlayerRef? target)
     {

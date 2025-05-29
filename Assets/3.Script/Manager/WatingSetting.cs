@@ -18,7 +18,7 @@ public class WatingSetting : MonoBehaviour
     
     private void Start()
     {
-        sessionNumberText.text = $"Session number: {Server.Instance.GetSessionNumber()}";
+        sessionNumberText.text = $"{Server.Instance.GetSessionNumber()}";
     }
 
     public void UpdateNicknameTexts(string[] nickNames)
@@ -31,16 +31,19 @@ public class WatingSetting : MonoBehaviour
     
     public void ShowStartButton()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
         startButton.gameObject.SetActive(true);
     }
 
     public void HideStartButton()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
         startButton.gameObject.SetActive(false);
     }
 
     public void OnStartButtonClicked()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
         var scene = SceneRef.FromIndex(3);
         if (!scene.IsValid) return;
 
@@ -49,6 +52,7 @@ public class WatingSetting : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
         Server.Instance.LeaveSession();
     }
 }

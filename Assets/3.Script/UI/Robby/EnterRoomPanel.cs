@@ -12,11 +12,15 @@ public class EnterRoomPanel : MonoBehaviour
     
     public void OnJoinButton()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
+
         Server.Instance.StartGame(GameMode.Client, roomNumberInput.text);
     }
     
     public void OnBackButton()
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
+
         currentPanel.SetActive(false);
         previousPanel.SetActive(true);
     }

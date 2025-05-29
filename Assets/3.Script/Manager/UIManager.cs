@@ -28,11 +28,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button useMissedButton;
     [SerializeField] private Button dontUseMissedButton;
 
+    public GameObject deadPanel;
 
     [SerializeField] private GameObject ResultPanel;
     [SerializeField] private TMP_Text resultText;
 
     public TMP_Text[] resultPlayerNameText;
+    
+    public static Dictionary<PlayerRef, string> NicknameCache = new();
 
     // public TMP_Text waitingUserTurnText;
     //
@@ -59,14 +62,25 @@ public class UIManager : MonoBehaviour
         endTurnButton.onClick.AddListener(() => { Broadcaster.Instance.RPC_RequestEndTurn(); });
     }
 
+    private void Start()
+    {
+        Broadcaster.Instance.RPC_RequestAllNicknames(Player.LocalPlayer.playerRef);
+    }
+
     public void ResetPanel()
     {
         cardListPanel.SetActive(false);
         waitingPanel.SetActive(false);
+        targetPanel.SetActive(false);
+        missedPanel.SetActive(false);
     }
 
     public void OnCardClicked(int index)
     {
+        SoundManager.Instance.PlaySound(SoundType.Button);
+
+        if (Player.LocalPlayer.InGameStat.isBang) return;
+        
         cardListPanel.SetActive(false);
         cardButtons[index].SetActive(false);
 
@@ -122,7 +136,7 @@ public class UIManager : MonoBehaviour
 
             var playerRef = targetPlayer.playerRef;
             var button = Instantiate(targetButtonPrefab, targetTextPanel.transform);
-            button.GetComponentInChildren<TMP_Text>().text = playerRef.ToString();
+            button.GetComponentInChildren<TMP_Text>().text = NicknameCache[playerRef];
 
             button.onClick.RemoveAllListeners();
 
@@ -138,6 +152,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowMissedPanel(bool hasMissed, PlayerRef attackRef, PlayerRef targetRef)
     {
+        
         Debug.Log($"빗나감 패널 메서드 시작");
 
         useMissedButton.onClick.RemoveAllListeners();
@@ -171,6 +186,8 @@ public class UIManager : MonoBehaviour
                     return;
                 }
             }
+            
+            
         });
 
         dontUseMissedButton.onClick.AddListener(() =>
@@ -180,6 +197,7 @@ public class UIManager : MonoBehaviour
 
             Player.GetPlayer(targetRef).InGameStat.hp--;
             Broadcaster.Instance.RPC_NotifyBang(attackRef, targetRef);
+            
         });
     }
 
