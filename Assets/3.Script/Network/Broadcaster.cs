@@ -227,10 +227,9 @@ public class Broadcaster : NetworkBehaviour
         Animator targetAnimator =target.GetComponent<Animator>();
         Debug.Log("miss : "+ attacker.name + " : " + target.name + " : " );
         attackerAnimator.SetTrigger("shooting");
-        SoundManager.Instance.PlaySound(SoundType.Bang);
-        
         targetAnimator.SetTrigger("hitting");
-        SoundManager.Instance.PlaySound(SoundType.Dodging);
+        
+        SoundManager.Instance.PlaySound(SoundType.Bang);
 
         Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
         //애니메이션
@@ -267,6 +266,9 @@ public class Broadcaster : NetworkBehaviour
         Player player = Player.GetPlayer(playerRef);
         Animator playerAnimator = player.GetComponent<Animator>();
         playerAnimator.SetTrigger("drinking");
+        
+        SoundManager.Instance.PlaySound(SoundType.Beer);
+        
         Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
         //애니메이션
         if (Runner.IsServer && Runner.LocalPlayer != playerRef)

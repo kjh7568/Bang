@@ -33,6 +33,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip bangClip;
     public AudioClip inputClip;
     public AudioClip dodgingClip;
+    public AudioClip beerClip;
 
     
     [Header("Source")]
@@ -115,6 +116,9 @@ public class SoundManager : MonoBehaviour
                 break;
             case SoundType.Dodging:
                 PlayEffect(dodgingClip);
+                break;
+            case SoundType.Beer:
+                PlayEffect(beerClip);
                 break;
             default:
                 Debug.LogWarning("SoundType not handled: " + soundType);
