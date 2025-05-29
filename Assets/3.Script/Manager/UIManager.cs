@@ -36,6 +36,8 @@ public class UIManager : MonoBehaviour
     public TMP_Text[] resultPlayerNameText;
     
     public static Dictionary<PlayerRef, string> NicknameCache = new();
+    
+    [SerializeField] private MyInfoPanel myInfoPanel;
 
     // public TMP_Text waitingUserTurnText;
     //
@@ -187,7 +189,6 @@ public class UIManager : MonoBehaviour
                 }
             }
             
-            
         });
 
         dontUseMissedButton.onClick.AddListener(() =>
@@ -233,6 +234,11 @@ public class UIManager : MonoBehaviour
                 cardListPanel.SetActive(true);
                 isPanelOn = true;
             }
+        }
+        
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            myInfoPanel.OpenMyPanel();
         }
     }
 

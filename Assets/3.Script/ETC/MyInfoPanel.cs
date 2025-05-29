@@ -67,7 +67,7 @@ public class MyInfoPanel : MonoBehaviour
         UpdatePlayerHp();
     }
 
-    void OpenMyPanel()
+    public void OpenMyPanel()
     {
         SoundManager.Instance.PlaySound(SoundType.Button);
         
