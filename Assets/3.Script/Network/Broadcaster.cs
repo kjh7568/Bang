@@ -398,14 +398,10 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_SetCountAndGatling(PlayerRef attackRef)
     {
-        Debug.Log("카운트 올라유~");
-        
         missedCheckCount++;
         
         if (missedCheckCount > 2)
         {
-            Debug.Log("카운트 다 올랐어유~");
-            
             RPC_TurnOnPanel(attackRef);
         }
     }
