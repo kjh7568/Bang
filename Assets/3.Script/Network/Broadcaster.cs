@@ -181,6 +181,25 @@ public class Broadcaster : NetworkBehaviour
             UIManager.Instance.waitingPanel.SetActive(true);
         }
     }
+    
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_RequestGatling(PlayerRef attackRef)
+    {
+        var targetRef = Player.LocalPlayer.playerRef;
+        
+        if (targetRef != attackRef)
+        {
+            var hasMissed = CardSystem.Instance.CheckHasMissed(targetRef);
+
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.ShowMissedPanel(hasMissed, attackRef, targetRef);
+        }
+        else
+        {
+            UIManager.Instance.ResetPanel();
+            UIManager.Instance.waitingPanel.SetActive(true);
+        }
+    }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_NotifyMissed(PlayerRef attackRef, PlayerRef targetRef)

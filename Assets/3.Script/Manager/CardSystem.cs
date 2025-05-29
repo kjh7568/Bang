@@ -172,6 +172,7 @@ public class CardSystem : MonoBehaviour
 
     private void UseGatling(PlayerRef user, PlayerRef? target)
     {
+        Broadcaster.Instance.RPC_RequestGatling(user);
     }
 
     private void UseAnyCard(PlayerRef user, PlayerRef? target)
