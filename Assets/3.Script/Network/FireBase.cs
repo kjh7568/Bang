@@ -237,7 +237,7 @@ public class FireBase : MonoBehaviour
                         else
                         {
                             NotificationPanel.SetActive(true);
-                            NotificationText.text = "ex";
+                            NotificationText.text = "Email or Password not found";
                             Debug.LogError("Exception occurred during login: " + firebaseEx.Message);
                         }
                     }
