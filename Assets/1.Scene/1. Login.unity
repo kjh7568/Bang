@@ -599,6 +599,7 @@ GameObject:
   - component: {fileID: 132817684}
   - component: {fileID: 132817686}
   - component: {fileID: 132817685}
+  - component: {fileID: 132817687}
   m_Layer: 5
   m_Name: SignUp_Panel
   m_TagString: Untagged
@@ -669,6 +670,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 132817683}
   m_CullTransparentMesh: 1
+--- !u!114 &132817687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132817683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ce17b35ab9ce8d41aefc0ced4d5e0a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstInput: {fileID: 1244345525}
 --- !u!1 &256391737
 GameObject:
   m_ObjectHideFlags: 0
@@ -1198,7 +1212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -1683,7 +1697,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -2658,6 +2672,7 @@ GameObject:
   - component: {fileID: 1150019715}
   - component: {fileID: 1150019717}
   - component: {fileID: 1150019716}
+  - component: {fileID: 1150019718}
   m_Layer: 5
   m_Name: SignIn_Panel
   m_TagString: Untagged
@@ -2727,6 +2742,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1150019714}
   m_CullTransparentMesh: 1
+--- !u!114 &1150019718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150019714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ce17b35ab9ce8d41aefc0ced4d5e0a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstInput: {fileID: 396277863}
 --- !u!1 &1153103396
 GameObject:
   m_ObjectHideFlags: 0
@@ -3626,7 +3654,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -3770,7 +3798,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
