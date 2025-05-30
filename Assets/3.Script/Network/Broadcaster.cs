@@ -505,7 +505,6 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_VictoryCheck(PlayerRef playerRef)
     {
-        UIManager.Instance.ResetPanel();
         //애니메이션
         Player player = Player.GetPlayer(playerRef);
         Animator playerAnimator = player.GetComponent<Animator>();
@@ -590,6 +589,7 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_ShowResultToClients(string result, string[] playerNames)
     {
+        UIManager.Instance.ResetPanel();
         UIManager.Instance.ShowResultPanel(result);
 
         // 모든 클라이언트가 받은 데이터로 이름 설정
