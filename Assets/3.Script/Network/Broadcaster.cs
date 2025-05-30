@@ -274,11 +274,13 @@ public class Broadcaster : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_RequestGatling(PlayerRef attackRef)
     {
+        Debug.Log($"RPC_RequestGatling attackRef ::: {attackRef}");
+        
         if (Runner.LocalPlayer == attackRef)
         {
             UIManager.Instance.waitingPanel.SetActive(true);
         }
-        else
+        else if (GameManager.Instance.isDead == false)
         {
             var targetRef = Player.LocalPlayer.playerRef;
             var hasMissed = CardSystem.Instance.CheckHasMissed(targetRef);
