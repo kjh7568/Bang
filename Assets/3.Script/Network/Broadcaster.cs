@@ -452,7 +452,7 @@ public class Broadcaster : NetworkBehaviour
     {
         missedCheckCount++;
         
-        if (missedCheckCount > 2)
+        if (missedCheckCount > Player.ConnectedPlayers.Count - 2)
         {
             RPC_TurnOnPanel(attackRef);
             missedCheckCount = 0;
@@ -562,7 +562,6 @@ public void RPC_VictoryCheck(PlayerRef playerRef)
         }
 
         Debug.Log($"승리 조건 검사: sheriffAlive={sheriffAlive}, renegadeAlive={renegadeAlive}, outlawAlive={outlawAlive}, result={result}");
-        UIManager.Instance.cardListPanel.SetActive(false);
         RPC_ShowResultToClients(result, playerNames);
     }
 }
