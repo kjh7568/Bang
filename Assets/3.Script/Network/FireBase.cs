@@ -266,6 +266,9 @@ public class FireBase : MonoBehaviour
         }
         catch (Exception ex)
         {
+            NotificationPanel.SetActive(true);
+            NotificationText.text = "Please Input the Email and Password";
+            StartCoroutine(DeleyPanel());
             Debug.LogError("Exception occurred during Signin: " + ex.Message);
         }
     }
