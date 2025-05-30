@@ -515,8 +515,6 @@ public void RPC_VictoryCheck(PlayerRef playerRef)
     playerAnimator.SetTrigger("dying");
     Server.Instance.MovePlayersToSpawnPoints(GameManager.Instance.spawnPoints);
 
-    
-
     // 모든 플레이어 리스트
     List<Player> allPlayers = Player.AllPlayers;
 
@@ -572,6 +570,7 @@ public void RPC_VictoryCheck(PlayerRef playerRef)
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_ShowResultToClients(string result, string[] playerNames)
     {
+        UIManager.Instance.ResetPanel();
         UIManager.Instance.ShowResultPanel(result);
 
         // 모든 클라이언트가 받은 데이터로 이름 설정
